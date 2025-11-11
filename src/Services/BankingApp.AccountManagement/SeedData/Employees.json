@@ -1,0 +1,17 @@
+[
+  {
+    "employeeId": "9a9da11c-a076-4af2-bae5-144445cc75ca",
+    "role": "Cashier",
+    "dateAdded": "2025-08-16T08:30:00Z"
+  },
+  {
+    "employeeId": "61bcd0ea-f8a9-46c9-a9c1-a556ff657f40",
+    "role": "Treasurer",
+    "dateAdded": "2025-08-16T08:30:00Z"
+  },
+  {
+    "employeeId": "fc003157-1644-4055-83bd-7f5ff956fae5",
+    "role": "Manager",
+    "dateAdded": "2025-08-16T08:30:00Z"
+  }
+]

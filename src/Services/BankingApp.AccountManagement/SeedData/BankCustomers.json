@@ -1,0 +1,32 @@
+[
+  {
+    "bankCustomerId": "78784fdb-5481-42e7-83df-16e6dc5124ea",
+    "name": "Ram",
+    "phoneNo": "7865432100",
+    "address": "kolkata",
+    "email": "test1@gmail.com",
+    "dateOfBirth": "2025-08-16T08:30:00Z",
+    "custType": "RegularCustomer",
+    "dateAdded": "2025-08-16T08:30:00Z"
+  },
+  {
+    "bankCustomerId": "05b01627-4e56-45bd-9ddd-149b828bc8dc",
+    "name": "Shyam",
+    "phoneNo": "7765487543",
+    "address": "bengaluru",
+    "email": "test2@gmail.com",
+    "dateOfBirth": "2025-08-16T08:30:00Z",
+    "custType": "RegularCustomer",
+    "dateAdded": "2025-08-16T08:30:00Z"
+  },
+  {
+    "bankCustomerId": "ae5f4173-b311-4fa9-8f05-fdeca1ec2120",
+    "name": "Ashok",
+    "phoneNo": "5564321224",
+    "address": "mumbai",
+    "email": "test3@gmail.com",
+    "dateOfBirth": "2025-08-16T08:30:00Z",
+    "custType": "CorporateCustomer",
+    "dateAdded": "2025-08-16T08:30:00Z"
+  }
+]

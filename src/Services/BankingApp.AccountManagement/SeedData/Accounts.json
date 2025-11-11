@@ -1,0 +1,32 @@
+[
+  {
+    "accountId": "55e27492-2b1a-47e6-bf6a-508a06f58e38",
+    "branchId": "b9429258-f553-4ae2-a176-bca043453cdc",
+    "accountNo": "987658700",
+    "balance": 1100.50,
+    "accountType": "Savings",
+    "status": "Active",
+    "dateAdded": "2025-08-16T08:30:00Z",
+    "closedDate": "2040-08-16T08:30:00Z"
+  },
+  {
+    "accountId": "49062cf9-68a7-4524-bcd0-623091335db2",
+    "branchId": "b9429258-f553-4ae2-a176-bca043453cdc",
+    "accountNo": "987658701",
+    "balance": 1300.50,
+    "accountType": "Current",
+    "status": "Active",
+    "dateAdded": "2025-08-16T08:30:00Z",
+    "closedDate": "2040-08-16T08:30:00Z"
+  },
+  {
+    "accountId": "b42cbf9f-7a6e-411d-8718-0e6d9593b889",
+    "branchId": "b9429258-f553-4ae2-a176-bca043453cdc",
+    "accountNo": "987658702",
+    "balance": 1400.60,
+    "accountType": "Savings",
+    "status": "Inactive",
+    "dateAdded": "2025-08-16T08:30:00Z",
+    "closedDate": "2040-08-16T08:30:00Z"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "branchId": "b9429258-f553-4ae2-a176-bca043453cdc",
+    "name": "Gandhi Bazaar",
+    "branchCode": "COB0007",
+    "address": "MGRoad",
+    "dateAdded": "2025-08-16T08:30:00Z",
+    "bankId": "e8bab6e7-fb02-4bcc-ad63-8fefddd295a5"
+  },
+  {
+    "branchId": "5cd92c82-80ac-45ee-aef0-f341546b4ace",
+    "name": "Jaynagak",
+    "branchCode": "COB0008",
+    "address": "East End Road",
+    "dateAdded": "2025-08-16T08:30:00Z",
+    "bankId": "e8bab6e7-fb02-4bcc-ad63-8fefddd295a5"
+  },
+  {
+    "branchId": "9186f6ce-4955-4bb6-9a0f-afdcbacc639b",
+    "name": "Lindsay street",
+    "branchCode": "COB0009",
+    "address": "S N Mukherjee Road",
+    "dateAdded": "2025-08-16T08:30:00Z",
+    "bankId": "e8bab6e7-fb02-4bcc-ad63-8fefddd295a5"
+  }
+]
