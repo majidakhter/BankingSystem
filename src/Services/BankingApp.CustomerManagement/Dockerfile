@@ -11,10 +11,14 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/Services/BankingApp.CustomerManagement/BankingApp.CustomerManagement/BankingApp.CustomerManagement.csproj", "src/Services/BankingApp.CustomerManagement/BankingApp.CustomerManagement/"]
-RUN dotnet restore "./src/Services/BankingApp.CustomerManagement/BankingApp.CustomerManagement/BankingApp.CustomerManagement.csproj"
+COPY ["src/Services/BankingApp.CustomerManagement/BankingApp.CustomerManagement.csproj", "src/Services/BankingApp.CustomerManagement/"]
+COPY ["src/Core/BankingDDD.Application/Applications/Applications.csproj", "src/Core/BankingDDD.Application/Applications/"]
+COPY ["src/Core/BankingDDD.Domain/Domains/Domains.csproj", "src/Core/BankingDDD.Domain/Domains/"]
+COPY ["src/Core/BankingDDD.CommonLibrary/Common/Common.csproj", "src/Core/BankingDDD.CommonLibrary/Common/"]
+COPY ["src/Core/BankingDDD.Infrastructure/Infrastructures/Infrastructures.csproj", "src/Core/BankingDDD.Infrastructure/Infrastructures/"]
+RUN dotnet restore "./src/Services/BankingApp.CustomerManagement/BankingApp.CustomerManagement.csproj"
 COPY . .
-WORKDIR "/src/src/Services/BankingApp.CustomerManagement/BankingApp.CustomerManagement"
+WORKDIR "/src/src/Services/BankingApp.CustomerManagement"
 RUN dotnet build "./BankingApp.CustomerManagement.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
