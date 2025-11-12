@@ -36,4 +36,8 @@
     <ProjectReference Include="..\..\Core\BankingDDD.Infrastructure\Infrastructures\Infrastructures.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
