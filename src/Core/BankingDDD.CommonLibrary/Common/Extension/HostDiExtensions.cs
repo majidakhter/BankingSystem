@@ -17,7 +17,7 @@ namespace BankingAppDDD.Common.Extension
         public static IServiceCollection AddWebHostInfrastructure(this IServiceCollection services, IConfiguration configuration, string serviceName)
         {
             services
-                //.AddRedis(configuration)
+                .AddRedis(configuration)
                 .AddHostOpenTelemetry(serviceName);
 
             return services;
@@ -30,8 +30,14 @@ namespace BankingAppDDD.Common.Extension
         private static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
         {
             var redisConnectionString = configuration.GetConnectionString("Redis")!;
-
-            IConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
+           
+                ConfigurationOptions option = new ConfigurationOptions
+                {
+                    AbortOnConnectFail = false,
+                    EndPoints = { "redis:6379" }
+                };
+            
+            IConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(option);
 
             services
                 .AddSingleton<ICacheService, CacheService>()
@@ -40,10 +46,6 @@ namespace BankingAppDDD.Common.Extension
                 {
                     
                     options.ConnectionMultiplexerFactory = () => Task.FromResult(connectionMultiplexer);
-                    options.ConfigurationOptions = new ConfigurationOptions
-                    {
-                        AbortOnConnectFail = false
-                    };
                 });
 
             return services;

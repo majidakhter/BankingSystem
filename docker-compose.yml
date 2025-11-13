@@ -99,9 +99,12 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     ports:
-      - 15673:15673
-      - 5673:5673
+      - 15672:15672
+      - 5672:5672
     healthcheck:
       test: rabbitmq-diagnostics check_port_connectivity
       interval: 10s
@@ -143,7 +146,127 @@ services:
       - 8081:80
     networks:
       - backend
- 
+  # Services  
+  banking-identityserver:
+    image: banking-identityserver
+    container_name: banking-identityserver
+    build:
+      context: .
+      dockerfile: src/Crosscutting/BankingDDD.IdentityServer/Identity/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: '${ASPNETCORE_ENVIRONMENT:-Development}'
+      ASPNETCORE_URLS: 'http://+:80'    
+    healthcheck:      
+      test: curl --fail http://banking-identityserver:80/health || exit 1      
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+      start_interval: 30s
+    ports:
+      - '5263:80'
+    networks:
+      - backend
+    restart: 
+      always
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+  banking-customermanagement:
+    image: banking-customermanagement
+    container_name: banking-customermanagement
+    build:
+      context: .
+      dockerfile: src/Services/BankingApp.CustomerManagement/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: '${ASPNETCORE_ENVIRONMENT:-Development}'
+      ASPNETCORE_URLS: 'http://+:80'    
+    healthcheck:      
+      test: curl --fail http://banking-customermanagement:80/health || exit 1      
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+      start_interval: 30s
+    ports:
+      - '5157:80'
+    networks:
+      - backend
+    restart: 
+      always
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  banking-accountmanagement:
+    image: banking-accountmanagement
+    container_name: banking-accountmanagement
+    build:
+      context: .
+      dockerfile: src/Services/BankingApp.AccountManagement/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: '${ASPNETCORE_ENVIRONMENT:-Development}'
+      ASPNETCORE_URLS: 'http://+:80'    
+    healthcheck:      
+      test: curl --fail http://banking-accountmanagement:80/health || exit 1      
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+      start_interval: 30s
+    ports:
+      - '5210:80'
+    networks:
+      - backend
+    restart: 
+      always
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  banking-loanmanagement:
+    image: banking-loanmanagement
+    container_name: banking-loanmanagement
+    build:
+      context: .
+      dockerfile: src/Services/BankingApp.LoanManagement/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: '${ASPNETCORE_ENVIRONMENT:-Development}'
+      ASPNETCORE_URLS: 'http://+:80'    
+    healthcheck:      
+      test: curl --fail http://banking-loanmanagement:80/health || exit 1      
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+      start_interval: 30s
+    ports:
+      - '5273:80'
+    networks:
+      - backend
+    restart: 
+      always
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 volumes:
   db-data:
     driver: local  
