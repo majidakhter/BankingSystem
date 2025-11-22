@@ -3,6 +3,7 @@ using BankingAppDDD.Common.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace BankingAppDDD.Common.Extension
 {
     public static class Extensions
     {
+
         public static IServiceCollection AddSwaggerDocs(this IServiceCollection services)
         {
             SwaggerOptions options;
@@ -42,10 +44,13 @@ namespace BankingAppDDD.Common.Extension
                 c.CustomSchemaIds(x => x.FullName);
                 if (options.IncludeSecurity)
                 {
-                    
-                    c.AddSecurityDefinition("Keycloak", new OpenApiSecurityScheme
+
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                     {
                         Type = SecuritySchemeType.OAuth2,
+                        In = ParameterLocation.Header,
+                        Name = "Authorization",
+                        Scheme = "Bearer",
                         Flows = new OpenApiOAuthFlows
                         {
                             AuthorizationCode = new OpenApiOAuthFlow
@@ -56,14 +61,12 @@ namespace BankingAppDDD.Common.Extension
                                 {
                                     { "openid", "openid" },
                                     { "profile", "profile" },
-                                    { "email", "Email" }
                                 }
                             }
 
                             /* Implicit = new OpenApiOAuthFlow // Or AuthorizationCode if using PKCE
                              {
                                  AuthorizationUrl = new Uri(authurl),
-                                 //TokenUrl = new Uri("YOUR_KEYCLOAK_AUTH_URL/realms/YOUR_REALM/protocol/openid-connect/token"), // Only for AuthorizationCode flow
                                  TokenUrl = new Uri(keycloaktokenUrl),
                                  Scopes = new Dictionary<string, string>
                                   {
@@ -74,26 +77,25 @@ namespace BankingAppDDD.Common.Extension
                         },
 
                     });
-                    /*OpenApiSecurityScheme keycloakSecurityScheme = new()
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
                      {
-                         Reference = new OpenApiReference
-                         {
-                             Id = "Keycloak",
-                             Type = ReferenceType.SecurityScheme,
-                         },
-                         In = ParameterLocation.Header,
-                         Name = "Bearer",
-                         Scheme = "Bearer",
-                     };
+                        {
+                          new OpenApiSecurityScheme
+                          {
+                           Reference = new OpenApiReference
+                            {
+                            Type = ReferenceType.SecurityScheme,
+                             Id = "Bearer"
+                             },
+                           Scheme = "oauth2",
+                           Name = "Bearer",
+                           In = ParameterLocation.Header,
 
-                     c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                     {
-                         {
-                              keycloakSecurityScheme, new[] { "openid", "profile", "email" }
-                         },
-
-                     });*/
-                    c.OperationFilter<AuthorizeOperationFilter>();
+                          },
+                         new[] { "openid", "profile"}
+                        }
+                     });
+                    // c.OperationFilter<AuthorizeOperationFilter>();
                 }
 
             });
@@ -116,7 +118,6 @@ namespace BankingAppDDD.Common.Extension
 
             builder.UseStaticFiles()
                 .UseSwagger(c => c.RouteTemplate = routePrefix + "/{documentName}/swagger.json");
-
             return options.ReDocEnabled
                 ? builder.UseReDoc(c =>
                 {
@@ -129,7 +130,7 @@ namespace BankingAppDDD.Common.Extension
                     c.RoutePrefix = routePrefix;
                     c.OAuthClientId(appSettings!.Keycloak.ClientId); // The client ID configured in Keycloak
                     c.OAuthClientSecret(appSettings!.Keycloak.ClientSecret);
-                    c.OAuthScopes("openid profile email");
+                    c.OAuthScopes("openid profile");
                     c.OAuthAppName("Identity Service API - Keycloak Integration");
                     c.OAuthUsePkce();
                 });

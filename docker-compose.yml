@@ -5,6 +5,7 @@ services:
     restart: on-failure
     volumes:
       - ./db-data:/var/lib/postgresql/data/
+      - ./postgres-init:/docker-entrypoint-initdb.d
     environment:
        POSTGRES_DB: keycloak_db
        POSTGRES_USER: keycloak
@@ -42,7 +43,6 @@ services:
     build:
       context: .
       dockerfile: ./KeyCloakDockerfile/Dockerfile
-    
     environment:
       KC_DB_URL_HOST: postgres
       KC_DB: postgres 
@@ -51,20 +51,20 @@ services:
       KC_DB_PASSWORD: keycloakpassword
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_STRICT_BACKCHANNEL: "false"
-      KC_HOSTNAME_STRICT_HTTPS: "false"
-      KC_TRANSACTION_XA_ENABLED: "true" # default: true
-      QUARKUS_TRANSACTION_MANAGER_ENABLE_RECOVERY: "true"
-      KC_DB_URL:  jdbc:postgresql://postgres:5432/keycloak_db
+      KC_DB_URL:  jdbc:postgresql://postgres:5432/keycloak_db 
       KC_HTTP_ENABLED: "true"
-      KC_LOG_LEVEL: info
-      KC_METRICS_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "false"
+      KC_HOSTNAME: keycloak
+      KC_HTTP_PORT: 8080
+      KC_HOSTNAME_BACKCHANNEL: http://keycloak:8080
+    volumes:
+      - ./data/import:/opt/keycloak/data/import
     depends_on:
        postgres:
           condition: service_healthy 
     ports:
-      - 8888:8080
+      - 8080:8080
       - 9000:9000
     healthcheck:
       test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080;echo -e 'GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then echo 'Healthcheck Successful';exit 0;else echo 'Healthcheck Failed';exit 1;fi;"] 
@@ -75,6 +75,7 @@ services:
     restart: always
     networks :
       - backend
+       
   mongodb:
     image: mongo:8.0
     container_name : mymongo
@@ -182,7 +183,7 @@ services:
       dockerfile: src/Services/BankingApp.CustomerManagement/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: '${ASPNETCORE_ENVIRONMENT:-Development}'
-      ASPNETCORE_URLS: 'http://+:80'    
+      ASPNETCORE_URLS: 'http://+:80'   
     healthcheck:      
       test: curl --fail http://banking-customermanagement:80/health || exit 1      
       interval: 40s
@@ -205,6 +206,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+ 
   banking-accountmanagement:
     image: banking-accountmanagement
     container_name: banking-accountmanagement

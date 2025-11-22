@@ -32,7 +32,7 @@ namespace BankingAppDDD.CustomerManagement.Controllers
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost]
-       // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]

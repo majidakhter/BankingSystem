@@ -3,6 +3,7 @@ using BankingApp.LoanManagement.Core.LoanApplicationsEntities;
 using BankingApp.LoanManagement.Infrastructure.Abstraction;
 using BankingApp.LoanManagement.Infrastructure.Repositories;
 using BankingApp.LoanManagement.Infrastructure.Services;
+using BankingAppDDD.Common.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -43,9 +44,14 @@ namespace BankingApp.LoanManagement.Infrastructure.AutofacModules
                 .AsImplementedInterfaces()
                 .InstancePerRequest()
                 .InstancePerLifetimeScope();
-
+            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
+            builder.RegisterType<AccessTokenService>() // Replace AccessTokenService with your actual implementation
+                   .As<IAccessTokenService>()
+                   .InstancePerLifetimeScope();
+            // Register AccessTokenValidatorMiddleware
+            builder.RegisterType<AccessTokenValidatorMiddleware>().AsSelf();
             //builder.RegisterGeneric(typeof(Repository<>))
-                //.As(typeof(IRepository<>));
+            //.As(typeof(IRepository<>));
             builder.RegisterGeneric(typeof(Repository<>))
                .As(typeof(ILoanRepository<>)).InstancePerLifetimeScope();
             builder.RegisterType<Repository<LoanApplication>>()

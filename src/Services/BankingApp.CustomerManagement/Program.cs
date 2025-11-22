@@ -26,6 +26,7 @@ builder.Services.AddSwaggerDocs();
 builder.Services.AddJwt();
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+builder.Services.AddHttpContextAccessor();
 var connectionString = builder.Configuration["DbContextSettings:ConnectionString"];
 builder.Services.AddDbContext<CustomerDbContext>(opts => { opts.UseNpgsql(connectionString); });
 builder.Services.AddHttpClient();
@@ -52,7 +53,16 @@ builder.Services.AddMassTransit(configure =>
         config.ConfigureEndpoints(context);
     });
 });
-
+builder.Services
+   .AddCors(options =>
+   {
+       options.AddPolicy("AllowOrigin",
+                    builder => builder.WithOrigins("http://localhost:5157") //url here need to change from http to https if we are doing ssl communication
+                             .AllowAnyHeader()
+                             .AllowAnyMethod()
+                         .AllowCredentials()
+                         .WithExposedHeaders(headers));
+   });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -66,12 +76,15 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/docs/v1/swagger.json", "v1");
     options.OAuthClientId(app.Configuration.GetValue<string>("Keycloak:ClientId"));
     options.OAuthClientSecret(app.Configuration.GetValue<string>("Keycloak:ClientSecret"));
-    options.OAuthScopes("openid profile email");
+    options.OAuthScopes("openid profile");
     options.OAuthUsePkce();
 });
-app.UseHttpsRedirection();
-
+//This is Required when we are doing ssl communication
+//app.UseHttpsRedirection();
+app.UseCors("AllowOrigin");
 app.UseRouting();
+app.UseAuthentication();
+app.UseAccessTokenValidator();
 app.UseAuthorization();
 
 app.MapControllers();

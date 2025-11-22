@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using BankingAppDDD.Common.Extension;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,10 +34,15 @@ builder.Services.AddSwaggerDocs();
 builder.Services.AddJwt();
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+builder.Services.AddHttpContextAccessor();
 var connectionString = builder.Configuration["DbContextSettings:ConnectionString"];
 builder.Services.AddDbContext<AccountDbContext>(opts => { opts.UseNpgsql(connectionString); });
 builder.Services.AddHttpClient();
-
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>((hostContext, container) =>
+{
+    container.RegisterModule(new ApplicationModule());
+    container.RegisterModule(new InfrastructureModule(builder.Configuration));
+});
 builder.Services.AddMassTransit(configure =>
 {
     var entryAssembly = Assembly.GetExecutingAssembly();
@@ -53,7 +59,16 @@ builder.Services.AddMassTransit(configure =>
         config.ConfigureEndpoints(context);
     });
 });
-
+builder.Services
+   .AddCors(options =>
+   {
+       options.AddPolicy("AllowOrigin",
+                    builder => builder.WithOrigins("http://localhost:5210") //url here need to change from http to https if we are doing ssl communication
+                             .AllowAnyHeader()
+                             .AllowAnyMethod()
+                         .AllowCredentials()
+                         .WithExposedHeaders(headers));
+   });
 
 builder.Services.AddHsts(options =>
 {
@@ -61,11 +76,7 @@ builder.Services.AddHsts(options =>
     options.IncludeSubDomains = true;
     options.MaxAge = TimeSpan.FromDays(365);
 });
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>((hostContext, container) =>
-{
-    container.RegisterModule(new ApplicationModule());
-    container.RegisterModule(new InfrastructureModule(builder.Configuration));
-});
+
 
 var app = builder.Build();
 string seedDataDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedData");
@@ -95,14 +106,9 @@ app.UseSwaggerUI(options =>
     options.OAuthScopes("openid profile email");
     options.OAuthUsePkce();
 });
-app.UseCors(options =>
-{
-    options.AllowAnyMethod()
-           .AllowAnyHeader()
-           .AllowAnyOrigin()
-           .WithExposedHeaders("Content-Disposition");
-});
-app.UseHttpsRedirection();
+app.UseCors("AllowOrigin");
+//This is Required when we are doing ssl communication
+//app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseAuthentication();

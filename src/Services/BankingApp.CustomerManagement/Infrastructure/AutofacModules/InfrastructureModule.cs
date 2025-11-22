@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using BankingAppDDD.Applications.Abstractions.Repositories;
+using BankingAppDDD.Common.Authentication;
 using BankingAppDDD.CustomerManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -54,7 +55,12 @@ namespace BankingAppDDD.CustomerManagement.Infrastructure.AutofacModules
                 .AsImplementedInterfaces()
                 .InstancePerRequest()
                 .InstancePerLifetimeScope();
-
+            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
+            builder.RegisterType<AccessTokenService>() // Replace AccessTokenService with your actual implementation
+                   .As<IAccessTokenService>()
+                   .InstancePerLifetimeScope();
+            // Register AccessTokenValidatorMiddleware
+            builder.RegisterType<AccessTokenValidatorMiddleware>().AsSelf();
             builder.RegisterGeneric(typeof(Repository<>))
                 .As(typeof(IRepository<>));
             builder.RegisterGeneric(typeof(Logger<>))

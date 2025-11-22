@@ -74,12 +74,24 @@ namespace BankingAppDDD.Common.Extension
             options.Authority = $"{appSettings!.Keycloak.BaseUrl}/realms/{appSettings!.Keycloak.Realm}"; // e.g., https://localhost:8080/realms/myrealm
             options.Audience = $"{appSettings!.Keycloak.ClientId}"; // The Client ID of your confidential client
             options.RequireHttpsMetadata = false; // Set to false only for development with http
+            options.SaveToken = true;
+            options.IncludeErrorDetails = true;
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateAudience = false,
+                ValidateIssuer = true,
+                ValidIssuer = $"{appSettings!.Keycloak.BaseUrl}/realms/{appSettings!.Keycloak.Realm}", //  http://localhost:8888/realms/bankaccount
                 ValidateIssuerSigningKey = true,
                 ValidateLifetime = false,
                 RoleClaimType = "roles",
+                IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
+                {
+                    var client = new HttpClient();
+                    var keyUri = $"{parameters.ValidIssuer}/protocol/openid-connect/certs";
+                    var response = client.GetAsync(keyUri).Result;
+                    var keys = new JsonWebKeySet(response.Content.ReadAsStringAsync().Result);
+                    return keys.GetSigningKeys();
+                }
             };
         });
         }

@@ -29,12 +29,7 @@ var connectionString = builder.Configuration["DbContextSettings:ConnectionString
 builder.Services.AddDbContext<CreditMgmtDbContext>(opts => { opts.UseNpgsql(connectionString); });
 var Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 builder.Services.AddHttpClient();
-builder.Services.AddHsts(options =>
-{
-    options.Preload = true;
-    options.IncludeSubDomains = true;
-    options.MaxAge = TimeSpan.FromDays(365);
-});
+
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>((hostContext, container) =>
 {
     container.RegisterModule(new ApplicationModule());
@@ -58,12 +53,18 @@ builder.Services
    .AddCors(options =>
    {
        options.AddPolicy("AllowOrigin",
-                    builder => builder.WithOrigins("https://localhost:7028")
+                    builder => builder.WithOrigins("http://localhost:5273")
                              .AllowAnyHeader()
                              .AllowAnyMethod()
                          .AllowCredentials()
                          .WithExposedHeaders(Headers));
    });
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(365);
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -81,14 +82,8 @@ app.UseSwaggerUI(options =>
     options.OAuthUsePkce();
 
 });
-app.UseCors(options =>
-{
-    options.AllowAnyMethod()
-           .AllowAnyHeader()
-           .AllowAnyOrigin()
-           .WithExposedHeaders("Content-Disposition");
-});
-app.UseHttpsRedirection();
+app.UseCors("AllowOrigin");
+//app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseAuthentication();
