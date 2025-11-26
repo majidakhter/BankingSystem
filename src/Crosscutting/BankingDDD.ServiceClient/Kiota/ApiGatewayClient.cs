@@ -39,7 +39,7 @@ namespace BankingDDD.ServiceClients.ApiGateway
             ApiClientBuilder.RegisterDefaultDeserializer<FormParseNodeFactory>();
             if (string.IsNullOrEmpty(RequestAdapter.BaseUrl))
             {
-                RequestAdapter.BaseUrl = "https://jsonplaceholder.typicode.com";
+                RequestAdapter.BaseUrl = "http://localhost:5000";
             }
             PathParameters.TryAdd("baseurl", RequestAdapter.BaseUrl);
         }

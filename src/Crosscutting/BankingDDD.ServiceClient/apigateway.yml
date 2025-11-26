@@ -3,7 +3,7 @@ info:
   title: JSONPlaceholder
   version: '1.0'
 servers:
-  - url: https://jsonplaceholder.typicode.com/
+  - url: http://localhost:5000
 
 components:
   schemas:
