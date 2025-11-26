@@ -22,7 +22,7 @@ namespace BankingApp.AccountManagement.Controllers
         }
 
 
-        [HttpPost("api/Account/AddAccount")]
+        [HttpPost("AddAccount")]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -33,9 +33,8 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         } 
 
-        [HttpPost("api/Account/Deposit")]
-        //[Authorize(Roles = "Customer")]
-        [Authorize]
+        [HttpPost("Deposit")]
+        [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
@@ -45,7 +44,7 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         }
 
-        [HttpPost("api/Account/Withdraw")]
+        [HttpPost("Withdraw")]
         [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -56,15 +55,18 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         }
 
-        [HttpPost("api/Account/CloseAccount")]
+        [HttpPost("CloseAccount")]
         [Authorize(Roles = "Accountant")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> CloseAccount([FromBody] CloseAccountCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
-        [HttpPost("api/Account/AddBeneficiary")]
+        [HttpPost("AddBeneficiary")]
         [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -75,9 +77,11 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         }
 
-        [HttpGet("api/Account/GetAccountStatus")]
+        [HttpGet("GetAccountStatus")]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(AccountStatusDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetAccountStatus(AccountStatusQuery query)
         {
             var result = await _mediator.Send(query);

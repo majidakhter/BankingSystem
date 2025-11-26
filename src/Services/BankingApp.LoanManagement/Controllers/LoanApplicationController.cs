@@ -100,6 +100,7 @@ namespace BankingApp.LoanManagement.Controllers
         } 
 
         [HttpGet("GetLoanByParam/{applicationNumber}/{customerIdentifier}/{decisionById}/{registeredById}")]
+        [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(LoanApplicationSearchCriteriaDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetLoanApplicationByOtherParam(string applicationNumber,Guid customerIdentifier, Guid decisionById, Guid registeredById)
         {

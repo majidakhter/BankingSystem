@@ -40,7 +40,16 @@ namespace BankingAppDDD.Applications.Abstractions.Commands
         public abstract  Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken);
        
     }
+    public abstract class CreateCommandHandler<TCommand, TResponse> : CommandHandler, IRequestHandler<TCommand, TResponse> where TCommand : ICreateCommand<TResponse>
+    {
+        protected CreateCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
 
+        }
+
+        public abstract Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken);
+
+    }
     public abstract class CreateCommandHandler<TCommand> : CommandHandler, IRequestHandler<TCommand, Guid> where TCommand : CreateCommand
     {
         protected CreateCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)

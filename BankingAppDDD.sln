@@ -44,6 +44,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certs", "Certs", "{02EA681E
 		..\..\..\..\..\..\OpenSSL\bin\bankingdomainapp.key = ..\..\..\..\..\..\OpenSSL\bin\bankingdomainapp.key
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingDDD.ServiceClient", "src\Crosscutting\BankingDDD.ServiceClient\BankingDDD.ServiceClient.csproj", "{036A5967-5728-4A23-906E-180143F2A6C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.ApiGateway", "src\Crosscutting\BankingApp.ApiGateway\BankingApp.ApiGateway.csproj", "{2DAF3F81-4190-4433-8114-3A427F85BB63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +90,14 @@ Global
 		{98793A5C-924E-AE94-A1C7-83E77893A24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98793A5C-924E-AE94-A1C7-83E77893A24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98793A5C-924E-AE94-A1C7-83E77893A24B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{036A5967-5728-4A23-906E-180143F2A6C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{036A5967-5728-4A23-906E-180143F2A6C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{036A5967-5728-4A23-906E-180143F2A6C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{036A5967-5728-4A23-906E-180143F2A6C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DAF3F81-4190-4433-8114-3A427F85BB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DAF3F81-4190-4433-8114-3A427F85BB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DAF3F81-4190-4433-8114-3A427F85BB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DAF3F81-4190-4433-8114-3A427F85BB63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +114,8 @@ Global
 		{F1B8C12D-FBB1-B322-B20F-1764CB554C0F} = {0092A781-B144-4863-BD27-D18046EECBD6}
 		{19E2046D-283D-BCE6-5F27-FB8A0065E9EA} = {74D4D034-C6E6-4A25-A573-5BBA6589B417}
 		{98793A5C-924E-AE94-A1C7-83E77893A24B} = {8B87C16E-C62F-40CB-8288-675092B772F4}
+		{036A5967-5728-4A23-906E-180143F2A6C8} = {EA3EB546-597C-47DA-87BA-15962CBF61AE}
+		{2DAF3F81-4190-4433-8114-3A427F85BB63} = {EA3EB546-597C-47DA-87BA-15962CBF61AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47989F9D-F280-412E-A02C-99362644B8B9}

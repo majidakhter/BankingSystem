@@ -1,4 +1,5 @@
-﻿using BankingAppDDD.Identity.Messages.Commands;
+﻿using BankingAppDDD.Common.Authentication;
+using BankingAppDDD.Identity.Messages.Commands;
 using BankingAppDDD.Identity.Services;
 using BankingAppDDD.Infrastructures.ActionResults;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +18,7 @@ namespace BankingAppDDD.Identity.Controllers
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(JsonWebToken), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> SignIn([FromBody] SignIn command)

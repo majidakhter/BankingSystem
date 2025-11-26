@@ -34,6 +34,8 @@ namespace BankingApp.AccountManagement.Controllers
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(BankDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(Guid id)
         {
             var banks = await _mediator.Send(new GetBanksQuery(id));

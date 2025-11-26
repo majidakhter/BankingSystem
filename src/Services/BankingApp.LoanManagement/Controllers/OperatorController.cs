@@ -32,6 +32,7 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(List<OperatorDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetOperators(GetOperatorQuery query)
         {
