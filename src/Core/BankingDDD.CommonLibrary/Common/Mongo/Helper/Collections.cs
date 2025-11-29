@@ -2,8 +2,6 @@
 {
     public class Collections
     {
-        public string RefreshTokenCollection { get; set; }
-        public string UserInfoCollection { get; set; }
-        public string UserCollection { get; set; }
+        public required string RefreshTokenCollection { get; set; }
     }
 }

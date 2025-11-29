@@ -1,42 +1,42 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using MassTransit;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Handlers;
-using BankingAppDDD.CustomerManagement.Infrastructure.AutofacModules;
 using BankingAppDDD.CustomerManagement;
+using BankingAppDDD.CustomerManagement.Infrastructure.AutofacModules;
+using BankingDDD.ServiceClient.Extensions;
+using MassTransit;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var services = builder.Services;
 // Add services to the container.
 builder.AddHostLogging();
-builder.Services.AddWebHostInfrastructure(builder.Configuration, "CustomerManagementService");
-builder.Services.AddControllers();
+services.AddWebHostInfrastructure(builder.Configuration, "CustomerManagementService");
+services.AddControllers();
 var headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddHealthChecks();
-builder.Services.AddSwaggerDocs();
-builder.Services.AddJwt();
-builder.Services.AddAuthorization();
-builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
-builder.Services.AddHttpContextAccessor();
+services.AddEndpointsApiExplorer();
+services.AddCoreInfrastructure(builder.Configuration);
+services.AddHealthChecks();
+services.AddAuthorization();
+services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+// Kiota client
+services.AddApiGatewayClient(builder.Configuration);
 var connectionString = builder.Configuration["DbContextSettings:ConnectionString"];
-builder.Services.AddDbContext<CustomerDbContext>(opts => { opts.UseNpgsql(connectionString); });
-builder.Services.AddHttpClient();
+services.AddDbContext<CustomerDbContext>(opts => { opts.UseNpgsql(connectionString); });
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>((hostContext, container) =>
 {
     container.RegisterModule(new ApplicationModule());
     container.RegisterModule(new InfrastructureModule(builder.Configuration));
 });
-builder.Services.AddMassTransit(configure =>
+var rabbitMqHost = builder.Configuration["RabbitMqUrl:Host"] ?? throw new ArgumentNullException("RabbitMqUrl:Host section was not found");
+var Username = builder.Configuration["RabbitMqUrl:Username"] ?? throw new ArgumentNullException("RabbitMqUrl:Username section was not found");
+var Password = builder.Configuration["RabbitMqUrl:Password"] ?? throw new ArgumentNullException("RabbitMqUrl:Password section was not found");
+services.AddMassTransit(configure =>
 {
     configure.SetKebabCaseEndpointNameFormatter();
     var entryAssembly = Assembly.GetExecutingAssembly();
@@ -44,16 +44,15 @@ builder.Services.AddMassTransit(configure =>
     configure.AddConsumers(entryAssembly);
     configure.UsingRabbitMq((context, config) =>
     {
-        config.Host(new Uri("rabbitmq://rabbitmq"), h =>
-        {
-            h.Username("guest");
-            h.Password("guest");
-
-        });
+            config.Host(new Uri($"rabbitmq://{rabbitMqHost}"), h =>
+            {
+                h.Username($"{Username}");
+                h.Password($"{Password}");
+            });
         config.ConfigureEndpoints(context);
     });
 });
-builder.Services
+services
    .AddCors(options =>
    {
        options.AddPolicy("AllowOrigin",
@@ -89,4 +88,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseHealthChecks();
+
 app.Run();

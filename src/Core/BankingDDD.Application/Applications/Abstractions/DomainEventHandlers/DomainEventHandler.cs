@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
-
 namespace BankingAppDDD.Applications.Abstractions.DomainEventHandlers
 {
     public abstract class DomainEventHandler<T> : INotificationHandler<T> where T : DomainEvent

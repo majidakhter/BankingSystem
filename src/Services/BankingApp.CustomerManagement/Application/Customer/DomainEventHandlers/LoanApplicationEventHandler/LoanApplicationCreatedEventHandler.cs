@@ -41,7 +41,6 @@ namespace BankingAppDDD.CustomerManagement.Application.Customers.DomainEventHand
             newCustomer!.UpdateLoanApplicationStatus(message.status);
             _customerRepository.Update(newCustomer);
             await _unitofwork.CommitAsync();
-
             await Task.CompletedTask;
         }
     }

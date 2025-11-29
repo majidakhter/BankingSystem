@@ -1,5 +1,4 @@
-﻿
-using BankingApp.AccountManagement.Core.Accounts.Entities;
+﻿using BankingApp.AccountManagement.Core.Accounts.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,7 +21,6 @@ namespace BankingApp.AccountManagement.Infrastructure.Configurations
                .HasColumnName("BeneficaryBankName")
                .IsRequired();
             });
-            
             builder.Property<Guid>("AccountId");
             builder.Property<DateTime>("AddedDate");
         }

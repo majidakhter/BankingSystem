@@ -18,7 +18,7 @@ namespace BankingApp.LoanManagement.Application.OperatorsCommand
 
         protected override async Task<Guid> HandleAsync(AddOperatorCommand request)
         {
-           
+
             var created = Operator.Create(request.CompetenceLevelAmount, Guid.Empty);
             //Guard.Against.NotFound(created);
             _repository.Insert(created);

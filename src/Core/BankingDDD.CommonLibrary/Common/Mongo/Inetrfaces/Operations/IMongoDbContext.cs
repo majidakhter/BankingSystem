@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using MongoDB.Driver;
 using System.Text.RegularExpressions;
 using MongoDB.Bson;
@@ -16,7 +12,7 @@ namespace BankingAppDDD.Common.Mongo.Interfaces.Operations
     {
 
         #region Create/Add Document(s)
-        StoreResult<T> InsertSingle<T>(T @object,CancellationToken cancellationToken, IMongoDBStateContext? stateContext = null) where T : class;
+        StoreResult<T> InsertSingle<T>(T @object, CancellationToken cancellationToken, IMongoDBStateContext? stateContext = null) where T : class;
         Task<StoreResult<T>> InsertSingleAsync<T>(T @object, CancellationToken cancellationToken, IMongoDBStateContext? stateContext = null) where T : class;
         StoreResult<T> InsertMany<T>(IEnumerable<T> objects, CancellationToken cancellationToken, IMongoDBStateContext? stateContext = null) where T : class;
         Task<StoreResult<T>> InsertManyAsync<T>(IEnumerable<T> objects, CancellationToken cancellationToken, IMongoDBStateContext? stateContext = null) where T : class;

@@ -1,7 +1,6 @@
 ﻿using BankingAppDDD.Applications.Abstractions.Repositories;
 using BankingAppDDD.Domains.Abstractions.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 using Z.EntityFramework.Plus;
 

@@ -1,6 +1,4 @@
-﻿
-
-using BankingAppDDD.Domains.Abstractions.Entities;
+﻿using BankingAppDDD.Domains.Abstractions.Entities;
 using System.Linq.Expressions;
 
 namespace BankingAppDDD.Applications.Abstractions.Repositories

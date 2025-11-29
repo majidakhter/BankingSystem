@@ -1,6 +1,4 @@
-﻿
-
-using BankingAppDDD.Domains.Extensions;
+﻿using BankingAppDDD.Domains.Extensions;
 
 namespace BankingAppDDD.Domains.Abstractions.ValueObjects
 {

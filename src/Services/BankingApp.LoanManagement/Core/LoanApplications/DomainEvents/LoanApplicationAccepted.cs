@@ -1,5 +1,6 @@
 ﻿using BankingAppDDD.Domains.Abstractions.DomainEvents;
 using BankingAppDDD.Domains.Abstractions.Models;
+
 namespace BankingApp.LoanManagement.Core.LoanApplicationsDomainEvents
 {
     public record class LoanApplicationAccepted : DomainEvent

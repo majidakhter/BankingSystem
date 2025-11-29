@@ -3,7 +3,6 @@ using BankingApp.AccountManagement.Application.Banks.Models;
 using BankingApp.AccountManagement.Core.Banks.Entities;
 using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.Queries;
-using Microsoft.EntityFrameworkCore;
 
 namespace BankingApp.AccountManagement.Application.Banks.Queries
 {

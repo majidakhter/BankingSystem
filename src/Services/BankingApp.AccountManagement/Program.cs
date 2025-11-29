@@ -1,5 +1,4 @@
 using Autofac;
-using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using BankingApp.AccountManagement;
 using BankingApp.AccountManagement.Core.Accounts.Entities;
@@ -7,59 +6,57 @@ using BankingApp.AccountManagement.Core.Banks.Entities;
 using BankingApp.AccountManagement.Core.Branches.Entities;
 using BankingApp.AccountManagement.Core.Customers.Entities;
 using BankingApp.AccountManagement.Infrastructure.AutofacModules;
+using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Handlers;
+using BankingDDD.ServiceClient.Extensions;
 using MassTransit;
-using MassTransit.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
+using Polly;
 using System.Reflection;
-using BankingAppDDD.Common.Extension;
-using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var services = builder.Services;
 // Add services to the container.
 builder.AddHostLogging();
-builder.Services.AddWebHostInfrastructure(builder.Configuration, "AccountManagementService");
-builder.Services.AddControllers();
+services.AddWebHostInfrastructure(builder.Configuration, "AccountManagementService");
+services.AddControllers();
 var headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddHealthChecks();
+services.AddEndpointsApiExplorer();
+services.AddCoreInfrastructure(builder.Configuration);
+services.AddHealthChecks();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddSwaggerDocs();
-builder.Services.AddJwt();
-builder.Services.AddAuthorization();
-builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
-builder.Services.AddHttpContextAccessor();
+services.AddAuthorization();
+services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+// Kiota client
+services.AddApiGatewayClient(builder.Configuration);
 var connectionString = builder.Configuration["DbContextSettings:ConnectionString"];
-builder.Services.AddDbContext<AccountDbContext>(opts => { opts.UseNpgsql(connectionString); });
-builder.Services.AddHttpClient();
+services.AddDbContext<AccountDbContext>(opts => { opts.UseNpgsql(connectionString); });
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>((hostContext, container) =>
 {
     container.RegisterModule(new ApplicationModule());
     container.RegisterModule(new InfrastructureModule(builder.Configuration));
 });
-builder.Services.AddMassTransit(configure =>
+var rabbitMqHost = builder.Configuration["RabbitMqUrl:Host"] ?? throw new ArgumentNullException("RabbitMqUrl:Host section was not found");
+var Username = builder.Configuration["RabbitMqUrl:Username"] ?? throw new ArgumentNullException("RabbitMqUrl:Username section was not found");
+var Password = builder.Configuration["RabbitMqUrl:Password"] ?? throw new ArgumentNullException("RabbitMqUrl:Password section was not found");
+services.AddMassTransit(configure =>
 {
     var entryAssembly = Assembly.GetExecutingAssembly();
 
     configure.AddConsumers(entryAssembly);
     configure.UsingRabbitMq((context, config) =>
     {
-        config.Host(new Uri("rabbitmq://rabbitmq"), h =>
+        config.Host(new Uri($"rabbitmq://{rabbitMqHost}"), h =>
         {
-            h.Username("guest");
-            h.Password("guest");
-            
+            h.Username($"{Username}");
+            h.Password($"{Password}");
         });
         config.ConfigureEndpoints(context);
     });
+   
 });
-builder.Services
+services
    .AddCors(options =>
    {
        options.AddPolicy("AllowOrigin",
@@ -70,7 +67,7 @@ builder.Services
                          .WithExposedHeaders(headers));
    });
 
-builder.Services.AddHsts(options =>
+services.AddHsts(options =>
 {
     options.Preload = true;
     options.IncludeSubDomains = true;
@@ -95,7 +92,7 @@ Dictionary<string, List<object>> allData = JsonSeedDataLoader.LoadMultipleSeedDa
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-   
+
 }
 app.UseSwaggerDocs();
 app.UseSwaggerUI(options =>

@@ -1,5 +1,4 @@
-﻿
-using BankingAppDDD.Common.Cache;
+﻿using BankingAppDDD.Common.Cache;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,19 +6,16 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
 using StackExchange.Redis;
-using System.Text.Json.Serialization;
 
 namespace BankingAppDDD.Common.Extension
 {
     public static class HostDiExtensions
     {
-       
+
         public static IServiceCollection AddWebHostInfrastructure(this IServiceCollection services, IConfiguration configuration, string serviceName)
         {
             services
-                .AddRedis(configuration)
                 .AddHostOpenTelemetry(serviceName);
-
             return services;
         }
 
@@ -27,16 +23,20 @@ namespace BankingAppDDD.Common.Extension
         {
             builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
         }
-        private static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
         {
-            var redisConnectionString = configuration.GetConnectionString("Redis")!;
-           
-                ConfigurationOptions option = new ConfigurationOptions
-                {
-                    AbortOnConnectFail = false,
-                    EndPoints = { "redis:6379" }
-                };
-            
+            if (configuration is null)
+                throw new ArgumentNullException(nameof(configuration));
+            var redisConnectionString = configuration
+            .GetValue<string>("RedisConnectionString:Redis")
+            ?? throw new ArgumentNullException("RedisConnectionString:Redis section was not found");
+
+            ConfigurationOptions option = new ConfigurationOptions
+            {
+                AbortOnConnectFail = false,
+                EndPoints = { redisConnectionString }
+            };
+
             IConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(option);
 
             services
@@ -44,7 +44,7 @@ namespace BankingAppDDD.Common.Extension
                 .AddSingleton(connectionMultiplexer)
                 .AddStackExchangeRedisCache(options =>
                 {
-                    
+
                     options.ConnectionMultiplexerFactory = () => Task.FromResult(connectionMultiplexer);
                 });
 

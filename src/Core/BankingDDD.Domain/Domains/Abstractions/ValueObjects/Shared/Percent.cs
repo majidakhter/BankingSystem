@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace BankingAppDDD.Domains.Abstractions.ValueObjects
 {
-    public  class Percent : ValueObject, IComparable<Percent>
+    public class Percent : ValueObject, IComparable<Percent>
     {
         public decimal Value { get; private set; }
 
@@ -40,13 +35,13 @@ namespace BankingAppDDD.Domains.Abstractions.ValueObjects
         {
             yield return Value;
         }
-      
+
     }
 
     public static class PercentExtensions
     {
-        public static Percent Percent(this int value) =>new Percent(value);
+        public static Percent Percent(this int value) => new Percent(value);
 
-        public static Percent Percent(this decimal value) =>new  Percent(value);
+        public static Percent Percent(this decimal value) => new Percent(value);
     }
 }

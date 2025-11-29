@@ -1,6 +1,4 @@
-﻿using Autofac.Builder;
-using BankingAppDDD.Domains.Abstractions.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using BankingAppDDD.Domains.Abstractions.Models;
 
 namespace BankingApp.LoanManagement.Application.LoanApplicationModels
 {

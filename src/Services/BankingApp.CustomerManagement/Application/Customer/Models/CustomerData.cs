@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace BankingAppDDD.CustomerManagement.Application.Customers.Models
 {
     /// <summary>
@@ -19,5 +14,5 @@ namespace BankingAppDDD.CustomerManagement.Application.Customers.Models
     string phoneno,
     DateOnly dateOfBirth,
     int customerType);
-    
+
 }

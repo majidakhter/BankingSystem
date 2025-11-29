@@ -1,6 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-
-namespace BankingAppDDD.Common.Mongo.Helper
+﻿namespace BankingAppDDD.Common.Mongo.Helper
 {
     public class MongoCollectionOption
     {

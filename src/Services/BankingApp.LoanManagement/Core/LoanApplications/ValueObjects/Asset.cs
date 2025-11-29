@@ -13,8 +13,8 @@ namespace BankingApp.LoanManagement.Core.LoanApplications.ValueObjects
                 throw new ArgumentException("Value cannot be null");
             if (address == null)
                 throw new ArgumentException("Address cannot be null");
-          //  if (value <= Amount.Zero)
-               // throw new ArgumentException("Property value must be higher than 0");
+            //  if (value <= Amount.Zero)
+            // throw new ArgumentException("Property value must be higher than 0");
 
             return new Asset(value, address);
         }

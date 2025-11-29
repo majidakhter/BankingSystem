@@ -3,24 +3,16 @@ using BankingAppDDD.Common.Mongo.Interfaces.Collection;
 using BankingAppDDD.Common.Mongo.Interfaces.Operations;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Net.Sockets;
 using System.Reflection;
-using System.Runtime;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BankingAppDDD.Common.Mongo
 {
     public class MongoDbContext : IMongoDbContext
     {
-       
+
         private readonly IMongoDatabase _mongoDatabase;
         private readonly Collections configCollectionName;
         public MongoDbContext(IMongoDatabase mongodatabase, IOptions<Collections> mySettingsOptions)
@@ -43,7 +35,7 @@ namespace BankingAppDDD.Common.Mongo
                     MaxSize = 10485760 // 10MB
                 });
             }
-          //  resultcollectionname.Select(x> _mongoDatabase?.CreateCollectionAsync(x , new CreateCollectionOptions { Capped = true, MaxSize = 10485760 })); check this code
+            //  resultcollectionname.Select(x> _mongoDatabase?.CreateCollectionAsync(x , new CreateCollectionOptions { Capped = true, MaxSize = 10485760 })); check this code
         }
         private List<string> GetAllCollection(Collections collectionval)
         {
@@ -60,7 +52,7 @@ namespace BankingAppDDD.Common.Mongo
 
         #region Support Methods for Managing Collections
 
-        public IMongoCollection<T> GetCollection<T>(CancellationToken cancellationToken, IMongoDBStateContext? stateContext= null) where T : class
+        public IMongoCollection<T> GetCollection<T>(CancellationToken cancellationToken, IMongoDBStateContext? stateContext = null) where T : class
         {
             return GetCollectionObject<T>(cancellationToken, stateContext);
         }
@@ -79,9 +71,9 @@ namespace BankingAppDDD.Common.Mongo
 
         //private void CreateCollection(List<string> mongoCollections)
         // {
-         //foreach (var collection in mongoCollections)
+        //foreach (var collection in mongoCollections)
         // {
-         //_mongoDatabase.GetCollection<BsonDocument>(collection);
+        //_mongoDatabase.GetCollection<BsonDocument>(collection);
         // }
         // }
 
@@ -110,7 +102,7 @@ namespace BankingAppDDD.Common.Mongo
             {
                 try
                 {
-                   
+
                     var indexBuilder = Builders<T>.IndexKeys;
                     var keys = indexBuilder.Ascending(stateContext.ExpirationFieldName);
                     var options = new CreateIndexOptions
@@ -119,7 +111,7 @@ namespace BankingAppDDD.Common.Mongo
                     };
                     var indexModel = new CreateIndexModel<T>(keys, options);
                     var tsk = collectionObject.Indexes.CreateOneAsync(indexModel, cancellationToken: cancellationToken);
-                   
+
 
                     tsk.Wait();
                 }
@@ -139,18 +131,18 @@ namespace BankingAppDDD.Common.Mongo
         public StoreResult<T> InsertSingle<T>(T @object, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             GetCollection<T>(cancellationtoken, stateContext).InsertOne(@object);
-            return new StoreResult<T>(true, @object,  Enumerable.Empty<T>());
+            return new StoreResult<T>(true, @object, Enumerable.Empty<T>());
         }
 
         public async Task<StoreResult<T>> InsertSingleAsync<T>(T @object, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             await GetCollection<T>(cancellationtoken, stateContext).InsertOneAsync(@object);
-            return new StoreResult<T>(true, @object,  Enumerable.Empty<T>());
+            return new StoreResult<T>(true, @object, Enumerable.Empty<T>());
         }
 
         public StoreResult<T> InsertMany<T>(IEnumerable<T> objects, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
-            GetCollection<T>(cancellationtoken,stateContext).InsertMany(objects);
+            GetCollection<T>(cancellationtoken, stateContext).InsertMany(objects);
             return new StoreResult<T>(true, null, objects);
         }
 
@@ -220,7 +212,7 @@ namespace BankingAppDDD.Common.Mongo
         {
             var projection = Builders<T>.Projection.Expression(projectionParameter);
             var filter = Builders<T>.Filter.And(searchParameters);
-            return GetCollection<T>(cancellationtoken,stateContext).Find(filter).Project(projection).ToList();
+            return GetCollection<T>(cancellationtoken, stateContext).Find(filter).Project(projection).ToList();
         }
 
         public IEnumerable<T> FindUsingRegex<T>(string fieldName, string searchKey, RegexOptions options, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
@@ -244,34 +236,34 @@ namespace BankingAppDDD.Common.Mongo
         public T FindOneAndUpdate<T, TField>(Expression<Func<T, TField>> expression, TField value, UpdateDefinition<T> updateDef, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var filter = Builders<T>.Filter.Eq(expression, value);
-            var result = GetCollection<T>(cancellationtoken,stateContext).FindOneAndUpdate<T>(filter, updateDef);
+            var result = GetCollection<T>(cancellationtoken, stateContext).FindOneAndUpdate<T>(filter, updateDef);
             return result;
         }
 
         public T FindOneAndUpdate<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var filter = Builders<T>.Filter.And(expression);
-            var result = GetCollection<T>(cancellationtoken,stateContext).FindOneAndUpdate<T>(filter, updateDef);
+            var result = GetCollection<T>(cancellationtoken, stateContext).FindOneAndUpdate<T>(filter, updateDef);
             return result;
         }
 
         public T FindOneAndUpdate<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef, FindOneAndUpdateOptions<T> options, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var filter = Builders<T>.Filter.And(expression);
-            var result = GetCollection<T>(cancellationtoken,stateContext).FindOneAndUpdate<T>(filter, updateDef, options);
+            var result = GetCollection<T>(cancellationtoken, stateContext).FindOneAndUpdate<T>(filter, updateDef, options);
             return result;
         }
 
         public UpdateResult UpdateMany<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
-            var result = GetCollection<T>(cancellationtoken,stateContext).UpdateMany<T>(expression, updateDef);
+            var result = GetCollection<T>(cancellationtoken, stateContext).UpdateMany<T>(expression, updateDef);
             return result;
         }
 
 
         public async Task<UpdateResult> UpdateManyAsync<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
-            var result = await GetCollection<T>(cancellationtoken,stateContext).UpdateManyAsync<T>(expression, updateDef);
+            var result = await GetCollection<T>(cancellationtoken, stateContext).UpdateManyAsync<T>(expression, updateDef);
             return result;
         }
 
@@ -279,14 +271,14 @@ namespace BankingAppDDD.Common.Mongo
         {
 
             var filter = Builders<T>.Filter.And(key);
-            var result = GetCollection<T>(cancellationtoken,stateContext).ReplaceOne(filter, @object, options);
+            var result = GetCollection<T>(cancellationtoken, stateContext).ReplaceOne(filter, @object, options);
             return result;
         }
 
         public async Task<ReplaceOneResult> ReplaceOneAsync<T>(T @object, Expression<Func<T, bool>> key, ReplaceOptions options, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var filter = Builders<T>.Filter.And(key);
-            var result = await GetCollection<T>(cancellationtoken,stateContext).ReplaceOneAsync(filter, @object, options);
+            var result = await GetCollection<T>(cancellationtoken, stateContext).ReplaceOneAsync(filter, @object, options);
             return result;
         }
 
@@ -296,52 +288,52 @@ namespace BankingAppDDD.Common.Mongo
 
         public DeleteResult DeleteOne<T>(Expression<Func<T, bool>> expression, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
-            var result = GetCollection<T>(cancellationtoken,stateContext).DeleteOne<T>(expression);
+            var result = GetCollection<T>(cancellationtoken, stateContext).DeleteOne<T>(expression);
             return result;
         }
 
         public async Task<DeleteResult> DeleteOneAsync<T>(Expression<Func<T, bool>> expression, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
-            var result = await GetCollection<T>(cancellationtoken,stateContext).DeleteOneAsync<T>(expression);
+            var result = await GetCollection<T>(cancellationtoken, stateContext).DeleteOneAsync<T>(expression);
             return result;
         }
 
         public DeleteResult DeleteMany<T>(Expression<Func<T, bool>> expression, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
-            var result = GetCollection<T>(cancellationtoken,stateContext).DeleteMany<T>(expression);
+            var result = GetCollection<T>(cancellationtoken, stateContext).DeleteMany<T>(expression);
             return result;
         }
 
         public async Task<DeleteResult> DeleteManyAsync<T>(Expression<Func<T, bool>> expression, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
-            var result = await GetCollection<T>(cancellationtoken,stateContext).DeleteManyAsync<T>(expression);
+            var result = await GetCollection<T>(cancellationtoken, stateContext).DeleteManyAsync<T>(expression);
             return result;
         }
 
         public T FindOneAndDelete<T>(Expression<Func<T, bool>> expression, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var filter = Builders<T>.Filter.And(expression);
-            var result = GetCollection<T>(cancellationtoken,stateContext).FindOneAndDelete<T>(filter);
+            var result = GetCollection<T>(cancellationtoken, stateContext).FindOneAndDelete<T>(filter);
             return result;
         }
 
         public async Task<T> FindOneAndDeleteAsync<T>(Expression<Func<T, bool>> expression, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var filter = Builders<T>.Filter.And(expression);
-            var result = await GetCollection<T>(cancellationtoken,stateContext).FindOneAndDeleteAsync<T>(filter);
+            var result = await GetCollection<T>(cancellationtoken, stateContext).FindOneAndDeleteAsync<T>(filter);
             return result;
         }
         public T FindOneAndDelete<T>(Expression<Func<T, bool>> expression, FindOneAndDeleteOptions<T> options, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var filter = Builders<T>.Filter.And(expression);
-            var result = GetCollection<T>(cancellationtoken,stateContext).FindOneAndDelete<T>(filter, options);
+            var result = GetCollection<T>(cancellationtoken, stateContext).FindOneAndDelete<T>(filter, options);
             return result;
         }
 
         public async Task<T> FindOneAndDeleteAsync<T>(Expression<Func<T, bool>> expression, FindOneAndDeleteOptions<T> options, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var filter = Builders<T>.Filter.And(expression);
-            var result = await GetCollection<T>(cancellationtoken,stateContext).FindOneAndDeleteAsync<T>(filter, options);
+            var result = await GetCollection<T>(cancellationtoken, stateContext).FindOneAndDeleteAsync<T>(filter, options);
             return result;
         }
 

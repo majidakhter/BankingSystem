@@ -1,5 +1,4 @@
-﻿
-using BankingApp.LoanManagement.Infrastructure.Abstraction;
+﻿using BankingApp.LoanManagement.Infrastructure.Abstraction;
 
 namespace BankingApp.LoanManagement.Infrastructure.Factory
 {

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
+﻿
 namespace BankingApp.LoanManagement.Infrastructure.Configurations
 {
     /*internal class LoanApplicationStatusEntityConfiguration : IEntityTypeConfiguration<LoanApplicationStatus>

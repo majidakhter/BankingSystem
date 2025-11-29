@@ -1,6 +1,4 @@
-﻿
-
-using BankingAppDDD.Domains.Abstractions.DomainEvents;
+﻿using BankingAppDDD.Domains.Abstractions.DomainEvents;
 
 namespace BankingAppDDD.Domains.Abstractions.Entities
 {

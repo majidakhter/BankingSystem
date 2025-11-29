@@ -1,4 +1,3 @@
-using System;
 using Newtonsoft.Json;
 
 namespace BankingAppDDD.Identity.Messages.Commands

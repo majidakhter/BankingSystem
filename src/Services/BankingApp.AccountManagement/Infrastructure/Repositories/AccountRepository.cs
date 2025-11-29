@@ -1,9 +1,6 @@
-﻿
-using BankingApp.AccountManagement.Core.Accounts.Entities;
+﻿using BankingApp.AccountManagement.Core.Accounts.Entities;
 using BankingAppDDD.Domains.Abstractions.Entities;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 using Z.EntityFramework.Plus;
 
@@ -13,7 +10,7 @@ namespace BankingApp.AccountManagement.Infrastructure.Repositories
     {
         private readonly AccountDbContext _context;
         private readonly DbSet<T> _entitySet;
-       // private readonly IAccountNonGenericRepo _repo;
+        // private readonly IAccountNonGenericRepo _repo;
         public AccountRepository(AccountDbContext context)
         {
             _context = context;
@@ -55,7 +52,7 @@ namespace BankingApp.AccountManagement.Infrastructure.Repositories
             _entitySet.RemoveRange(entitiesToRemove);
         }
 
-        public  Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>>? predicate = null)
+        public Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>>? predicate = null)
         {
             return predicate == null ? _entitySet.FirstOrDefaultAsync() : _entitySet.FirstOrDefaultAsync(predicate);
         }

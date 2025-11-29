@@ -1,5 +1,4 @@
-﻿
-using BankingAppDDD.Common.Mongo.Interfaces.Collection;
+﻿using BankingAppDDD.Common.Mongo.Interfaces.Collection;
 
 namespace BankingAppDDD.Identity.Services
 {

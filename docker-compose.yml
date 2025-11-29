@@ -145,8 +145,23 @@ services:
     ports:
       - 5341:5341
       - 8081:80
+    healthcheck:
+      test: ["CMD-SHELL", "/seqsvr/Client/seqcli node health -s http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
     networks:
       - backend
+  seq-input-gelf:
+    image: datalust/seq-input-gelf:latest
+    depends_on:
+      - seq # Ensures Seq starts before the GELF input
+    ports:
+      - "12201:12201/udp" # GELF UDP input
+    environment:
+      SEQ_ADDRESS: "http://seq:5341" # Address of the Seq service
+    restart: unless-stopped
   # Services  
   banking-identityserver:
     image: banking-identityserver
@@ -206,7 +221,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
- 
+      seq:
+         condition: service_healthy
   banking-accountmanagement:
     image: banking-accountmanagement
     container_name: banking-accountmanagement
@@ -238,6 +254,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      seq:
+         condition: service_healthy
   banking-loanmanagement:
     image: banking-loanmanagement
     container_name: banking-loanmanagement
@@ -269,6 +287,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      seq:
+         condition: service_healthy
 volumes:
   db-data:
     driver: local  

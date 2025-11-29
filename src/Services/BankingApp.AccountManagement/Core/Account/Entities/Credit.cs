@@ -1,5 +1,4 @@
-﻿
-using BankingAppDDD.Domains.Abstractions.Entities;
+﻿using BankingAppDDD.Domains.Abstractions.Entities;
 using BankingAppDDD.Domains.Abstractions.ValueObjects;
 
 namespace BankingApp.AccountManagement.Core.Accounts.Entities
@@ -21,8 +20,7 @@ namespace BankingApp.AccountManagement.Core.Accounts.Entities
         public Amount Amount { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public string Description { get; private set; }
-        public  Account Account { get; private set; }
-        public static  Credit  Create(Guid accountId, Amount amount, DateTime createdAt, string description)
+        public static Credit Create(Guid accountId, Amount amount, DateTime createdAt, string description)
         {
             return new Credit(accountId, amount, createdAt, description);
         }

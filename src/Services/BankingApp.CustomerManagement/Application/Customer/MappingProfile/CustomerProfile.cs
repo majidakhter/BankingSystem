@@ -7,7 +7,7 @@ namespace BankingAppDDD.CustomerManagement.Application.Customers.MappingProfile
     /// <summary>
     /// 
     /// </summary>
-    public class CustomerProfile : Profile 
+    public class CustomerProfile : Profile
     {
         /// <summary>
         /// 
@@ -44,8 +44,6 @@ namespace BankingAppDDD.CustomerManagement.Application.Customers.MappingProfile
                             e => e.MapFrom(src => src.PermanentAddress.Country))
                 .ForPath(dest => dest.PermanentAddress!.Street,
                             e => e.MapFrom(src => src.PermanentAddress.Street));
-
-          
 
         }
     }

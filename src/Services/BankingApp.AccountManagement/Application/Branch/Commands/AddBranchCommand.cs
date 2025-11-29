@@ -21,7 +21,7 @@ namespace BankingApp.AccountManagement.Application.Branches.Commands
         protected override async Task<Guid> HandleAsync(AddBranchCommand request)
         {
             var addressData = new AddressData(request.address.street, request.address.city, request.address.state, request.address.zipCode, request.address.country);
-            var created = Branch.Create(request.name, request.branchCode,request.bankId, request.phoneNumber, addressData);
+            var created = Branch.Create(request.name, request.branchCode, request.bankId, request.phoneNumber, addressData);
             _repository.Insert(created);
             await UnitOfWork.CommitAsync();
             _logger.LogInformation("Branch Created {@event}", created.Id);

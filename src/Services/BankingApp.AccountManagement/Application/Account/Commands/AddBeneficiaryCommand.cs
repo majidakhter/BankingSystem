@@ -3,11 +3,6 @@ using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.Commands;
 using BankingAppDDD.Applications.Abstractions.Repositories;
 using BankingAppDDD.Domains.Abstractions.Guards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingApp.AccountManagement.Application.Accounts.Commands
 {
@@ -24,13 +19,10 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
 
         protected override async Task<bool> HandleAsync(AddBeneficiaryCommand request)
         {
-
             var account = await _repository.GetByIdAsync(request.accountId);
-            
             var beneficiary = new BeneficiaryData(request.beneficiaryName, request.beneficiaryAccount, request.beneficiaryBankName);
             Guard.Against.NotFound(account);
             account!.AddBeneficiary(beneficiary);
-
             _repository.Update(account);
             await UnitOfWork.CommitAsync();
             _logger.LogInformation("Added Beneficiary : {@Event}", request.beneficiaryName);

@@ -30,5 +30,4 @@ namespace BankingApp.LoanManagement.Application.DebtorInfosCommand
         }
     }
 }
- 
- 
+

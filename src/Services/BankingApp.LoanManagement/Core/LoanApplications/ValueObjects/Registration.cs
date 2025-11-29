@@ -21,8 +21,8 @@ namespace BankingApp.LoanManagement.Core.LoanApplications.ValueObjects
             RegisteredBy = registeredBy;
         }
 
-        private Registration() 
-        { 
+        private Registration()
+        {
         }
         protected override IEnumerable<object> GetEqualityComponents()
         {

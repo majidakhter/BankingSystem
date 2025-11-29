@@ -19,7 +19,7 @@ namespace BankingApp.LoanManagement.Core.LoanApplications.ValueObjects
 
         public static implicit operator string(LoanApplicationNumber number) => number.Number;
 
-        
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Number;

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
+﻿
 namespace BankingApp.AccountManagement.Application.Branches.Model
 {
     public class BranchDTO

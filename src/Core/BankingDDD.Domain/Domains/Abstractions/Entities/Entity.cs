@@ -1,5 +1,4 @@
 ﻿
-
 namespace BankingAppDDD.Domains.Abstractions.Entities
 {
     public class Entity<T>

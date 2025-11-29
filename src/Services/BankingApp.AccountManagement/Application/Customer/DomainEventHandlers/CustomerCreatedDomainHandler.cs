@@ -12,7 +12,7 @@ namespace BankingApp.AccountManagement.Application.Customers.DomainEventHandlers
         private readonly ILogger<CustomerCreatedEventHandler> _logger;
         private readonly IAccountRepository<Customer> _customerRepository;
         private readonly IUnitOfWork _unitofwork;
-        public CustomerCreatedEventHandler(IAccountRepository<Customer> customerRepository, 
+        public CustomerCreatedEventHandler(IAccountRepository<Customer> customerRepository,
             ILogger<CustomerCreatedEventHandler> logger, IUnitOfWork unitofwork)
         {
             _customerRepository = customerRepository;

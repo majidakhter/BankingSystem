@@ -5,13 +5,6 @@ using BankingApp.LoanManagement.Infrastructure.Repositories;
 using BankingApp.LoanManagement.Infrastructure.Services;
 using BankingAppDDD.Common.Authentication;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingApp.LoanManagement.Infrastructure.AutofacModules
 {
@@ -33,7 +26,7 @@ namespace BankingApp.LoanManagement.Infrastructure.AutofacModules
 
         protected override void Load(ContainerBuilder builder)
         {
-           // builder.RegisterInstance(Options.Create(DatabaseSettings.Create(Configuration)));
+            // builder.RegisterInstance(Options.Create(DatabaseSettings.Create(Configuration)));
             builder.RegisterType<CreditMgmtDbContext>()
                 .AsSelf()
                 .InstancePerRequest()

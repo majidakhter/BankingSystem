@@ -2,7 +2,6 @@
 using BankingAppDDD.Identity.Messages.Commands;
 using BankingAppDDD.Identity.Services;
 using BankingAppDDD.Infrastructures.ActionResults;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingAppDDD.Identity.Controllers

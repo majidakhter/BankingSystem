@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace BankingAppDDD.Domains.Extensions
 {
@@ -13,6 +8,10 @@ namespace BankingAppDDD.Domains.Extensions
         {
             var enumType = value.GetType();
             var name = Enum.GetName(enumType, value);
+            if(name ==null)
+            {
+                return string.Empty;
+            }
             var field = enumType.GetField(name);
             var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
 

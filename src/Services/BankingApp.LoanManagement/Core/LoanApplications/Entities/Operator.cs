@@ -1,8 +1,6 @@
 ﻿using BankingApp.LoanManagement.Infrastructure.Repositories;
 using BankingAppDDD.Domains.Abstractions.Entities;
 using BankingAppDDD.Domains.Abstractions.ValueObjects;
-using Newtonsoft.Json.Linq;
-using System.Xml.Linq;
 
 namespace BankingApp.LoanManagement.Core.LoanApplicationsEntities
 {
@@ -23,7 +21,7 @@ namespace BankingApp.LoanManagement.Core.LoanApplicationsEntities
             {
                 return new Operator(competenceLevel, id);
             }
-                
+
         }
 
         //To satisfy EF Core
@@ -39,7 +37,7 @@ namespace BankingApp.LoanManagement.Core.LoanApplicationsEntities
 
         public bool CanAccept(Amount loanLoanAmount) => loanLoanAmount <= CompetenceLevel;
 
-        
+
     }
-   
+
 }

@@ -2,11 +2,6 @@
 using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Domains.Abstractions.Entities;
 using BankingAppDDD.Domains.Abstractions.ValueObjects;
-using Microsoft.EntityFrameworkCore.Storage;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics;
-using System.Xml.Linq;
 
 namespace BankingApp.AccountManagement.Core.Accounts.Entities
 {
@@ -20,15 +15,15 @@ namespace BankingApp.AccountManagement.Core.Accounts.Entities
         public DateTime? DateAdded { get; private set; }
         public DateTime? CloasedDate { get; private set; }
         public DateTime? AccountUpdatedDate { get; private set; }
-       
-        private  List<Credit> _credits;
 
-        private  List<Debit> _debits;
+        private List<Credit> _credits;
 
-        private  List<BeneficiaryGroup> _beneficiaries;
-        public  IReadOnlyCollection<Credit> Credits => _credits;
-        public  IReadOnlyCollection<Debit> Debits => _debits;
-        public  AccountStatus AccountStatus { get; private set; }
+        private List<Debit> _debits;
+
+        private List<BeneficiaryGroup> _beneficiaries;
+        public IReadOnlyCollection<Credit> Credits => _credits;
+        public IReadOnlyCollection<Debit> Debits => _debits;
+        public AccountStatus AccountStatus { get; private set; }
         public AccountStatus GetAccountStatus => AccountStatus.From(_accountStatusId);
 
         private int _accountStatusId;
@@ -39,15 +34,15 @@ namespace BankingApp.AccountManagement.Core.Accounts.Entities
             _beneficiaries = new List<BeneficiaryGroup>();
         }
         private Account(Guid customerId, int accountTypeId)
-         {
+        {
             //only mandatory fields are required in constructor
             var accountTypeIdEnumEnums = AccountType.List().FirstOrDefault(x => x.Id == accountTypeId);
             var @event = AccountAddedDomainEvent.Create(
                 Id,
                 customerId,
                 accountTypeIdEnumEnums.Id);
-            
-            
+
+
             AddDomainEvent(@event);
             Apply(@event);
         }
@@ -86,7 +81,7 @@ namespace BankingApp.AccountManagement.Core.Accounts.Entities
             _debits.Add(debit);
             return debit;
         }
-       
+
         public void Close(Guid customerId)
         {
             if (GetBalance() > 0)

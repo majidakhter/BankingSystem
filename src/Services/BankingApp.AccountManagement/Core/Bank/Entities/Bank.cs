@@ -2,8 +2,6 @@
 using BankingAppDDD.Domains.Abstractions.Entities;
 using BankingAppDDD.Domains.Abstractions.Models;
 using BankingAppDDD.Domains.Abstractions.ValueObjects;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankingApp.AccountManagement.Core.Banks.Entities
 {

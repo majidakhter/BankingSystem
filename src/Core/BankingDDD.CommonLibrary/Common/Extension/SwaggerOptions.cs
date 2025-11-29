@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BankingAppDDD.Common.Extension
+﻿namespace BankingAppDDD.Common.Extension
 {
     public class SwaggerOptions
     {
@@ -15,7 +9,7 @@ namespace BankingAppDDD.Common.Extension
         public required string Version { get; set; }
         public required string RoutePrefix { get; set; }
         public bool IncludeSecurity { get; set; }
-       
+
     }
-    
+
 }

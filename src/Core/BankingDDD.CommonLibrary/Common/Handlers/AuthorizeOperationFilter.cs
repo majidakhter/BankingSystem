@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
 namespace BankingAppDDD.Common.Handlers
@@ -29,10 +27,10 @@ namespace BankingAppDDD.Common.Handlers
             {
                 operation.Security = new List<OpenApiSecurityRequirement>();
 
-               /* var oauth2SecurityScheme = new OpenApiSecurityScheme()
-                {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "OAuth2" },
-                };*/
+                /* var oauth2SecurityScheme = new OpenApiSecurityScheme()
+                 {
+                     Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "OAuth2" },
+                 };*/
                 OpenApiSecurityScheme keycloakSecurityScheme = new()
                 {
                     Reference = new OpenApiReference

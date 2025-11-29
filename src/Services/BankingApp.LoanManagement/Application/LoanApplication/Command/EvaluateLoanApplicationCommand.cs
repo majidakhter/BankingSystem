@@ -7,7 +7,7 @@ using BankingAppDDD.Applications.Abstractions.Repositories;
 
 namespace BankingApp.LoanManagement.Application.LoanApplicationCommands
 {
-   // public sealed record EvaluateLoanApplicationCommand(Guid loanApplicationId) : IUpdateCommand;
+    // public sealed record EvaluateLoanApplicationCommand(Guid loanApplicationId) : IUpdateCommand;
 
     public sealed class EvaluateLoanApplicationCommand : IUpdateCommand<CommandResult>
     {
@@ -41,6 +41,5 @@ namespace BankingApp.LoanManagement.Application.LoanApplicationCommands
             return new CommandResult { IsSuccess = true };
         }
 
-        
     }
 }

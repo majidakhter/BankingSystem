@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using System.Security.Claims;
+
 namespace BankingAppDDD.Common.Handlers
 {
     public class RolesAuthorizationHandler : AuthorizationHandler<RolesAuthorizationRequirement>, IAuthorizationHandler
@@ -28,7 +29,7 @@ namespace BankingAppDDD.Common.Handlers
                 var roleList = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
                 var roles = requirement.AllowedRoles;
                 var inputRole = roles.First();
-                if(roleList.Contains(inputRole))
+                if (roleList.Contains(inputRole))
                 {
                     validRole = true;
                 }

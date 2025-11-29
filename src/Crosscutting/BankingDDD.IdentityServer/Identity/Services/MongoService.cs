@@ -1,15 +1,6 @@
-﻿
-using Microsoft.Extensions.Configuration.UserSecrets;
-using Microsoft.Extensions.Options;
-using MongoDB.Bson;
+﻿using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using System.Collections;
-using System.Configuration;
-using System.Diagnostics;
-using System.Reflection;
-using System.Runtime;
-using System.Threading;
 using BankingAppDDD.Common.Mongo.Interfaces.Client;
 using BankingAppDDD.Common.Mongo.Helper;
 using BankingAppDDD.Common.Mongo.Interfaces.Operations;

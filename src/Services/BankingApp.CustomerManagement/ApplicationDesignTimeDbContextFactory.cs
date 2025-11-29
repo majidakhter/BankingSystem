@@ -6,7 +6,7 @@ namespace BankingAppDDD.CustomerManagement
     /// <summary>
     /// 
     /// </summary>
-    public  class ApplicationDesignTimeDbContextFactory : IDesignTimeDbContextFactory<CustomerDbContext>
+    public class ApplicationDesignTimeDbContextFactory : IDesignTimeDbContextFactory<CustomerDbContext>
     {
         /// <summary>
         /// 
@@ -18,7 +18,6 @@ namespace BankingAppDDD.CustomerManagement
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
             configuration.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-           
             var optionsBuilder = new DbContextOptionsBuilder<CustomerDbContext>();
             var connectionString = builder.Configuration["DbContextSettings:ConnectionString"];
             optionsBuilder.UseNpgsql(connectionString);

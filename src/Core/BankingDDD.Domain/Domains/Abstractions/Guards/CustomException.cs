@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-
 namespace BankingAppDDD.Domains.Abstractions.Guards
 {
     public class CustomException : Exception

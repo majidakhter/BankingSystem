@@ -15,4 +15,8 @@
 	  <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.17.2" />
 	  <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.17.2" />
 </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\BankingDDD.CommonLibrary\Common\Common.csproj" />
+  </ItemGroup>
 </Project>

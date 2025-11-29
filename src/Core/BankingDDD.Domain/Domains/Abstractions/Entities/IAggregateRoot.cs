@@ -1,6 +1,4 @@
-﻿
-
-namespace BankingAppDDD.Domains.Abstractions.Entities
+﻿namespace BankingAppDDD.Domains.Abstractions.Entities
 {
     public interface IAggregateRoot
     {

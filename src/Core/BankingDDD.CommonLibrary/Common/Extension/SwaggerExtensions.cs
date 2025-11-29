@@ -1,17 +1,8 @@
-﻿using BankingAppDDD.Common.Handlers;
-using BankingAppDDD.Common.Types;
+﻿using BankingAppDDD.Common.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BankingAppDDD.Common.Extension
 {
@@ -44,7 +35,6 @@ namespace BankingAppDDD.Common.Extension
                 c.CustomSchemaIds(x => x.FullName);
                 if (options.IncludeSecurity)
                 {
-
                     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                     {
                         Type = SecuritySchemeType.OAuth2,
@@ -63,17 +53,6 @@ namespace BankingAppDDD.Common.Extension
                                     { "profile", "profile" },
                                 }
                             }
-
-                            /* Implicit = new OpenApiOAuthFlow // Or AuthorizationCode if using PKCE
-                             {
-                                 AuthorizationUrl = new Uri(authurl),
-                                 TokenUrl = new Uri(keycloaktokenUrl),
-                                 Scopes = new Dictionary<string, string>
-                                  {
-                                    { "openid", "openid" },
-                                    { "profile", "profile" }
-                                  }
-                             }*/
                         },
 
                     });
@@ -136,8 +115,6 @@ namespace BankingAppDDD.Common.Extension
                 });
         }
     }
-
-
 }
 
 // Replace the GetOptions extension method to use Activator.CreateInstance instead of new()

@@ -1,7 +1,7 @@
 ﻿
 namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents
 {
-    public enum EventStateEnum:int
+    public enum EventStateEnum : int
     {
         None = 0,
         ReadyToPublish = 1,

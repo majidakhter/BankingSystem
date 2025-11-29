@@ -1,6 +1,5 @@
 ﻿using BankingApp.AccountManagement.Core.Accounts.ValueObjects;
 using BankingAppDDD.Domains.Abstractions.Entities;
-using System.Xml.Linq;
 
 namespace BankingApp.AccountManagement.Core.Accounts.Entities
 {
@@ -23,7 +22,7 @@ namespace BankingApp.AccountManagement.Core.Accounts.Entities
         public static BeneficiaryGroup Create(BeneficiaryData beneficiary, Guid accountId, DateTime addedDate)
         {
             var (BeneficaryName, BeneficaryAccountNo, BeneficaryBankName) = beneficiary ?? throw new ArgumentNullException(nameof(beneficiary));
-           
+
             Beneficiary beneficiaryData = Beneficiary.Create(BeneficaryName, BeneficaryAccountNo, BeneficaryBankName);
 
             return new BeneficiaryGroup(accountId, beneficiaryData, addedDate);

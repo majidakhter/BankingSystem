@@ -6,50 +6,51 @@ using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Handlers;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using BankingDDD.ServiceClient.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 builder.AddHostLogging();
-builder.Services.AddWebHostInfrastructure(builder.Configuration, "CreditService");
+services.AddWebHostInfrastructure(builder.Configuration, "CreditService");
 // Add services to the container.
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddHealthChecks();
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddCoreInfrastructure(builder.Configuration);
+services.AddHealthChecks();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddSwaggerDocs();
-builder.Services.AddJwt();
-builder.Services.AddAuthorization();
-builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
-builder.Services.AddHttpContextAccessor();
+services.AddAuthorization();
+services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+services.AddApiGatewayClient(builder.Configuration);
+
 var connectionString = builder.Configuration["DbContextSettings:ConnectionString"];
-builder.Services.AddDbContext<CreditMgmtDbContext>(opts => { opts.UseNpgsql(connectionString); });
+services.AddDbContext<CreditMgmtDbContext>(opts => { opts.UseNpgsql(connectionString); });
 var Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
-builder.Services.AddHttpClient();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>((hostContext, container) =>
 {
     container.RegisterModule(new ApplicationModule());
     container.RegisterModule(new InfrastructureModule(builder.Configuration));
 });
-builder.Services.AddMassTransit(configure =>
+var rabbitMqHost = builder.Configuration["RabbitMqUrl:Host"] ?? throw new ArgumentNullException("RabbitMqUrl:Host section was not found");
+var Username = builder.Configuration["RabbitMqUrl:Username"] ?? throw new ArgumentNullException("RabbitMqUrl:Username section was not found");
+var Password = builder.Configuration["RabbitMqUrl:Password"] ?? throw new ArgumentNullException("RabbitMqUrl:Password section was not found");
+
+services.AddMassTransit(configure =>
 {
     configure.SetKebabCaseEndpointNameFormatter();
     configure.UsingRabbitMq((context, config) =>
     {
-        config.Host(new Uri("rabbitmq://rabbitmq"), h =>
+        config.Host(new Uri($"rabbitmq://{rabbitMqHost}"), h =>
         {
-            h.Username("guest");
-            h.Password("guest");
-
+            h.Username($"{Username}");
+            h.Password($"{Password}");
         });
 
     });
 });
-builder.Services
+services
    .AddCors(options =>
    {
        options.AddPolicy("AllowOrigin",
@@ -59,7 +60,7 @@ builder.Services
                          .AllowCredentials()
                          .WithExposedHeaders(Headers));
    });
-builder.Services.AddHsts(options =>
+services.AddHsts(options =>
 {
     options.Preload = true;
     options.IncludeSubDomains = true;

@@ -4,7 +4,6 @@ using BankingApp.LoanManagement.Core.LoanApplicationsEntities;
 using BankingAppDDD.Applications.Abstractions.Queries;
 using BankingAppDDD.Applications.Abstractions.Repositories;
 using BankingAppDDD.Domains.Abstractions.Guards;
-using System.Collections.Generic;
 
 namespace BankingApp.LoanManagement.Application.OperatorsQueries
 {
@@ -19,11 +18,11 @@ namespace BankingApp.LoanManagement.Application.OperatorsQueries
             _repository = repository;
         }
 
-        protected override  Task<List<OperatorDTO>> HandleAsync(GetOperatorQuery request)
+        protected override Task<List<OperatorDTO>> HandleAsync(GetOperatorQuery request)
         {
-            var operators =  _repository.GetAll();
+            var operators = _repository.GetAll();
             Guard.Against.NotFound(operators);
-            Task<IQueryable<Operator>> data= Task.FromResult(operators);
+            Task<IQueryable<Operator>> data = Task.FromResult(operators);
             var destinationObject = Mapper.Map<List<OperatorDTO>>(data);
             return Task.FromResult(destinationObject);
         }

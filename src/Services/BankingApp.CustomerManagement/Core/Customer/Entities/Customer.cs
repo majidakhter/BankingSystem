@@ -4,9 +4,6 @@ using BankingAppDDD.Domains.Abstractions.Entities;
 using BankingAppDDD.Domains.Abstractions.Guards;
 using BankingAppDDD.Domains.Abstractions.Models;
 using BankingAppDDD.Domains.Abstractions.ValueObjects;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml.Linq;
 
 namespace BankingAppDDD.CustomerManagement.Core.Customers.Entities
 {
@@ -18,38 +15,38 @@ namespace BankingAppDDD.CustomerManagement.Core.Customers.Entities
         /// <summary>
         /// 
         /// </summary>
-        public string Name { get;  private set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string PhoneNo { get;  private set; }
+        public string PhoneNo { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string Email { get;  private set; }
+        public string Email { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public BirthDate DateOfBirth { get;  private set; }
+        public BirthDate DateOfBirth { get; private set; }
         /// <summary>
         /// 
         /// </summary>
-        public CustomerType CustomerType { get;  private set; }
+        public CustomerType CustomerType { get; private set; }
         /// <summary>
         /// 
         /// </summary>
-        public  int CustomerTypeId { get; private set; }
+        public int CustomerTypeId { get; private set; }
         /// <summary>
         /// 
         /// </summary>
-        public DateTime DateAdded { get; private  set; }
+        public DateTime DateAdded { get; private set; }
         /// <summary>
         /// 
         /// </summary>
-        public DateTime UpdatedOn { get;  private set; }
+        public DateTime UpdatedOn { get; private set; }
         /// <summary>
         /// 
         /// </summary>
@@ -80,7 +77,7 @@ namespace BankingAppDDD.CustomerManagement.Core.Customers.Entities
                 throw new BusinessRuleException("Customer Phone No cannot be null or whitespace.");
 
             return new Customer(customerData, addressData);
-          
+
         }
         /// <summary>
         /// 

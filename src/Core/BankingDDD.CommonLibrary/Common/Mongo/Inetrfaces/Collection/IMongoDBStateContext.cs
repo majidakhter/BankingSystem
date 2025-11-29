@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace BankingAppDDD.Common.Mongo.Interfaces.Collection
 {
     public interface IMongoDBStateContext

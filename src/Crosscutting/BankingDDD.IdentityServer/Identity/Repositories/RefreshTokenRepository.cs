@@ -1,6 +1,4 @@
-﻿
-
-using BankingAppDDD.Identity.MongoModel;
+﻿using BankingAppDDD.Identity.MongoModel;
 
 namespace BankingAppDDD.Identity.Repositories
 {

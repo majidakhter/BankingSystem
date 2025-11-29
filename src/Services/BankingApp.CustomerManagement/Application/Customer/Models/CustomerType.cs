@@ -48,7 +48,7 @@ namespace BankingAppDDD.CustomerManagement.Application.Customers.Models
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<CustomerType> List() =>
-            new[] { RegularCustomer, CorporateCustomer, VisitorCustomer};
+            new[] { RegularCustomer, CorporateCustomer, VisitorCustomer };
         /// <summary>
         /// 
         /// </summary>

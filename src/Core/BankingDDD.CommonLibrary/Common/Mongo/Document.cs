@@ -4,12 +4,8 @@ using BankingAppDDD.Common.Mongo.Interfaces.Collection;
 using BankingAppDDD.Common.Mongo.Interfaces.Operations;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace BankingAppDDD.Common.Mongo
 {
@@ -24,7 +20,7 @@ namespace BankingAppDDD.Common.Mongo
 
         #region Create/Add Document(s)
 
-        public StoreResult<T> AddOne<T>(T @object,CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class
+        public StoreResult<T> AddOne<T>(T @object, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             return context.InsertSingle<T>(@object, cancellationToken, stateContext);
         }
@@ -64,7 +60,7 @@ namespace BankingAppDDD.Common.Mongo
 
         public IEnumerable<T> GetAll<T>(Expression<Func<T, bool>> expression, FindOptions<T> options, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
-            return context.FindAll(expression,  options, cancellationToken, stateContext);
+            return context.FindAll(expression, options, cancellationToken, stateContext);
         }
 
         public async Task<IEnumerable<T>> GetAllAysnc<T>(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class

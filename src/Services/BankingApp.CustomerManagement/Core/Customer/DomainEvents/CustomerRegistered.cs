@@ -1,11 +1,6 @@
 ﻿using BankingAppDDD.Domains.Abstractions.DomainEvents;
 using BankingAppDDD.Domains.Abstractions.Models;
 using BankingAppDDD.Domains.Abstractions.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingAppDDD.CustomerManagement.Core.Customers.DomainEvents
 {
@@ -65,7 +60,7 @@ namespace BankingAppDDD.CustomerManagement.Core.Customers.DomainEvents
             DateOnly dateOfBirth,
             int custType,
             AddressData permanentAddress)
-            //AddressData presentAddress)
+        //AddressData presentAddress)
         {
             if (customerId == Guid.Empty)
                 throw new ArgumentOutOfRangeException(nameof(customerId));

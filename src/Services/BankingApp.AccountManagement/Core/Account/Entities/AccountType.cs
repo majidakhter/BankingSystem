@@ -1,5 +1,4 @@
-﻿
-using BankingAppDDD.Domains.Abstractions.Entities;
+﻿using BankingAppDDD.Domains.Abstractions.Entities;
 using BankingAppDDD.Domains.Abstractions.Guards;
 
 namespace BankingApp.AccountManagement.Core.Accounts.Entities

@@ -1,16 +1,8 @@
 ﻿using Autofac;
-using Autofac.Core;
 using BankingApp.AccountManagement.Core.Accounts.Entities;
 using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Common.Authentication;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingApp.AccountManagement.Infrastructure.AutofacModules
 {
@@ -32,7 +24,7 @@ namespace BankingApp.AccountManagement.Infrastructure.AutofacModules
 
         protected override void Load(ContainerBuilder builder)
         {
-           // builder.RegisterInstance(Options.Create(DatabaseSettings.Create(Configuration)));
+            // builder.RegisterInstance(Options.Create(DatabaseSettings.Create(Configuration)));
             builder.RegisterType<AccountDbContext>()
                 .AsSelf()
                 .InstancePerRequest()
@@ -49,7 +41,7 @@ namespace BankingApp.AccountManagement.Infrastructure.AutofacModules
                    .InstancePerLifetimeScope();
             // Register AccessTokenValidatorMiddleware
             builder.RegisterType<AccessTokenValidatorMiddleware>().AsSelf();
-           
+
 
             builder.RegisterGeneric(typeof(AccountRepository<>))
                 .As(typeof(IAccountRepository<>)).InstancePerLifetimeScope();
@@ -57,7 +49,7 @@ namespace BankingApp.AccountManagement.Infrastructure.AutofacModules
               .As<IAccountRepository<Account>>()
               .InstancePerLifetimeScope();
 
-           // builder.RegisterType<AccountRepository<Account>>().As<IAccountNonGenericRepo>().InstancePerLifetimeScope();
+            // builder.RegisterType<AccountRepository<Account>>().As<IAccountNonGenericRepo>().InstancePerLifetimeScope();
             //builder.RegisterType<NotificationsService>()
             // .AsImplementedInterfaces()
             // .SingleInstance();

@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using MediatR.NotificationPublishers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 using Autofac;
 
@@ -22,15 +17,15 @@ namespace BankingAppDDD.CustomerManagement.Infrastructure.AutofacModules
         /// <param name="builder"></param>
         protected override void Load(ContainerBuilder builder)
         {
-             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly)
-            // this publisher causes problems with the EF Core DbContext
-            // as it is not thread safe
-            .Where(e => e != typeof(TaskWhenAllPublisher))
-             .AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly)
+           // this publisher causes problems with the EF Core DbContext
+           // as it is not thread safe
+           .Where(e => e != typeof(TaskWhenAllPublisher))
+            .AsImplementedInterfaces();
 
             //builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly)
-                //.AsClosedTypesOf(typeof(IRequestHandler<,>))
-                 //.AsImplementedInterfaces();
+            //.AsClosedTypesOf(typeof(IRequestHandler<,>))
+            //.AsImplementedInterfaces();
 
             // Register the DomainEventHandler classes (they implement INotificationHandler<>) in assembly
             builder.RegisterAssemblyTypes(ThisAssembly)

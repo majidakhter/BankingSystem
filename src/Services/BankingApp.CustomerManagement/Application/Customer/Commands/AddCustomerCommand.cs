@@ -4,9 +4,6 @@ using BankingAppDDD.CustomerManagement.Application.Customers.Models;
 using BankingAppDDD.CustomerManagement.Core.Customers.Entities;
 using BankingAppDDD.Domains.Abstractions.Guards;
 using BankingAppDDD.Domains.Abstractions.Models;
-using MassTransit;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Extensions.Logging;
 
 namespace BankingAppDDD.CustomerManagement.Application.Customers.Commands
 {

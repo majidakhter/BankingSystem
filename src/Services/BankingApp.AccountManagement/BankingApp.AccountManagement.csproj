@@ -70,6 +70,7 @@
 	  <ProjectReference Include="..\..\Core\BankingDDD.Application\Applications\Applications.csproj" />
 	  <ProjectReference Include="..\..\Core\BankingDDD.CommonLibrary\Common\Common.csproj" />
 	  <ProjectReference Include="..\..\Core\BankingDDD.Infrastructure\Infrastructures\Infrastructures.csproj" />
+	  <ProjectReference Include="..\..\Crosscutting\BankingDDD.ServiceClient\BankingDDD.ServiceClient.csproj" />
 	</ItemGroup>
 
 

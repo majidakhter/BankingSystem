@@ -1,9 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Buffers;
 using System.Text.Json;
 
@@ -13,7 +8,6 @@ namespace BankingAppDDD.Common.Cache
     {
         public Task DeleteAsync(string key, CancellationToken cancellationToken = default)
             => cache.RemoveAsync(key, cancellationToken);
-
 
         public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
         {
@@ -34,6 +28,7 @@ namespace BankingAppDDD.Common.Cache
             var options = new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = expiration };
             await cache.SetAsync(key, bytes, options, cancellationToken);
         }
+
         private static T Deserialize<T>(byte[] bytes)
         => JsonSerializer.Deserialize<T>(bytes)!;
 

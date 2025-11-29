@@ -1,8 +1,6 @@
 ﻿using BankingAppDDD.Common.Types;
-using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System.Reflection.Emit;
 
 namespace BankingAppDDD.Identity.MongoModel
 {

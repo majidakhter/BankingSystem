@@ -1,6 +1,4 @@
 using BankingAppDDD.Common.Authentication;
-using System;
-using System.Threading.Tasks;
 
 namespace BankingAppDDD.Identity.Services
 {

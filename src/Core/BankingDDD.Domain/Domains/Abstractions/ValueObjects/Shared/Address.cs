@@ -1,5 +1,4 @@
-﻿
-using BankingAppDDD.Domains.Abstractions.Guards;
+﻿using BankingAppDDD.Domains.Abstractions.Guards;
 using BankingAppDDD.Domains.Abstractions.Models;
 
 namespace BankingAppDDD.Domains.Abstractions.ValueObjects
@@ -15,7 +14,7 @@ namespace BankingAppDDD.Domains.Abstractions.ValueObjects
         {
             var (street, city, state, zipCode, country) = addressData ?? throw new ArgumentNullException(nameof(addressData));
             if (string.IsNullOrWhiteSpace(street))
-             throw new BusinessRuleException("street cannot be null or whitespace.");
+                throw new BusinessRuleException("street cannot be null or whitespace.");
             if (string.IsNullOrWhiteSpace(city))
                 throw new BusinessRuleException("city cannot be null or whitespace.");
             if (string.IsNullOrWhiteSpace(state))

@@ -3,13 +3,6 @@ using BankingAppDDD.Applications.Abstractions.Repositories;
 using BankingAppDDD.Common.Authentication;
 using BankingAppDDD.CustomerManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingAppDDD.CustomerManagement.Infrastructure.AutofacModules
 {
@@ -44,7 +37,7 @@ namespace BankingAppDDD.CustomerManagement.Infrastructure.AutofacModules
         /// <param name="builder"></param>
         protected override void Load(ContainerBuilder builder)
         {
-           // builder.RegisterInstance(Options.Create(DatabaseSettings.Create(Configuration)));
+            // builder.RegisterInstance(Options.Create(DatabaseSettings.Create(Configuration)));
             builder.RegisterType<CustomerDbContext>()
                 .AsSelf()
                 .InstancePerRequest()

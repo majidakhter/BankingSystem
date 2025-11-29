@@ -1,13 +1,5 @@
 ﻿using Autofac;
-using Autofac.Core;
 using BankingAppDDD.Common.Authentication;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingApp.Identity.Infrastructure.AutofacModules
 {

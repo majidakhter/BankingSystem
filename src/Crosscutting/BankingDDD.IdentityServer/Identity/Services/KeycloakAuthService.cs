@@ -1,12 +1,5 @@
-
 using BankingAppDDD.Common.Authentication;
 using BankingAppDDD.Identity.Model;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BankingAppDDD.Identity.Services

@@ -1,6 +1,4 @@
-﻿
-
-using BankingAppDDD.Identity.Model;
+﻿using BankingAppDDD.Identity.Model;
 
 namespace BankingAppDDD.Identity.Services
 {

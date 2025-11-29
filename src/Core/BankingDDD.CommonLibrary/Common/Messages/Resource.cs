@@ -4,7 +4,6 @@ namespace BankingAppDDD.Common.Messages
     {
         public string Service { get; }
         public string Endpoint { get; }
-
         protected Resource()
         {
         }

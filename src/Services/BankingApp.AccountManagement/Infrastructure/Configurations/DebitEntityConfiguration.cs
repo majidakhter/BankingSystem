@@ -9,7 +9,6 @@ namespace BankingApp.AccountManagement.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Debit> builder)
         {
             builder.ToTable("Debits");
-
             //Amount value object persisted as owned entity type supported since EF Core 2.0
             builder.OwnsOne(e => e.Amount, amountBuilder =>
             {
@@ -17,7 +16,6 @@ namespace BankingApp.AccountManagement.Infrastructure.Configurations
                 .HasColumnName("CreditAmount")
                 .IsRequired();
             });
-
             builder.Property<Guid>("AccountId");
             builder.Property<DateTime>("CreatedAt");
             builder.Property<string>("Description").IsRequired().HasMaxLength(32);

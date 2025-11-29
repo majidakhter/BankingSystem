@@ -1,6 +1,4 @@
-﻿
-
-using BankingAppDDD.Domains.Abstractions.Models;
+﻿using BankingAppDDD.Domains.Abstractions.Models;
 
 namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents.LoanEvents
 {

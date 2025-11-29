@@ -1,13 +1,7 @@
 ﻿using BankingAppDDD.Identity.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Configuration;
 using System.Net.Sockets;
-using System.Runtime;
-using System.Security.Authentication;
+
 public static class Extensions
 {
 

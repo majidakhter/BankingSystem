@@ -1,16 +1,9 @@
 ﻿using BankingAppDDD.Domains.Abstractions.DomainEvents;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingApp.AccountManagement.Core.Accounts.DomainEvents
 {
     public record class AccountClosedDomainEvent : DomainEvent
     {
-
         public Guid AccountId { get; private set; }
         public Guid CustomerId { get; private set; }
         private AccountClosedDomainEvent(Guid accountId, Guid customerId)

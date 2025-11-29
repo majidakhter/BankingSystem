@@ -1,5 +1,4 @@
-﻿
-using BankingApp.LoanManagement.Core.LoanApplicationsEntities;
+﻿using BankingApp.LoanManagement.Core.LoanApplicationsEntities;
 
 namespace BankingApp.LoanManagement.Infrastructure.Abstraction
 {

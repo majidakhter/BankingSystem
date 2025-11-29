@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace BankingAppDDD.Common.Authentication
 {
     public interface IJwtHandler

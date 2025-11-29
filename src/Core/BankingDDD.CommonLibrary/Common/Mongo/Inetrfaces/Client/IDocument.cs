@@ -2,13 +2,9 @@
 using BankingAppDDD.Common.Mongo.Interfaces.Collection;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
 
 namespace BankingAppDDD.Common.Mongo.Interfaces.Client
 {
@@ -40,7 +36,7 @@ namespace BankingAppDDD.Common.Mongo.Interfaces.Client
         #region Update Document(s)
         T FindOneAndUpdate<T, TField>(Expression<Func<T, TField>> expression, TField value, UpdateDefinition<T> updateDef, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
         T FindOneAndUpdate<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
-        T FindOneAndUpdate<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef,  FindOneAndUpdateOptions<T> options, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
+        T FindOneAndUpdate<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef, FindOneAndUpdateOptions<T> options, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
         UpdateResult UpdateMany<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
         Task<UpdateResult> UpdateManyAsync<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
         ReplaceOneResult ReplaceOne<T>(T @object, Expression<Func<T, bool>> expression, ReplaceOptions options, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
@@ -56,7 +52,7 @@ namespace BankingAppDDD.Common.Mongo.Interfaces.Client
         Task<T> FindOneAndDeleteAsync<T>(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
         T FindOneAndDelete<T>(Expression<Func<T, bool>> expression, FindOneAndDeleteOptions<T> options, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
         Task<T> FindOneAndDeleteAsync<T>(Expression<Func<T, bool>> expression, FindOneAndDeleteOptions<T> options, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null) where T : class;
-        
-        #endregion     
+
+        #endregion
     }
 }

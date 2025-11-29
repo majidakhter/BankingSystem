@@ -8,11 +8,9 @@ namespace BankingApp.AccountManagement.Application.Accounts.MappingProfile
     {
         public AccountStatusMappingProfile()
         {
-
             CreateMap<AccountStatus, AccountStatusDTO>()
                 .ForMember(dest => dest.AccountStatusId,
                             e => e.MapFrom(src => src.Id));
-                
         }
     }
 }

@@ -4,7 +4,6 @@ using BankingAppDDD.CustomerManagement.Application.Customers.Queries;
 using BankingAppDDD.Infrastructures.ActionResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingAppDDD.CustomerManagement.Controllers

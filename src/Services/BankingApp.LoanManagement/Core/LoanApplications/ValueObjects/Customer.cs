@@ -1,6 +1,4 @@
 ﻿using BankingAppDDD.Domains.Abstractions.ValueObjects;
-using System.Net;
-using System.Xml.Linq;
 
 namespace BankingApp.LoanManagement.Core.LoanApplications.ValueObjects
 {
@@ -8,7 +6,7 @@ namespace BankingApp.LoanManagement.Core.LoanApplications.ValueObjects
     {
         private Customer() { }
         public Amount MonthlyIncome { get; private set; }
-        public DateOnly BirthDate { get; private set;}
+        public DateOnly BirthDate { get; private set; }
         public Guid CustomerId { get; private set; }
         public static Customer Create(Amount monthlyIncome, DateOnly birthDate, Guid customerId)
         {

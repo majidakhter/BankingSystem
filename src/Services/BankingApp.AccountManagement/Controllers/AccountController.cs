@@ -4,12 +4,11 @@ using BankingApp.AccountManagement.Application.Accounts.Queries;
 using BankingAppDDD.Infrastructures.ActionResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingApp.AccountManagement.Controllers
 {
-   
+
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -31,7 +30,7 @@ namespace BankingApp.AccountManagement.Controllers
         {
             var result = await _mediator.Send(command);
             return Ok(result);
-        } 
+        }
 
         [HttpPost("Deposit")]
         [Authorize(Roles = "Customer")]

@@ -1,10 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using Newtonsoft.Json;
+
 public static class JsonSeedDataLoader
 {
     public static List<T> LoadSeedData<T>(string filePath)

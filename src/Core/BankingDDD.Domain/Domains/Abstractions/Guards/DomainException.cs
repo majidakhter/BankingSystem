@@ -1,5 +1,4 @@
 ﻿
-
 namespace BankingAppDDD.Domains.Abstractions.Guards
 {
     public class DomainException : Exception

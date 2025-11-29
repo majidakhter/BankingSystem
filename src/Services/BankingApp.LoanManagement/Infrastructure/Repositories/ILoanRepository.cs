@@ -1,5 +1,4 @@
-﻿
-using BankingApp.LoanManagement.Core.LoanApplicationsEntities;
+﻿using BankingApp.LoanManagement.Core.LoanApplicationsEntities;
 using BankingAppDDD.Domains.Abstractions.Entities;
 using System.Linq.Expressions;
 

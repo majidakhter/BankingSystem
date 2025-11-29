@@ -1,5 +1,4 @@
-﻿
-using BankingAppDDD.Domains.Abstractions.Guards;
+﻿using BankingAppDDD.Domains.Abstractions.Guards;
 using BankingAppDDD.Domains.Extensions;
 
 namespace BankingAppDDD.Domains.Abstractions.ValueObjects
@@ -25,7 +24,7 @@ namespace BankingAppDDD.Domains.Abstractions.ValueObjects
         private Amount(decimal value)
         {
             //Value = value;
-            Value = decimal.Round(value, 2, MidpointRounding.ToEven); 
+            Value = decimal.Round(value, 2, MidpointRounding.ToEven);
         }
         public Amount MultiplyByPercent(Percent percent) => new Amount((this.Value * percent.Value) / 100M);
         public static implicit operator Amount(decimal v)

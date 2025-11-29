@@ -1,4 +1,3 @@
-using System;
 using BankingAppDDD.Common.Messages;
 using Newtonsoft.Json;
 

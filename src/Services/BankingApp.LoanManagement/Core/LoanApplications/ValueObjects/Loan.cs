@@ -18,9 +18,9 @@ namespace BankingApp.LoanManagement.Core.LoanApplications.ValueObjects
             if (interestRate.Value == 0m)
                 throw new ArgumentException("Interest rate cannot be zero");
             //if (loanAmount <= Amount.Zero)
-               // throw new ArgumentException("Loan amount must be grated than 0");
-           // if (interestRate <= Percent.Zero)
-                //throw new ArgumentException("Interest rate must be higher than 0");
+            // throw new ArgumentException("Loan amount must be grated than 0");
+            // if (interestRate <= Percent.Zero)
+            //throw new ArgumentException("Interest rate must be higher than 0");
             if (loanNumberOfYears <= 0)
                 throw new ArgumentException("Loan number of years must be greater than 0");
 

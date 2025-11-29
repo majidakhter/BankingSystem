@@ -1,53 +1,31 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using BankingApp.Identity.Infrastructure.AutofacModules;
 using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Handlers;
 using BankingAppDDD.Common.Mongo.Helper;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using MongoDB.Driver;
-using MongoDB.Driver.Core.Configuration;
-using Newtonsoft.Json.Linq;
-using Serilog;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Sockets;
-using System.Runtime;
-using BankingApp.Identity.Infrastructure.AutofacModules;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 builder.AddHostLogging();
-builder.Services.AddWebHostInfrastructure(builder.Configuration, "IdentityService");
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddHealthChecks();
-builder.Services.AddSwaggerDocs();
-//builder.Services.AddTransient<IAccessTokenService, AccessTokenService>();
+services.AddWebHostInfrastructure(builder.Configuration, "IdentityService");
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddCoreInfrastructure(builder.Configuration);
+services.AddHealthChecks();
 
-builder.Services.AddJwt();
-builder.Services.AddAuthorization();
-builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
-builder.Services.AddHttpContextAccessor();
-ConfigurationManager Configuration = builder.Configuration;
-builder.Services.Configure<Collections>(builder.Configuration.GetSection("MongoDbSettings").GetSection("Collections"));
+services.AddAuthorization();
+services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+services.Configure<Collections>(builder.Configuration.GetSection("MongoDbSettings").GetSection("Collections"));
 var Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
-builder.Services.AddHttpClient();
-//builder.Services.AddScoped<IKeycloakAuthService, KeycloakAuthService>();
 
-builder.Services.AddDependencyServices(Configuration);
+services.AddDependencyServices(builder.Configuration);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>((hostContext, container) =>
 {
     container.RegisterModule(new InfrastructureModule());
 });
-builder.Services
+services
    .AddCors(options =>
     {
         options.AddPolicy("AllowOrigin",

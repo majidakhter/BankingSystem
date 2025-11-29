@@ -2,7 +2,6 @@
 using BankingApp.AccountManagement.Application.Customers.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingApp.AccountManagement.Controllers

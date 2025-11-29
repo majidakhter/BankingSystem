@@ -1,7 +1,3 @@
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication;
-using System.Net.Http.Headers;
-using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 
@@ -9,7 +5,7 @@ namespace BankingAppDDD.Common.Authentication
 {
     public class JwtHandler : IJwtHandler
     {
-        
+
         private readonly JwtOptions _options;
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;

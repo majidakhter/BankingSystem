@@ -3,7 +3,6 @@ using BankingAppDDD.Applications.Abstractions.Repositories;
 using BankingAppDDD.CustomerManagement.Application.Customers.Models;
 using BankingAppDDD.CustomerManagement.Core.Customers.Entities;
 using BankingAppDDD.Domains.Abstractions.Models;
-using MassTransit;
 
 namespace BankingAppDDD.CustomerManagement.Application.Customers.Commands
 {

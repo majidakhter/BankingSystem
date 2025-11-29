@@ -2,9 +2,6 @@ using BankingApp.LoanManagement.Core.DebtInfos.Entities;
 using BankingApp.LoanManagement.Core.LoanApplications.ValueObjects;
 using BankingApp.LoanManagement.Infrastructure.Abstraction;
 using BankingApp.LoanManagement.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BankingApp.LoanManagement.Infrastructure.Services;
 

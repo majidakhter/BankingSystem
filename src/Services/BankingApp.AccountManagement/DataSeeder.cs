@@ -2,7 +2,6 @@
 using BankingApp.AccountManagement.Core.Banks.Entities;
 using BankingApp.AccountManagement.Core.Branches.Entities;
 using BankingApp.AccountManagement.Core.Customers.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace BankingApp.AccountManagement
 {
@@ -69,9 +68,9 @@ namespace BankingApp.AccountManagement
                     }
 
                 }
-              
-               if(!record)
-                context.SaveChanges();
+
+                if (!record)
+                    context.SaveChanges();
             }
             return webApp;
         }

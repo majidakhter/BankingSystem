@@ -6,7 +6,6 @@ using BankingApp.LoanManagement.Infrastructure.Repositories;
 using BankingAppDDD.Domains.Abstractions.Entities;
 using BankingAppDDD.Domains.Abstractions.Models;
 using BankingAppDDD.Domains.Abstractions.ValueObjects;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BankingApp.LoanManagement.Core.LoanApplicationsEntities
 {
@@ -55,7 +54,7 @@ namespace BankingApp.LoanManagement.Core.LoanApplicationsEntities
             }
 
             Status = LoanApplicationStatus.Accepted;
-            Decision =  LoanUnderWriter.Create(SysTime.Today(), decisionBy.Id);
+            Decision = LoanUnderWriter.Create(SysTime.Today(), decisionBy.Id);
             AddDomainEvent(LoanApplicationAccepted.Create(CustomerId, Status));
         }
 
@@ -73,7 +72,7 @@ namespace BankingApp.LoanManagement.Core.LoanApplicationsEntities
 
         public static LoanApplication Create(LoanApplicationData loanApplicationData, Operator? operatorData)
         {
-            var (customerData, assetData,loanData, loanTypeId) = loanApplicationData ?? throw new ArgumentNullException(nameof(loanApplicationData));
+            var (customerData, assetData, loanData, loanTypeId) = loanApplicationData ?? throw new ArgumentNullException(nameof(loanApplicationData));
             var loanApplicationNumber = LoanApplicationNumber.NewNumber();
             if (string.IsNullOrWhiteSpace(loanApplicationNumber))
                 throw new ArgumentException("Number cannot be null");
@@ -83,15 +82,15 @@ namespace BankingApp.LoanManagement.Core.LoanApplicationsEntities
                 throw new ArgumentException("Property cannot be null");
             if (loanData == null)
                 throw new ArgumentException("Loan cannot be null");
-           
-           
+
+
             var customer = Customer.Create(customerData.customerMonthlyIncome, customerData.customerBirthdate, customerData.customerNationalIdentifier);
             var addressData = new AddressData(assetData.propertyAddress.street, assetData.propertyAddress.city, assetData.propertyAddress.state, assetData.propertyAddress.zipCode, assetData.propertyAddress.country);
             var property = Asset.Create(assetData.PropertyValue, Address.Create(addressData));
             var loan = Loan.Create(loanData.loanAmount, loanData.loanNumberOfYears, new Percent(loanData.percent));
             var registeredBy = Operator.Create(operatorData!.CompetenceLevel, operatorData.Id);
             return new LoanApplication(loanApplicationNumber, LoanApplicationStatus.New, customer, property, loan, ScoringResult.Create(null, string.Empty), Registration.Create(SysTime.Today(), registeredBy.Id), LoanUnderWriter.Create(default, Guid.Empty), loanTypeId);
-           
+
         }
 
         private LoanApplication(

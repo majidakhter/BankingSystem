@@ -4,11 +4,6 @@ using BankingApp.AccountManagement.Core.Accounts.Entities;
 using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.Queries;
 using BankingAppDDD.Domains.Abstractions.Guards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingApp.AccountManagement.Application.Accounts.Queries
 {
@@ -29,7 +24,6 @@ namespace BankingApp.AccountManagement.Application.Accounts.Queries
             var account = await _repository.GetByIdAsync(request.AccountId);
             Guard.Against.NotFound(account);
             return Mapper.Map<AccountStatusDTO>(account);
-
         }
     }
 }

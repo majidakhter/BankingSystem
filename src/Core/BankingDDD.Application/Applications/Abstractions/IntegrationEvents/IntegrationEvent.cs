@@ -1,6 +1,4 @@
-﻿
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents
 {
@@ -20,7 +18,7 @@ namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents
         }
 
         [JsonProperty]
-        public Guid MessageId { get; private set; } 
+        public Guid MessageId { get; private set; }
 
         [JsonProperty]
         public DateTime CreationDate { get; private set; }

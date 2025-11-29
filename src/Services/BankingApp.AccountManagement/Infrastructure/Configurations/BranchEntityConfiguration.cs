@@ -1,9 +1,7 @@
-﻿
-using BankingApp.AccountManagement.Core.Banks.Entities;
+﻿using BankingApp.AccountManagement.Core.Banks.Entities;
 using BankingApp.AccountManagement.Core.Branches.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 
 namespace BankingApp.AccountManagement.Infrastructure.Configurations
 {
@@ -11,7 +9,6 @@ namespace BankingApp.AccountManagement.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Branch> builder)
         {
-
             builder.ToTable("Branches");
             builder.Property(p => p.Name).HasMaxLength(100).IsRequired();
             builder.Property(p => p.BranchCode).HasMaxLength(10).IsRequired();
@@ -45,7 +42,7 @@ namespace BankingApp.AccountManagement.Infrastructure.Configurations
                                   .HasColumnName("PhoneNumber")
                                   .IsRequired();
             });
-          
+
         }
     }
 }

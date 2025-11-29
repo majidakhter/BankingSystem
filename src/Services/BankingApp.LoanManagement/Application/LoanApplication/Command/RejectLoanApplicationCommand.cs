@@ -34,7 +34,6 @@ namespace BankingApp.LoanManagement.Application.LoanApplicationCommands
                 new ArgumentException("loanapplicationId does not exist");
             }
             loanapplication!.Reject(operato!, loanapplication.Customer.CustomerId);
-
             _repository.Update(loanapplication);
             await UnitOfWork.CommitAsync();
             return new CommandResult { IsSuccess = true };

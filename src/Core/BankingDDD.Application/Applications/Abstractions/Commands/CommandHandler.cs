@@ -6,7 +6,6 @@ namespace BankingAppDDD.Applications.Abstractions.Commands
     public abstract class CommandHandler
     {
         protected readonly IUnitOfWork UnitOfWork;
-
         protected CommandHandler(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
@@ -37,8 +36,8 @@ namespace BankingAppDDD.Applications.Abstractions.Commands
 
         }
 
-        public abstract  Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken);
-       
+        public abstract Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken);
+
     }
     public abstract class CreateCommandHandler<TCommand, TResponse> : CommandHandler, IRequestHandler<TCommand, TResponse> where TCommand : ICreateCommand<TResponse>
     {
@@ -65,5 +64,5 @@ namespace BankingAppDDD.Applications.Abstractions.Commands
         protected abstract Task<Guid> HandleAsync(TCommand request);
     }
 
-   
+
 }

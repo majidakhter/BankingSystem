@@ -1,6 +1,5 @@
 ﻿using BankingAppDDD.Domains.Abstractions.ValueObjects;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace BankingApp.LoanManagement.Core.LoanApplications.ValueObjects
 {
@@ -22,7 +21,7 @@ namespace BankingApp.LoanManagement.Core.LoanApplications.ValueObjects
         }
 
         // To Satisfy EF Core
-        public static  LoanUnderWriter Create(DateOnly decisionDate, Guid decisionBy)
+        public static LoanUnderWriter Create(DateOnly decisionDate, Guid decisionBy)
         {
             return new LoanUnderWriter(decisionDate, decisionBy);
         }

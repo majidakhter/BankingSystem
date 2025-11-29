@@ -1,11 +1,6 @@
 ﻿using BankingAppDDD.Domains.Abstractions.DomainEvents;
 using BankingAppDDD.Domains.Abstractions.Models;
 using BankingAppDDD.Domains.Abstractions.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingAppDDD.CustomerManagement.Core.Customers.DomainEvents
 {
@@ -97,7 +92,7 @@ namespace BankingAppDDD.CustomerManagement.Core.Customers.DomainEvents
             Name = name;
             PhoneNo = phoneNo;
             CustType = custType;
-            DateOfBirth = BirthDate.Create(dateOfBirth); 
+            DateOfBirth = BirthDate.Create(dateOfBirth);
             PermanentAddress = permanentAddress;
             Email = email;
         }

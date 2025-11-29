@@ -2,10 +2,6 @@
 using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.Commands;
 using BankingAppDDD.Applications.Abstractions.Repositories;
-using DnsClient;
-using MediatR;
-using System;
-using System.Text.Json;
 
 namespace BankingApp.AccountManagement.Application.Accounts.Commands
 {
@@ -25,13 +21,13 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
 
         protected override async Task<Guid> HandleAsync(AddAccountCommand request)
         {
-          //  var data = new AccountCreatedIntegrationEvent(request.customerId);
-           // var jsonContent = JsonSerializer.Serialize(data);
-            
+            //  var data = new AccountCreatedIntegrationEvent(request.customerId);
+            // var jsonContent = JsonSerializer.Serialize(data);
+
             //var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
-           // var response = await client.PostAsync("https://localhost:7155/api/EventLog/AddEventLog", content);
-           // string responseBody = await response.Content.ReadAsStringAsync();
-            var created = Account.Create(request.customerId,request.accountTypeId);
+            // var response = await client.PostAsync("https://localhost:7155/api/EventLog/AddEventLog", content);
+            // string responseBody = await response.Content.ReadAsStringAsync();
+            var created = Account.Create(request.customerId, request.accountTypeId);
             //Guard.Against.NotFound(created);
             _repository.Insert(created);
             await UnitOfWork.CommitAsync();

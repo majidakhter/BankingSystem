@@ -1,5 +1,4 @@
-﻿
-using BankingApp.AccountManagement.Core.Banks.Entities;
+﻿using BankingApp.AccountManagement.Core.Banks.Entities;
 using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.Commands;
 using BankingAppDDD.Applications.Abstractions.Repositories;

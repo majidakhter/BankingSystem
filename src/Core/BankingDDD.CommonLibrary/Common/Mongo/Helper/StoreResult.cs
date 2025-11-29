@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace BankingAppDDD.Common.Mongo.Helper
 {
     public class StoreResult<T>
@@ -8,10 +7,10 @@ namespace BankingAppDDD.Common.Mongo.Helper
         {
             Success = success;
             Document = document;
-            Documents = documents;       
+            Documents = documents;
         }
-        public T Document { get; set; }  
+        public T Document { get; set; }
         public IEnumerable<T> Documents { get; set; }
-        public bool Success { get; set; }       
+        public bool Success { get; set; }
     }
 }

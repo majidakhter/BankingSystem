@@ -14,7 +14,7 @@ namespace BankingApp.LoanManagement.Infrastructure.Configurations
 
             builder.OwnsOne(x => x.CompetenceLevel, competencyLevelBuilder =>
             {
-                competencyLevelBuilder.Property(x=>x.Value).HasColumnName("CompetenceLevelAmount");
+                competencyLevelBuilder.Property(x => x.Value).HasColumnName("CompetenceLevelAmount");
             });
 
         }

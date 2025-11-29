@@ -1,5 +1,4 @@
 using System.Net;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace BankingAppDDD.Common.Authentication
@@ -12,16 +11,15 @@ namespace BankingAppDDD.Common.Authentication
         {
             _accessTokenService = accessTokenService;
         }
-        
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             if (await _accessTokenService.IsCurrentActiveToken())
             {
                 await next(context);
-                
                 return;
             }
-            context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
     }
 }

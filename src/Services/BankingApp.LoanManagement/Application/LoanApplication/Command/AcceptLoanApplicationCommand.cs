@@ -1,12 +1,11 @@
-﻿
-using BankingApp.LoanManagement.Core.LoanApplicationsEntities;
+﻿using BankingApp.LoanManagement.Core.LoanApplicationsEntities;
 using BankingApp.LoanManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.Commands;
 using BankingAppDDD.Applications.Abstractions.Repositories;
 
 namespace BankingApp.LoanManagement.Application.LoanApplicationCommands
 {
-    
+
     public sealed class AcceptLoanApplicationCommand : IUpdateCommand<CommandResult>
     {
         public Guid LoanApplicationId { get; private set; }
@@ -29,14 +28,14 @@ namespace BankingApp.LoanManagement.Application.LoanApplicationCommands
             _operatorrepository = operatorrepository;
             _logger = logger;
         }
-         
+
         public override async Task<CommandResult> Handle(AcceptLoanApplicationCommand request, CancellationToken cancellationToken)
         {
             var operato = await _operatorrepository.GetByIdAsync(request.OperatorId);
             var loanapplication = await _repository.GetByIdAsync(request.LoanApplicationId);
             if (loanapplication == null)
             {
-                 new ArgumentException("loanapplicationId does not exist");
+                new ArgumentException("loanapplicationId does not exist");
             }
             loanapplication!.Accept(operato!, loanapplication.Customer.CustomerId);
 

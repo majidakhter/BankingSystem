@@ -3,20 +3,11 @@ using BankingApp.AccountManagement.Core.Customers.Entities;
 using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.DomainEventHandlers;
 using MassTransit;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingApp.AccountManagement.Application.Accounts.DomainEventHandlers.AccountAdded
 {
     public sealed class AccountAddedDomainEventHandler : DomainEventHandler<AccountAddedDomainEvent>
     {
-
         private readonly IBus _eventBus;
         private readonly IAccountRepository<Customer> _customerRepository;
         public AccountAddedDomainEventHandler(IAccountRepository<Customer> customerRepository, ILogger<DomainEventHandler<AccountAddedDomainEvent>> logger,
@@ -34,6 +25,6 @@ namespace BankingApp.AccountManagement.Application.Accounts.DomainEventHandlers.
             _customerRepository.Update(customer);
 
         }
-       
+
     }
 }

@@ -2,8 +2,6 @@
 using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.Commands;
 using BankingAppDDD.Applications.Abstractions.Repositories;
-using MediatR;
-using System.Net;
 
 namespace BankingApp.AccountManagement.Application.Accounts.Commands
 {
@@ -17,9 +15,9 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
             _repository = repository;
             _logger = logger;
         }
-         
+
         protected override async Task<bool> HandleAsync(DepositCommand request)
-        { 
+        {
 
             var account = await _repository.GetEntityById(request.accountId);
             if (account == null)
@@ -28,7 +26,6 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
                 throw new ArgumentException("AccountId does not exist");
             }
             account.Deposit(request.amount);
-
             _repository.Update(account);
             await UnitOfWork.CommitAsync();
             _logger.LogInformation("Amount Deposited to {@Account No}", request.accountId);

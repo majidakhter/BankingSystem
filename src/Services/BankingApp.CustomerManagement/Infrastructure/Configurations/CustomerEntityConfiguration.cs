@@ -13,11 +13,12 @@ namespace BankingAppDDD.CustomerManagement.Infrastructure.Configurations
             builder.Property<string>("Name").IsRequired().HasMaxLength(32);
             builder.Property<string>("Email").IsRequired().HasMaxLength(32);
             builder.Property<string>("PhoneNo").IsRequired().HasMaxLength(32);
-            builder.Property(x=>x.CustomerTypeId).IsRequired();
+            builder.Property(x => x.CustomerTypeId).IsRequired();
             builder.Property(x => x.LoanStatus).HasConversion<string>();
             builder.Property<DateTime>("DateAdded");
             builder.Property<DateTime>("UpdatedOn");
-            builder.OwnsOne(e => e.DateOfBirth, birthdateBuilder => {
+            builder.OwnsOne(e => e.DateOfBirth, birthdateBuilder =>
+            {
                 birthdateBuilder.Property(e => e.Value)
                                   .HasColumnName("DateOfBirth")
                                   .IsRequired();
@@ -40,7 +41,7 @@ namespace BankingAppDDD.CustomerManagement.Infrastructure.Configurations
                                   .HasColumnName("Country")
                                   .IsRequired();
             });
-           
+
         }
     }
 }

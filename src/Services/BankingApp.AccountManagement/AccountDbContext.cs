@@ -4,16 +4,7 @@ using BankingApp.AccountManagement.Core.Branches.Entities;
 using BankingApp.AccountManagement.Core.Customers.Entities;
 using BankingApp.AccountManagement.Infrastructure.Configurations;
 using BankingAppDDD.Domains.Abstractions.Entities;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingApp.AccountManagement
 {
@@ -93,10 +84,11 @@ namespace BankingApp.AccountManagement
                 {
                     aggregateBuild.Ignore(nameof(EntityBase.Id));
                 }
-                else {
+                else
+                {
                     aggregateBuild.Property(nameof(EntityBase.Id)).ValueGeneratedNever();
                 }
-                    
+
 
             }
         }

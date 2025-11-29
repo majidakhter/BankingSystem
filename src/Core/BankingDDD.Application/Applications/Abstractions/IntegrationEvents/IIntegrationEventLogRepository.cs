@@ -1,5 +1,4 @@
 ﻿
-
 namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents
 {
     /*public interface IIntegrationEventLogRepository : IRepository<IntegrationEventLog>

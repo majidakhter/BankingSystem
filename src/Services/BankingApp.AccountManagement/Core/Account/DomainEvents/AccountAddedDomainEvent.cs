@@ -1,10 +1,4 @@
 ﻿using BankingAppDDD.Domains.Abstractions.DomainEvents;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingApp.AccountManagement.Core.Accounts.DomainEvents
 {
@@ -25,7 +19,7 @@ namespace BankingApp.AccountManagement.Core.Accounts.DomainEvents
                 throw new ArgumentOutOfRangeException(nameof(customerId));
             if (accountId == Guid.Empty)
                 throw new ArgumentOutOfRangeException(nameof(accountId));
-            return new AccountAddedDomainEvent(accountId,customerId, accountTypeId);
+            return new AccountAddedDomainEvent(accountId, customerId, accountTypeId);
         }
     }
 }

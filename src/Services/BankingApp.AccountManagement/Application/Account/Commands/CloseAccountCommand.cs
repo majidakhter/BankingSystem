@@ -3,7 +3,6 @@ using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.Commands;
 using BankingAppDDD.Applications.Abstractions.Repositories;
 using BankingAppDDD.Domains.Abstractions.Guards;
-using MediatR;
 
 namespace BankingApp.AccountManagement.Application.Accounts.Commands
 {
@@ -20,7 +19,6 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
             _repository = repository;
             _logger = logger;
         }
-
 
         protected override async Task<bool> HandleAsync(CloseAccountCommand request)
         {

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
+﻿
 namespace BankingApp.LoanManagement.Application.LoanApplicationModels
 {
     public class CreditCardsDTO

@@ -4,7 +4,6 @@ using BankingApp.LoanManagement.Core.LoanApplicationsEntities;
 using BankingApp.LoanManagement.Infrastructure.Configurations;
 using BankingAppDDD.Domains.Abstractions.Entities;
 using Microsoft.EntityFrameworkCore;
-using SharpCompress.Common;
 
 namespace BankingApp.LoanManagement
 {
@@ -97,8 +96,5 @@ namespace BankingApp.LoanManagement
                 }*/
 
             }
-            
-
         }
-    
 }
