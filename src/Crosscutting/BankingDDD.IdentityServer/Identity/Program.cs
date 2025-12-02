@@ -4,12 +4,14 @@ using BankingApp.Identity.Infrastructure.AutofacModules;
 using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Handlers;
 using BankingAppDDD.Common.Mongo.Helper;
+using BankingAppDDD.Common.Types;
 using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 builder.AddHostLogging();
 services.AddWebHostInfrastructure(builder.Configuration, "IdentityService");
+services.AddApiVersioning(ApiVersions.V2);
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddCoreInfrastructure(builder.Configuration);
@@ -43,17 +45,9 @@ if (app.Environment.IsDevelopment())
 
 }
 app.UseSwaggerDocs();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/docs/v1/swagger.json", "v1");
-    options.OAuthClientId(app.Configuration.GetValue<string>("Keycloak:ClientId"));
-    options.OAuthClientSecret(app.Configuration.GetValue<string>("Keycloak:ClientSecret"));
-    options.OAuthScopes("openid profile email");
-    options.OAuthUsePkce();
 
-
-});
 //app.UseHttpsRedirection();
+app.UseCors("AllowOrigin");
 
 app.UseRouting();
 app.UseAuthentication();

@@ -289,6 +289,37 @@ services:
         condition: service_healthy
       seq:
          condition: service_healthy
+  banking-apigateway:
+    image: banking-apigateway
+    container_name: banking-apigateway
+    build:
+      context: .
+      dockerfile: src/Crosscutting/BankingApp.ApiGateway/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: '${ASPNETCORE_ENVIRONMENT:-Development}'
+      ASPNETCORE_URLS: 'http://+:80'    
+    healthcheck:
+      test: curl --fail http://banking-apigateway:80/health || exit 1
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 60s
+      start_interval: 5s
+    ports:
+      - '5000:80'
+    networks:
+      - backend    
+    restart:
+      always
+    depends_on:      
+      banking-identityserver:
+        condition: service_started
+      banking-customermanagement:
+        condition: service_started
+      banking-accountmanagement:
+        condition: service_started
+      banking-loanmanagement:
+        condition: service_started
 volumes:
   db-data:
     driver: local  

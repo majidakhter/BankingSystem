@@ -1,6 +1,7 @@
 ﻿using BankingApp.AccountManagement.Application.Accounts.Commands;
 using BankingApp.AccountManagement.Application.Accounts.Models;
 using BankingApp.AccountManagement.Application.Accounts.Queries;
+using BankingAppDDD.Common.Types;
 using BankingAppDDD.Infrastructures.ActionResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace BankingApp.AccountManagement.Controllers
 {
 
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/account")]
     public class AccountController : ControllerBase
     {
 
@@ -22,6 +23,7 @@ namespace BankingApp.AccountManagement.Controllers
 
 
         [HttpPost("AddAccount")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -33,6 +35,7 @@ namespace BankingApp.AccountManagement.Controllers
         }
 
         [HttpPost("Deposit")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -44,6 +47,7 @@ namespace BankingApp.AccountManagement.Controllers
         }
 
         [HttpPost("Withdraw")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -55,6 +59,7 @@ namespace BankingApp.AccountManagement.Controllers
         }
 
         [HttpPost("CloseAccount")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -66,6 +71,7 @@ namespace BankingApp.AccountManagement.Controllers
         }
 
         [HttpPost("AddBeneficiary")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -77,6 +83,7 @@ namespace BankingApp.AccountManagement.Controllers
         }
 
         [HttpGet("GetAccountStatus")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(AccountStatusDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]

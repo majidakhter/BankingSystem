@@ -1,6 +1,7 @@
 ﻿using BankingApp.AccountManagement.Application.Branches.Commands;
 using BankingApp.AccountManagement.Application.Branches.Model;
 using BankingApp.AccountManagement.Application.Branches.Queries;
+using BankingAppDDD.Common.Types;
 using BankingAppDDD.Infrastructures.ActionResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -8,8 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingApp.AccountManagement.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/branch")]
     public class BranchController : ControllerBase
     {
         readonly IMediator _mediator;
@@ -20,6 +21,7 @@ namespace BankingApp.AccountManagement.Controllers
 
 
         [HttpPost]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -31,6 +33,7 @@ namespace BankingApp.AccountManagement.Controllers
         }
 
         [HttpGet, Route("branchDetails")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(List<BranchDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
@@ -40,6 +43,7 @@ namespace BankingApp.AccountManagement.Controllers
         }
 
         [HttpGet("{id}")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(BranchDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetBranchById(Guid id)

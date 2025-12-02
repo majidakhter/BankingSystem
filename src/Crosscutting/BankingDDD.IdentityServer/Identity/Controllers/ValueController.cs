@@ -1,3 +1,4 @@
+using BankingAppDDD.Common.Types;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,8 +8,8 @@ namespace BankingAppDDD.Identity.Controllers
     /// <summary>
     /// Controller class just to validate the User Role Permission.
     /// </summary>
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/value")]
     public class ValueController : ControllerBase
     {
 
@@ -27,6 +28,7 @@ namespace BankingAppDDD.Identity.Controllers
         /// </summary>
         /// <returns>Ok result with a general user message.</returns>
         [HttpGet("get-admin")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public IActionResult GetAdmin()
@@ -39,6 +41,7 @@ namespace BankingAppDDD.Identity.Controllers
         /// </summary>
         /// <returns>Ok result with a general user message.</returns>
         [HttpGet("get-general")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public IActionResult GetGeneral()

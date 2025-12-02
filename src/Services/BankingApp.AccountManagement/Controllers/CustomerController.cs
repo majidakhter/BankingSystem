@@ -1,13 +1,15 @@
 ﻿using BankingApp.AccountManagement.Application.Customers.Models;
 using BankingApp.AccountManagement.Application.Customers.Queries;
+using BankingAppDDD.Common.Types;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingApp.AccountManagement.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/customer")]
+
     public class CustomerController : ControllerBase
     {
         readonly IMediator _mediator;
@@ -16,6 +18,7 @@ namespace BankingApp.AccountManagement.Controllers
             _mediator = mediator;
         }
         [HttpGet("GetCustomerAccountCount/{id}")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(CustomerAccountDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCustomerAccountCountById(Guid id)

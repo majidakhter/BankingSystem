@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Banking-CustomerManagement": {
+    " Banking.CustomerManagement": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

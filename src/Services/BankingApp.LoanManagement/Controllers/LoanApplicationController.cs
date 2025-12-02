@@ -2,6 +2,7 @@ using BankingApp.LoanManagement.Application.DebtorInfosCommand;
 using BankingApp.LoanManagement.Application.LoanApplicationCommands;
 using BankingApp.LoanManagement.Application.LoanApplicationModels;
 using BankingApp.LoanManagement.Application.LoanApplicationQueries;
+using BankingAppDDD.Common.Types;
 using BankingAppDDD.Infrastructures.ActionResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingApp.LoanManagement.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/loanapplication")]
     public class LoanApplicationController : ControllerBase
     {
         readonly IMediator _mediator;
@@ -20,6 +21,7 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpPost, Route("CreateLoanApplication")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Operator")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -31,6 +33,7 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpPut, Route("EvaluateLoanApplication")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Underwriter")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -51,6 +54,7 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpPut, Route("AcceptLoanApplication")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Underwriter")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -71,6 +75,7 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpPut, Route("RejectLoanApplication")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Underwriter")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -91,6 +96,7 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpGet("GetLoanById/{loanApplicationid}")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(List<LoanApplicationDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid loanApplicationid)
@@ -100,6 +106,7 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpGet("GetLoanByParam/{applicationNumber}/{customerIdentifier}/{decisionById}/{registeredById}")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(LoanApplicationSearchCriteriaDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetLoanApplicationByOtherParam(string applicationNumber, Guid customerIdentifier, Guid decisionById, Guid registeredById)
@@ -109,6 +116,7 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpPost, Route("CreateDebtorInfo")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]

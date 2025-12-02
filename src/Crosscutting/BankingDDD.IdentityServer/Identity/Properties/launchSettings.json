@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Banking-IdentityServer": {
+    "Banking.IdentityServer": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

@@ -15,7 +15,7 @@ namespace BankingAppDDD.Common.Extension
             var appSettings = configuration.Get<AppSettings>()
                  ?? throw new ArgumentNullException("AppSettings section was not found.");
 
-            services.AddRedis(configuration);
+            //services.AddRedis(configuration);
             services.AddHttpClient();
             services.AddTransient<IAccessTokenService, AccessTokenService>();
             services.AddTransient<AccessTokenValidatorMiddleware>();

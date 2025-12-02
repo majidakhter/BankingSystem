@@ -1,4 +1,5 @@
-﻿using BankingAppDDD.CustomerManagement.Application.Customers.Commands;
+﻿using BankingAppDDD.Common.Types;
+using BankingAppDDD.CustomerManagement.Application.Customers.Commands;
 using BankingAppDDD.CustomerManagement.Application.Customers.Models;
 using BankingAppDDD.CustomerManagement.Application.Customers.Queries;
 using BankingAppDDD.Infrastructures.ActionResults;
@@ -11,8 +12,8 @@ namespace BankingAppDDD.CustomerManagement.Controllers
     /// <summary>
     /// 
     /// </summary>
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/customer")]
     public class CustomerController : ControllerBase
     {
         readonly IMediator _mediator;
@@ -31,6 +32,7 @@ namespace BankingAppDDD.CustomerManagement.Controllers
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -46,6 +48,7 @@ namespace BankingAppDDD.CustomerManagement.Controllers
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -60,6 +63,7 @@ namespace BankingAppDDD.CustomerManagement.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("customerDetails")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(List<CustomerDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
@@ -73,6 +77,7 @@ namespace BankingAppDDD.CustomerManagement.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetBranchById(Guid id)

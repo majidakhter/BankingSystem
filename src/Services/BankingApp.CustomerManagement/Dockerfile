@@ -12,7 +12,7 @@ USER root
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Switch back to the default non-root user for security
-USER app  
+USER app
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -23,6 +23,7 @@ COPY ["src/Core/BankingDDD.Application/Applications/Applications.csproj", "src/C
 COPY ["src/Core/BankingDDD.Domain/Domains/Domains.csproj", "src/Core/BankingDDD.Domain/Domains/"]
 COPY ["src/Core/BankingDDD.CommonLibrary/Common/Common.csproj", "src/Core/BankingDDD.CommonLibrary/Common/"]
 COPY ["src/Core/BankingDDD.Infrastructure/Infrastructures/Infrastructures.csproj", "src/Core/BankingDDD.Infrastructure/Infrastructures/"]
+COPY ["src/Crosscutting/BankingDDD.ServiceClient/BankingDDD.ServiceClient.csproj", "src/Crosscutting/BankingDDD.ServiceClient/"]
 RUN dotnet restore "./src/Services/BankingApp.CustomerManagement/BankingApp.CustomerManagement.csproj"
 COPY . .
 WORKDIR "/src/src/Services/BankingApp.CustomerManagement"

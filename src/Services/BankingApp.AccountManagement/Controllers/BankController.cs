@@ -1,6 +1,7 @@
 ﻿using BankingApp.AccountManagement.Application.Banks.Commands;
 using BankingApp.AccountManagement.Application.Banks.Models;
 using BankingApp.AccountManagement.Application.Banks.Queries;
+using BankingAppDDD.Common.Types;
 using BankingAppDDD.Infrastructures.ActionResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -8,8 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingApp.AccountManagement.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/bank")]
     public class BankController : ControllerBase
     {
         readonly IMediator _mediator;
@@ -20,6 +21,7 @@ namespace BankingApp.AccountManagement.Controllers
 
 
         [HttpPost]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -31,6 +33,7 @@ namespace BankingApp.AccountManagement.Controllers
         }
 
         [HttpGet("{id}")]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(BankDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]

@@ -8,6 +8,7 @@ using BankingApp.AccountManagement.Core.Customers.Entities;
 using BankingApp.AccountManagement.Infrastructure.AutofacModules;
 using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Handlers;
+using BankingAppDDD.Common.Types;
 using BankingDDD.ServiceClient.Extensions;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
@@ -20,6 +21,7 @@ var services = builder.Services;
 // Add services to the container.
 builder.AddHostLogging();
 services.AddWebHostInfrastructure(builder.Configuration, "AccountManagementService");
+services.AddApiVersioning(ApiVersions.V2);
 services.AddControllers();
 var headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 services.AddEndpointsApiExplorer();
@@ -95,14 +97,7 @@ if (app.Environment.IsDevelopment())
 
 }
 app.UseSwaggerDocs();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/docs/v1/swagger.json", "v1");
-    options.OAuthClientId(app.Configuration.GetValue<string>("Keycloak:ClientId"));
-    options.OAuthClientSecret(app.Configuration.GetValue<string>("Keycloak:ClientSecret"));
-    options.OAuthScopes("openid profile email");
-    options.OAuthUsePkce();
-});
+
 app.UseCors("AllowOrigin");
 //This is Required when we are doing ssl communication
 //app.UseHttpsRedirection();

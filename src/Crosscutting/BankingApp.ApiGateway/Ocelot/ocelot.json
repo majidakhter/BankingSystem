@@ -1,3 +1,783 @@
 {
+  "Routes": [
+    {
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+        "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+      },
+      "RouteClaimsRequirement": {
+        "role": [] // Optional: Require a specific claim for this route
+      },
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
 
-}
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-identityserver",
+          "Port": 80
+        }
+      ],
+      "DownstreamHttpMethod": null,
+      "DownstreamHttpVersion": null,
+      "DownstreamHttpVersionPolicy": null,
+      "DownstreamPathTemplate": "/api/auth/login",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": {
+        "TtlSeconds": null,
+        "Region": null,
+        "Header": null,
+        "EnableContentHashing": null
+      },
+      "HttpHandlerOptions": {
+        "AllowAutoRedirect": false,
+        "MaxConnectionsPerServer": 2147483647,
+        "UseCookieContainer": false,
+        "UseProxy": true,
+        "UseTracing": false,
+        "PooledConnectionLifetimeSeconds": null
+      },
+      "Key": null,
+      "LoadBalancerOptions": {
+        "Expiry": 2147483647,
+        "Key": "",
+        "Type": ""
+      },
+      "Metadata": {},
+      "Priority": 1,
+      "QoSOptions": {
+        "DurationOfBreak": 1,
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "TimeoutValue": 0
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": null,
+        "PeriodTimespan": 0.0,
+        "Limit": 0
+      },
+      "RequestIdKey": null,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "ServiceName": null,
+      "ServiceNamespace": null,
+      "Timeout": 0,
+      "UpstreamHeaderTransform": {},
+      "UpstreamHost": null,
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "UpstreamPathTemplate": "/api/auth/login",
+      "UpstreamHeaderTemplates": {}
+    },
+    {
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+        "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+      },
+      "RouteClaimsRequirement": {
+        "role": [ "Admin" ] // Optional: Require a specific claim for this route
+      },
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-identityserver",
+          "Port": 80
+        }
+      ],
+      "DownstreamHttpMethod": null,
+      "DownstreamHttpVersion": null,
+      "DownstreamHttpVersionPolicy": null,
+      "DownstreamPathTemplate": "/api/value/get-admin",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": {
+        "TtlSeconds": null,
+        "Region": null,
+        "Header": null,
+        "EnableContentHashing": null
+      },
+      "HttpHandlerOptions": {
+        "AllowAutoRedirect": false,
+        "MaxConnectionsPerServer": 2147483647,
+        "UseCookieContainer": false,
+        "UseProxy": true,
+        "UseTracing": false,
+        "PooledConnectionLifetimeSeconds": null
+      },
+      "Key": null,
+      "LoadBalancerOptions": {
+        "Expiry": 2147483647,
+        "Key": "",
+        "Type": ""
+      },
+      "Metadata": {},
+      "Priority": 1,
+      "QoSOptions": {
+        "DurationOfBreak": 1,
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "TimeoutValue": 0
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": null,
+        "PeriodTimespan": 0.0,
+        "Limit": 0
+      },
+      "RequestIdKey": null,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "ServiceName": null,
+      "ServiceNamespace": null,
+      "Timeout": 0,
+      "UpstreamHeaderTransform": {},
+      "UpstreamHost": null,
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "UpstreamPathTemplate": "/api/value/get-admin",
+      "UpstreamHeaderTemplates": {}
+    },
+    {
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+        "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+      },
+      "RouteClaimsRequirement": {
+        "role": [ "Customer" ] // Optional: Require a specific claim for this route
+      },
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-identityserver",
+          "Port": 80
+        }
+      ],
+      "DownstreamHttpMethod": null,
+      "DownstreamHttpVersion": null,
+      "DownstreamHttpVersionPolicy": null,
+      "DownstreamPathTemplate": "/api/value/get-general",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": {
+        "TtlSeconds": null,
+        "Region": null,
+        "Header": null,
+        "EnableContentHashing": null
+      },
+      "HttpHandlerOptions": {
+        "AllowAutoRedirect": false,
+        "MaxConnectionsPerServer": 2147483647,
+        "UseCookieContainer": false,
+        "UseProxy": true,
+        "UseTracing": false,
+        "PooledConnectionLifetimeSeconds": null
+      },
+      "Key": null,
+      "LoadBalancerOptions": {
+        "Expiry": 2147483647,
+        "Key": "",
+        "Type": ""
+      },
+      "Metadata": {},
+      "Priority": 1,
+      "QoSOptions": {
+        "DurationOfBreak": 1,
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "TimeoutValue": 0
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": null,
+        "PeriodTimespan": 0.0,
+        "Limit": 0
+      },
+      "RequestIdKey": null,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "ServiceName": null,
+      "ServiceNamespace": null,
+      "Timeout": 0,
+      "UpstreamHeaderTransform": {},
+      "UpstreamHost": null,
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "UpstreamPathTemplate": "/api/value/get-general",
+      "UpstreamHeaderTemplates": {}
+    },
+    {
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+        "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+      },
+      "RouteClaimsRequirement": {
+        "role": [ "Admin" ] // Optional: Require a specific claim for this route
+      },
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-customermanagement",
+          "Port": 80
+        }
+      ],
+      "DownstreamHttpMethod": null,
+      "DownstreamHttpVersion": null,
+      "DownstreamHttpVersionPolicy": null,
+      "DownstreamPathTemplate": "/api/customer/addcustomer",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": {
+        "TtlSeconds": null,
+        "Region": null,
+        "Header": null,
+        "EnableContentHashing": null
+      },
+      "HttpHandlerOptions": {
+        "AllowAutoRedirect": false,
+        "MaxConnectionsPerServer": 2147483647,
+        "UseCookieContainer": false,
+        "UseProxy": true,
+        "UseTracing": false,
+        "PooledConnectionLifetimeSeconds": null
+      },
+      "Key": null,
+      "LoadBalancerOptions": {
+        "Expiry": 2147483647,
+        "Key": "",
+        "Type": ""
+      },
+      "Metadata": {},
+      "Priority": 1,
+      "QoSOptions": {
+        "DurationOfBreak": 1,
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "TimeoutValue": 0
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": null,
+        "PeriodTimespan": 0.0,
+        "Limit": 0
+      },
+      "RequestIdKey": null,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "ServiceName": null,
+      "ServiceNamespace": null,
+      "Timeout": 0,
+      "UpstreamHeaderTransform": {},
+      "UpstreamHost": null,
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "UpstreamPathTemplate": "/api/customer/addcustomer",
+      "UpstreamHeaderTemplates": {}
+    },
+    {
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+        "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+      },
+      "RouteClaimsRequirement": {
+        "role": [ "Admin" ] // Optional: Require a specific claim for this route
+      },
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-customermanagement",
+          "Port": 80
+        }
+      ],
+      "DownstreamHttpMethod": null,
+      "DownstreamHttpVersion": null,
+      "DownstreamHttpVersionPolicy": null,
+      "DownstreamPathTemplate": "/api/customer/updatecustomer",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": {
+        "TtlSeconds": null,
+        "Region": null,
+        "Header": null,
+        "EnableContentHashing": null
+      },
+      "HttpHandlerOptions": {
+        "AllowAutoRedirect": false,
+        "MaxConnectionsPerServer": 2147483647,
+        "UseCookieContainer": false,
+        "UseProxy": true,
+        "UseTracing": false,
+        "PooledConnectionLifetimeSeconds": null
+      },
+      "Key": null,
+      "LoadBalancerOptions": {
+        "Expiry": 2147483647,
+        "Key": "",
+        "Type": ""
+      },
+      "Metadata": {},
+      "Priority": 1,
+      "QoSOptions": {
+        "DurationOfBreak": 1,
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "TimeoutValue": 0
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": null,
+        "PeriodTimespan": 0.0,
+        "Limit": 0
+      },
+      "RequestIdKey": null,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "ServiceName": null,
+      "ServiceNamespace": null,
+      "Timeout": 0,
+      "UpstreamHeaderTransform": {},
+      "UpstreamHost": null,
+      "UpstreamHttpMethod": [
+        "PUT"
+      ],
+      "UpstreamPathTemplate": "/api/customer/updatecustomer",
+      "UpstreamHeaderTemplates": {}
+    },
+    {
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+        "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+      },
+      "RouteClaimsRequirement": {
+        "role": [ "Admin" ] // Optional: Require a specific claim for this route
+      },
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-customermanagement",
+          "Port": 80
+        }
+      ],
+      "DownstreamHttpMethod": null,
+      "DownstreamHttpVersion": null,
+      "DownstreamHttpVersionPolicy": null,
+      "DownstreamPathTemplate": "/api/customer/customerdetails",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": {
+        "TtlSeconds": null,
+        "Region": null,
+        "Header": null,
+        "EnableContentHashing": null
+      },
+      "HttpHandlerOptions": {
+        "AllowAutoRedirect": false,
+        "MaxConnectionsPerServer": 2147483647,
+        "UseCookieContainer": false,
+        "UseProxy": true,
+        "UseTracing": false,
+        "PooledConnectionLifetimeSeconds": null
+      },
+      "Key": null,
+      "LoadBalancerOptions": {
+        "Expiry": 2147483647,
+        "Key": "",
+        "Type": ""
+      },
+      "Metadata": {},
+      "Priority": 1,
+      "QoSOptions": {
+        "DurationOfBreak": 1,
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "TimeoutValue": 0
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": null,
+        "PeriodTimespan": 0.0,
+        "Limit": 0
+      },
+      "RequestIdKey": null,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "ServiceName": null,
+      "ServiceNamespace": null,
+      "Timeout": 0,
+      "UpstreamHeaderTransform": {},
+      "UpstreamHost": null,
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "UpstreamPathTemplate": "/api/customer/customerdetails",
+      "UpstreamHeaderTemplates": {}
+    },
+    {
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+        "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+      },
+      "RouteClaimsRequirement": {
+        "role": [ "Admin" ] // Optional: Require a specific claim for this route
+      },
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-customermanagement",
+          "Port": 80
+        }
+      ],
+      "DownstreamHttpMethod": null,
+      "DownstreamHttpVersion": null,
+      "DownstreamHttpVersionPolicy": null,
+      "DownstreamPathTemplate": "/api/customer/{id}",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": {
+        "TtlSeconds": null,
+        "Region": null,
+        "Header": null,
+        "EnableContentHashing": null
+      },
+      "HttpHandlerOptions": {
+        "AllowAutoRedirect": false,
+        "MaxConnectionsPerServer": 2147483647,
+        "UseCookieContainer": false,
+        "UseProxy": true,
+        "UseTracing": false,
+        "PooledConnectionLifetimeSeconds": null
+      },
+      "Key": null,
+      "LoadBalancerOptions": {
+        "Expiry": 2147483647,
+        "Key": "",
+        "Type": ""
+      },
+      "Metadata": {},
+      "Priority": 1,
+      "QoSOptions": {
+        "DurationOfBreak": 1,
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "TimeoutValue": 0
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": null,
+        "PeriodTimespan": 0.0,
+        "Limit": 0
+      },
+      "RequestIdKey": null,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "ServiceName": null,
+      "ServiceNamespace": null,
+      "Timeout": 0,
+      "UpstreamHeaderTransform": {},
+      "UpstreamHost": null,
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "UpstreamPathTemplate": "/api/customer/{id}",
+      "UpstreamHeaderTemplates": {}
+    },
+    {
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+        "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+      },
+      "RouteClaimsRequirement": {
+        "role": [ "Accountant" ] // Optional: Require a specific claim for this route
+      },
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "DownstreamHttpMethod": null,
+      "DownstreamHttpVersion": null,
+      "DownstreamHttpVersionPolicy": null,
+      "DownstreamPathTemplate": "/api/accounnt/addaccount",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": {
+        "TtlSeconds": null,
+        "Region": null,
+        "Header": null,
+        "EnableContentHashing": null
+      },
+      "HttpHandlerOptions": {
+        "AllowAutoRedirect": false,
+        "MaxConnectionsPerServer": 2147483647,
+        "UseCookieContainer": false,
+        "UseProxy": true,
+        "UseTracing": false,
+        "PooledConnectionLifetimeSeconds": null
+      },
+      "Key": null,
+      "LoadBalancerOptions": {
+        "Expiry": 2147483647,
+        "Key": "",
+        "Type": ""
+      },
+      "Metadata": {},
+      "Priority": 1,
+      "QoSOptions": {
+        "DurationOfBreak": 1,
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "TimeoutValue": 0
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": null,
+        "PeriodTimespan": 0.0,
+        "Limit": 0
+      },
+      "RequestIdKey": null,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "ServiceName": null,
+      "ServiceNamespace": null,
+      "Timeout": 0,
+      "UpstreamHeaderTransform": {},
+      "UpstreamHost": null,
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "UpstreamPathTemplate": "/api/account/addaccount",
+      "UpstreamHeaderTemplates": {}
+    },
+    {
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+        "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+      },
+      "RouteClaimsRequirement": {
+        "role": [ "Customer" ] // Optional: Require a specific claim for this route
+      },
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "DownstreamHttpMethod": null,
+      "DownstreamHttpVersion": null,
+      "DownstreamHttpVersionPolicy": null,
+      "DownstreamPathTemplate": "/api/account/deposit",
+      "DownstreamScheme": "http",
+      "FileCacheOptions": {
+        "TtlSeconds": null,
+        "Region": null,
+        "Header": null,
+        "EnableContentHashing": null
+      },
+      "HttpHandlerOptions": {
+        "AllowAutoRedirect": false,
+        "MaxConnectionsPerServer": 2147483647,
+        "UseCookieContainer": false,
+        "UseProxy": true,
+        "UseTracing": false,
+        "PooledConnectionLifetimeSeconds": null
+      },
+      "Key": null,
+      "LoadBalancerOptions": {
+        "Expiry": 2147483647,
+        "Key": "",
+        "Type": ""
+      },
+      "Metadata": {},
+      "Priority": 1,
+      "QoSOptions": {
+        "DurationOfBreak": 1,
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "TimeoutValue": 0
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": null,
+        "PeriodTimespan": 0.0,
+        "Limit": 0
+      },
+      "RequestIdKey": null,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "ServiceName": null,
+      "ServiceNamespace": null,
+      "Timeout": 0,
+      "UpstreamHeaderTransform": {},
+      "UpstreamHost": null,
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "UpstreamPathTemplate": "/api/account/deposit",
+      "UpstreamHeaderTemplates": {}
+    }
+  ],
+  "DynamicRoutes": [],
+  "Aggregates": [],
+  "GlobalConfiguration": {
+    "RequestIdKey": null,
+    "ServiceDiscoveryProvider": {
+      "Scheme": null,
+      "Host": null,
+      "Port": 0,
+      "Type": null,
+      "Token": null,
+      "ConfigurationKey": null,
+      "PollingInterval": 0,
+      "Namespace": null
+    },
+    "RateLimitOptions": {
+      "ClientIdHeader": "ClientId",
+      "QuotaExceededMessage": null,
+      "RateLimitCounterPrefix": "ocelot",
+      "DisableRateLimitHeaders": false,
+      "HttpStatusCode": 429
+    },
+    "QoSOptions": {
+      "DurationOfBreak": 1,
+      "ExceptionsAllowedBeforeBreaking": 0,
+      "TimeoutValue": 0
+    },
+    "BaseUrl": "http://localhost:5000",
+    "LoadBalancerOptions": {
+      "Expiry": 2147483647,
+      "Key": "",
+      "Type": ""
+    },
+    "DownstreamScheme": null,
+    "HttpHandlerOptions": {
+      "AllowAutoRedirect": false,
+      "MaxConnectionsPerServer": 2147483647,
+      "UseCookieContainer": false,
+      "UseProxy": true,
+      "UseTracing": false,
+      "PooledConnectionLifetimeSeconds": null
+    },
+    "DownstreamHttpVersion": null,
+    "DownstreamHttpVersionPolicy": null,
+    "CacheOptions": {
+      "TtlSeconds": null,
+      "Region": null,
+      "Header": null,
+      "EnableContentHashing": null
+    },
+    "MetadataOptions": {
+      "Metadata": {},
+      "Separators": [
+        ","
+      ],
+      "TrimChars": [
+        " "
+      ],
+      "StringSplitOption": "None",
+      "NumberStyle": "Any",
+      "CurrentCulture": ""
+    },
+    "SecurityOptions": {
+      "IPAllowedList": [],
+      "IPBlockedList": [],
+      "ExcludeAllowedFromBlocked": false
+    }
+    }
+  }

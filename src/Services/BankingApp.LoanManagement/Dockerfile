@@ -23,6 +23,7 @@ COPY ["src/Core/BankingDDD.Application/Applications/Applications.csproj", "src/C
 COPY ["src/Core/BankingDDD.Domain/Domains/Domains.csproj", "src/Core/BankingDDD.Domain/Domains/"]
 COPY ["src/Core/BankingDDD.CommonLibrary/Common/Common.csproj", "src/Core/BankingDDD.CommonLibrary/Common/"]
 COPY ["src/Core/BankingDDD.Infrastructure/Infrastructures/Infrastructures.csproj", "src/Core/BankingDDD.Infrastructure/Infrastructures/"]
+COPY ["src/Crosscutting/BankingDDD.ServiceClient/BankingDDD.ServiceClient.csproj", "src/Crosscutting/BankingDDD.ServiceClient/"]
 RUN dotnet restore "./src/Services/BankingApp.LoanManagement/BankingApp.LoanManagement.csproj"
 COPY . .
 WORKDIR "/src/src/Services/BankingApp.LoanManagement"

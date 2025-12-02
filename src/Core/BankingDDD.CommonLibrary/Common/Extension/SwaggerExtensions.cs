@@ -30,7 +30,7 @@ namespace BankingAppDDD.Common.Extension
             var keycloaktokenUrl = $"{appSettings!.Keycloak.BaseUrl}/realms/{appSettings!.Keycloak.Realm}/protocol/openid-connect/token";
             return services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(options.Name, new OpenApiInfo { Title = options.Title, Version = options.Version });
+                c.SwaggerDoc(options.Version, new OpenApiInfo { Title = options.Title, Version = options.Version });
                 c.DescribeAllParametersInCamelCase();
                 c.CustomSchemaIds(x => x.FullName);
                 if (options.IncludeSecurity)
@@ -66,7 +66,7 @@ namespace BankingAppDDD.Common.Extension
                             Type = ReferenceType.SecurityScheme,
                              Id = "Bearer"
                              },
-                           Scheme = "oauth2",
+                           Scheme = "Bearer",
                            Name = "Bearer",
                            In = ParameterLocation.Header,
 
@@ -101,11 +101,11 @@ namespace BankingAppDDD.Common.Extension
                 ? builder.UseReDoc(c =>
                 {
                     c.RoutePrefix = routePrefix;
-                    c.SpecUrl = $"{options.Name}/swagger.json";
+                    c.SpecUrl = $"{options.Version}/swagger.json";
                 })
                 : builder.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint($"/{routePrefix}/{options.Name}/swagger.json", options.Title);
+                    c.SwaggerEndpoint($"/{routePrefix}/{options.Version ?? ApiVersions.V2}/swagger.json", options.Title);
                     c.RoutePrefix = routePrefix;
                     c.OAuthClientId(appSettings!.Keycloak.ClientId); // The client ID configured in Keycloak
                     c.OAuthClientSecret(appSettings!.Keycloak.ClientSecret);

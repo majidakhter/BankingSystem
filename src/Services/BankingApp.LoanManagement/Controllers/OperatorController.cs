@@ -1,6 +1,7 @@
 ﻿using BankingApp.LoanManagement.Application.OperatorsCommand;
 using BankingApp.LoanManagement.Application.OperatorsModel;
 using BankingApp.LoanManagement.Application.OperatorsQueries;
+using BankingAppDDD.Common.Types;
 using BankingAppDDD.Infrastructures.ActionResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingApp.LoanManagement.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/operator")]
     public class OperatorController : ControllerBase
     {
         readonly IMediator _mediator;
@@ -21,6 +22,7 @@ namespace BankingApp.LoanManagement.Controllers
 
 
         [HttpPost]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
@@ -32,6 +34,7 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpGet]
+        [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(List<OperatorDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetOperators(GetOperatorQuery query)

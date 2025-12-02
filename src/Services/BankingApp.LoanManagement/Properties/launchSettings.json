@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Banking-LoanManagement": {
+    "Banking.LoanManagement": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

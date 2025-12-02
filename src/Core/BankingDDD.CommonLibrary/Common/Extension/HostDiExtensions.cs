@@ -65,7 +65,7 @@ namespace BankingAppDDD.Common.Extension
                         .AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources")
                         .AddSource("MailKit");
 
-                    tracing.AddOtlpExporter();
+                    tracing.AddOtlpExporter(x => { x.Endpoint = new Uri("http://seq:5341"); });
                 });
 
             return services;

@@ -1,4 +1,5 @@
 ﻿using BankingAppDDD.Common.Authentication;
+using BankingAppDDD.Common.Types;
 using BankingAppDDD.Identity.Messages.Commands;
 using BankingAppDDD.Identity.Services;
 using BankingAppDDD.Infrastructures.ActionResults;
@@ -6,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingAppDDD.Identity.Controllers
 {
-    [Route("api/[controller]")]
+    
     [ApiController]
+    [Route("api/v{version:apiVersion}/auth")]
     public class AuthController : ControllerBase
     {
         private readonly IKeycloakAuthService _identityService;
@@ -17,6 +19,7 @@ namespace BankingAppDDD.Identity.Controllers
         }
 
         [HttpPost("login")]
+        [MapToApiVersion(ApiVersions.V2)]
         [ProducesResponseType(typeof(JsonWebToken), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]

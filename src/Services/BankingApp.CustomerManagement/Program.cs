@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Handlers;
+using BankingAppDDD.Common.Types;
 using BankingAppDDD.CustomerManagement;
 using BankingAppDDD.CustomerManagement.Infrastructure.AutofacModules;
 using BankingDDD.ServiceClient.Extensions;
@@ -15,6 +16,8 @@ var services = builder.Services;
 // Add services to the container.
 builder.AddHostLogging();
 services.AddWebHostInfrastructure(builder.Configuration, "CustomerManagementService");
+// API Versioning
+services.AddApiVersioning(ApiVersions.V2);
 services.AddControllers();
 var headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -70,14 +73,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 app.UseSwaggerDocs();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/docs/v1/swagger.json", "v1");
-    options.OAuthClientId(app.Configuration.GetValue<string>("Keycloak:ClientId"));
-    options.OAuthClientSecret(app.Configuration.GetValue<string>("Keycloak:ClientSecret"));
-    options.OAuthScopes("openid profile");
-    options.OAuthUsePkce();
-});
+
 //This is Required when we are doing ssl communication
 //app.UseHttpsRedirection();
 app.UseCors("AllowOrigin");

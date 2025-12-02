@@ -8,6 +8,7 @@
 	  <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
+	  <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

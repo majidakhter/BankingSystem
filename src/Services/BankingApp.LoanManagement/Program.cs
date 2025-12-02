@@ -4,17 +4,18 @@ using BankingApp.LoanManagement;
 using BankingApp.LoanManagement.Infrastructure.AutofacModules;
 using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Handlers;
+using BankingAppDDD.Common.Types;
+using BankingDDD.ServiceClient.Extensions;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using BankingDDD.ServiceClient.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 builder.AddHostLogging();
 services.AddWebHostInfrastructure(builder.Configuration, "CreditService");
 // Add services to the container.
-
+services.AddApiVersioning(ApiVersions.V2);
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddCoreInfrastructure(builder.Configuration);
@@ -74,15 +75,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 app.UseSwaggerDocs();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/docs/v1/swagger.json", "v1");
-    options.OAuthClientId(app.Configuration.GetValue<string>("Keycloak:ClientId"));
-    options.OAuthClientSecret(app.Configuration.GetValue<string>("Keycloak:ClientSecret"));
-    options.OAuthScopes("openid profile email");
-    options.OAuthUsePkce();
 
-});
 app.UseCors("AllowOrigin");
 //app.UseHttpsRedirection();
 
