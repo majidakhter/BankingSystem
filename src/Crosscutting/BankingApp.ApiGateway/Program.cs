@@ -1,11 +1,16 @@
+using BankingAppDDD.Common.Authentication;
 using BankingAppDDD.Common.Extension;
+using BankingAppDDD.Common.Handlers;
+using BankingAppDDD.Common.Mongo.Helper;
 using BankingAppDDD.Common.Types;
 using Koalesce.Core.Extensions;
 using Koalesce.OpenAPI;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.Options;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 IServiceCollection services = builder.Services;
@@ -24,15 +29,20 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 // Add services to the container.
-services.AddWebHostInfrastructure(builder.Configuration, "ApiGateway");
 services.AddApiVersioning(ApiVersions.V2);
 services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
-services.AddJwt(builder.Configuration);
 services.AddHealthChecks();
+services.AddJwt(builder.Configuration);
 services.AddSwaggerGen();
 services.AddSwaggerDocs();
+services.AddRedis(builder.Configuration);
+services.AddTransient<IAccessTokenService, AccessTokenService>();
+services.AddTransient<AccessTokenValidatorMiddleware>();
+services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+//services.Configure<Collections>(builder.Configuration.GetSection("MongoDbSettings").GetSection("Collections"));
+
 services.AddOcelot(builder.Configuration);
 // Register Koalesce
 services.AddKoalesce(builder.Configuration)
@@ -58,7 +68,7 @@ app.UseCors(corsPolicy);
 app.UseWebSockets();
 app.UseRouting();
 app.UseAuthentication();
-
+app.UseAccessTokenValidator();
 app.UseAuthorization();
 app.UseHealthChecks();
 
@@ -73,11 +83,15 @@ using (var scope = app.Services.CreateScope())
 {
     koalesceOptions = scope.ServiceProvider
         .GetRequiredService<IOptions<KoalesceOptions>>().Value;
-
     // Enable Swagger UI
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint(koalesceOptions.MergedOpenApiPath, koalesceOptions.Title);
+        c.OAuthClientId(app.Configuration.GetValue<string>("Keycloak:ClientId")); // The client ID configured in Keycloak
+        c.OAuthClientSecret(app.Configuration.GetValue<string>("Keycloak:ClientSecret"));
+        c.OAuthScopes("openid profile");
+        c.OAuthAppName("BankingApp ApiGateway - Keycloak Integration");
+        c.OAuthUsePkce();
     });
 }
 

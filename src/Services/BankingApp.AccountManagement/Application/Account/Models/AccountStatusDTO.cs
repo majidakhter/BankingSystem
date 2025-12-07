@@ -1,8 +1,11 @@
-﻿namespace BankingApp.AccountManagement.Application.Accounts.Models
+﻿using BankingApp.AccountManagement.Core.Accounts.Entities;
+
+namespace BankingApp.AccountManagement.Application.Accounts.Models
 {
-    public sealed class AccountStatusDTO
+    public class AccountStatusDTO
     {
         public int AccountStatusId { get; set; }
 
     }
+    
 }

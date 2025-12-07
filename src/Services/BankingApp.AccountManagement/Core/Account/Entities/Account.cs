@@ -23,6 +23,7 @@ namespace BankingApp.AccountManagement.Core.Accounts.Entities
         private List<BeneficiaryGroup> _beneficiaries;
         public IReadOnlyCollection<Credit> Credits => _credits;
         public IReadOnlyCollection<Debit> Debits => _debits;
+        public IReadOnlyCollection<BeneficiaryGroup> BeneficiaryGroups => _beneficiaries;
         public AccountStatus AccountStatus { get; private set; }
         public AccountStatus GetAccountStatus => AccountStatus.From(_accountStatusId);
 

@@ -20,7 +20,7 @@ namespace BankingApp.AccountManagement.Application.Accounts.DomainEventHandlers.
         protected override async Task OnHandleAsync(AccountClosedDomainEvent @event)
         {
             await _eventBus.Publish(AccountClosedDomainEvent.Create(@event.AccountId, @event.CustomerId));
-            var customer = await _customerRepository.FirstOrDefaultAsync(q => q.Id == @event.CustomerId);
+            var customer = await _customerRepository.FirstOrDefaultAsync(q => q.CustomerId == @event.CustomerId);
             customer.SetOneAccountClosed();
             _customerRepository.Update(customer);
 

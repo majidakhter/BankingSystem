@@ -6,7 +6,7 @@ using BankingAppDDD.Applications.Abstractions.Repositories;
 
 namespace BankingApp.AccountManagement.Application.Customers.Queries
 {
-    public sealed record GetCustomerAccountCountById(Guid id) : Query<CustomerAccountDTO>;
+    public sealed record GetCustomerAccountCountById(Guid customerid) : Query<CustomerAccountDTO>;
 
     public sealed class GetCustomerAccountCountByIdHandler : QueryHandler<GetCustomerAccountCountById, CustomerAccountDTO>
     {
@@ -20,7 +20,7 @@ namespace BankingApp.AccountManagement.Application.Customers.Queries
 
         protected override async Task<CustomerAccountDTO> HandleAsync(GetCustomerAccountCountById request)
         {
-            var customer = await _repository.GetByIdAsync(request.id);
+            var customer = await _repository.GetByIdAsync(request.customerid);
             return Mapper.Map<CustomerAccountDTO>(customer);
         }
     }

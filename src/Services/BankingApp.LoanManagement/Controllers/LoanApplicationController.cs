@@ -20,7 +20,7 @@ namespace BankingApp.LoanManagement.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost, Route("CreateLoanApplication")]
+        [HttpPost, Route("createloanapplication")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Operator")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
@@ -32,7 +32,7 @@ namespace BankingApp.LoanManagement.Controllers
             return Ok(result);
         }
 
-        [HttpPut, Route("EvaluateLoanApplication")]
+        [HttpPut, Route("evaluateloanapplication")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Underwriter")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
@@ -53,7 +53,7 @@ namespace BankingApp.LoanManagement.Controllers
             }
         }
 
-        [HttpPut, Route("AcceptLoanApplication")]
+        [HttpPut, Route("acceptloanapplication")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Underwriter")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
@@ -74,7 +74,7 @@ namespace BankingApp.LoanManagement.Controllers
             }
         }
 
-        [HttpPut, Route("RejectLoanApplication")]
+        [HttpPut, Route("rejectloanapplication")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Underwriter")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
@@ -95,27 +95,27 @@ namespace BankingApp.LoanManagement.Controllers
             }
         }
 
-        [HttpGet("GetLoanById/{loanApplicationid}")]
+        [HttpGet("getloanbyid/{loanapplicationid}")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(List<LoanApplicationDTO>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get(Guid loanApplicationid)
+        public async Task<IActionResult> Get(Guid loanapplicationid)
         {
-            var branches = await _mediator.Send(new GetLoanApplicationsQueryById(loanApplicationid));
+            var branches = await _mediator.Send(new GetLoanApplicationsQueryById(loanapplicationid));
             return Ok(branches);
         }
 
-        [HttpGet("GetLoanByParam/{applicationNumber}/{customerIdentifier}/{decisionById}/{registeredById}")]
+        [HttpGet("getloanbyparam/{applicationnumber}/{customeridentifier}/{decisionbyid}/{registeredbyid}")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(LoanApplicationSearchCriteriaDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetLoanApplicationByOtherParam(string applicationNumber, Guid customerIdentifier, Guid decisionById, Guid registeredById)
+        public async Task<IActionResult> GetLoanApplicationByOtherParam(string applic ationnumber, Guid customeridentifier, Guid decisionbyid, Guid registeredbyid)
         {
-            var branches = await _mediator.Send(new GetLoanApplicationByOtherParam(applicationNumber, customerIdentifier, decisionById, registeredById));
+            var branches = await _mediator.Send(new GetLoanApplicationByOtherParam(applicationnumber, customeridentifier, decisionbyid, registeredbyid));
             return Ok(branches);
         }
 
-        [HttpPost, Route("CreateDebtorInfo")]
+        [HttpPost, Route("createdebtorInfo")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]

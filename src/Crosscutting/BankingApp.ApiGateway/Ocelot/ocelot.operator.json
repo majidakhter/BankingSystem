@@ -1,0 +1,28 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v{version}/operator",
+      "UpstreamPathTemplate": "/api/v{version}/operator",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-loanmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/operator/getoperators",
+      "UpstreamPathTemplate": "/api/v{version}/operator/getoperators",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-loanmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    }
+  ]
+}

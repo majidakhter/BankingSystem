@@ -1,0 +1,40 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v{version}/branch",
+      "UpstreamPathTemplate": "/api/v{version}/branch",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/branch/branchdetails",
+      "UpstreamPathTemplate": "/api/v{version}/branch/branchdetails",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/branch/{id}",
+      "UpstreamPathTemplate": "/api/v{version}/branch/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    }
+  ]
+}

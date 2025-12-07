@@ -34,12 +34,13 @@ namespace BankingApp.LoanManagement.Controllers
         }
 
         [HttpGet]
+        [Route("getoperators")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(List<OperatorDTO>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetOperators(GetOperatorQuery query)
+        public async Task<ActionResult> GetOperators()
         {
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(new GetOperatorQuery());
             return Ok(result);
         }
     }

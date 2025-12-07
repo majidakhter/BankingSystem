@@ -5,6 +5,7 @@ using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Handlers;
 using BankingAppDDD.Common.Mongo.Helper;
 using BankingAppDDD.Common.Types;
+using BankingAppDDD.Identity.Services;
 using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,10 +20,11 @@ services.AddHealthChecks();
 
 services.AddAuthorization();
 services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
-services.Configure<Collections>(builder.Configuration.GetSection("MongoDbSettings").GetSection("Collections"));
+//services.Configure<Collections>(builder.Configuration.GetSection("MongoDbSettings").GetSection("Collections"));
 var Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 
-services.AddDependencyServices(builder.Configuration);
+//services.AddDependencyServices(builder.Configuration);
+//services.AddSingleton<IMongoService, MongoService>();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>((hostContext, container) =>
 {
     container.RegisterModule(new InfrastructureModule());

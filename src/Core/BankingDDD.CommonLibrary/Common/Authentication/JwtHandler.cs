@@ -1,20 +1,28 @@
-using System.Text.Json;
+using DnsClient.Internal;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace BankingAppDDD.Common.Authentication
 {
     public class JwtHandler : IJwtHandler
     {
 
-        private readonly JwtOptions _options;
+        //private readonly JwtOptions _options;
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
-
-        public JwtHandler(HttpClient httpClient, IConfiguration configuration)
+        private readonly ILogger<JwtHandler> _logger;
+       // private readonly List<User> _users = new()
+       // {
+           // new("admin", "ADm1n","Administrator",["writers.read"]),
+           // new("user01", "u$3r01","User",["writers.noread"])
+       // };
+        public JwtHandler(HttpClient httpClient, IConfiguration configuration, ILogger<JwtHandler> logger)
         {
             _httpClient = httpClient;
             _configuration = configuration;
-
+            _logger = logger;
         }
 
         public async Task<JsonWebToken> GetToken(string userName, string password)
@@ -25,7 +33,7 @@ namespace BankingAppDDD.Common.Authentication
             }
 
             var tokenEndpoint = $"{_configuration["Keycloak:BaseUrl"]}/realms/{_configuration["Keycloak:Realm"]}/protocol/openid-connect/token";
-
+            _logger.LogInformation("token Endpoint: {@endpoint}", tokenEndpoint);
             var requestBody = new Dictionary<string, string>
             {
                { "grant_type", "password" },
@@ -39,12 +47,12 @@ namespace BankingAppDDD.Common.Authentication
 
             var response = await _httpClient.PostAsync(tokenEndpoint, content);
             var responseText = await response.Content.ReadAsStringAsync();
-
+            _logger.LogInformation("Created token response: {@tokenresponse}", responseText);
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var tokenResult = JsonSerializer.Deserialize<JsonWebToken>(responseContent);
-
+                _logger.LogInformation("Deserialized token: {@deserialisedtoken}", tokenResult);
                 return tokenResult!;
             }
 

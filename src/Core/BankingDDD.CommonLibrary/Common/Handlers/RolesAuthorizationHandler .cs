@@ -1,11 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BankingAppDDD.Common.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace BankingAppDDD.Common.Handlers
 {
     public class RolesAuthorizationHandler : AuthorizationHandler<RolesAuthorizationRequirement>, IAuthorizationHandler
     {
+        private readonly ILogger<RolesAuthorizationHandler> _logger;
+        public RolesAuthorizationHandler(ILogger<RolesAuthorizationHandler> logger)
+        {
+            _logger = logger;
+        }
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                                       RolesAuthorizationRequirement requirement)
         {
@@ -29,6 +36,8 @@ namespace BankingAppDDD.Common.Handlers
                 var roleList = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
                 var roles = requirement.AllowedRoles;
                 var inputRole = roles.First();
+                _logger.LogInformation("input role: {@inputrole}", inputRole);
+                _logger.LogInformation("keycloak rolelist: {@rolelist}", roleList);
                 if (roleList.Contains(inputRole))
                 {
                     validRole = true;

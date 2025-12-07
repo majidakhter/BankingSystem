@@ -34,11 +34,12 @@ namespace BankingAppDDD.Common.Extension
             ConfigurationOptions option = new ConfigurationOptions
             {
                 AbortOnConnectFail = false,
+               // ClientName = "MyApp-RedisCacheProvider",
+                //ReconnectRetryPolicy = new ExponentialRetry(5000, 10000),
                 EndPoints = { redisConnectionString }
             };
 
             IConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(option);
-
             services
                 .AddSingleton<ICacheService, CacheService>()
                 .AddSingleton(connectionMultiplexer)

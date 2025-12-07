@@ -32,11 +32,11 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         }
 
-        [HttpGet, Route("branchDetails")]
+        [HttpGet, Route("branchdetails")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(List<BranchDTO>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             var branches = await _mediator.Send(new GetBranchQuery());
             return Ok(branches);

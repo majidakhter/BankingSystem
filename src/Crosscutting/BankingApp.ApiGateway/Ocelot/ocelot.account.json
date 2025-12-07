@@ -1,0 +1,76 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v{version}/account/addaccount",
+      "UpstreamPathTemplate": "/api/v{version}/account/addaccount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST","GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/account/deposit",
+      "UpstreamPathTemplate": "/api/v{version}/account/deposit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/account/withdraw",
+      "UpstreamPathTemplate": "/api/v{version}/account/withdraw",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/account/closeaccount",
+      "UpstreamPathTemplate": "/api/v{version}/account/closeaccount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/account/addbeneficiary",
+      "UpstreamPathTemplate": "/api/v{version}/account/addbeneficiary",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/account/getaccountstatus/{accountid}",
+      "UpstreamPathTemplate": "/api/v{version}/account/getaccountstatus/{accountid}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    }
+  ]
+}

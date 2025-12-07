@@ -17,13 +17,13 @@ namespace BankingApp.AccountManagement.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet("GetCustomerAccountCount/{id}")]
+        [HttpGet("getcustomeraccountcount/{customerid}")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(CustomerAccountDTO), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetCustomerAccountCountById(Guid id)
+        public async Task<IActionResult> GetCustomerAccountCountById(Guid customerid)
         {
-            var customer = await _mediator.Send(new GetCustomerAccountCountById(id));
+            var customer = await _mediator.Send(new GetCustomerAccountCountById(customerid));
             return Ok(customer);
         }
     }

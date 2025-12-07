@@ -1,0 +1,28 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v{version}/value/get-admin",
+      "UpstreamPathTemplate": "/api/v{version}/value/get-admin",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-identityserver",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/value/get-general",
+      "UpstreamPathTemplate": "/api/v{version}/value/get-general",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-identityserver",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    }
+  ]
+}

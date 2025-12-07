@@ -7,15 +7,15 @@ namespace BankingAppDDD.Identity.Services
     public class KeycloakAuthService : IKeycloakAuthService
     {
         private readonly IJwtHandler _jwtHandler;
-        private IMongoService _mongoService;
+        //private IMongoService _mongoService;
         //private readonly IOptionsMonitor<DomainModel.PolyConfigSettings> _policyConfigSettings;
        // private readonly ILogger _logger;
        // private readonly IConfiguration _configuration;
 
-        public KeycloakAuthService(IJwtHandler jwtHandler, IMongoService mongoService)
+        public KeycloakAuthService(IJwtHandler jwtHandler)
         {
             _jwtHandler = jwtHandler;
-            _mongoService = mongoService;
+           // _mongoService = mongoService;
            // _configuration = configuration;
           //  _logger = logger;
            // _refreshTokenRepository = refreshTokenRepository;
@@ -28,7 +28,7 @@ namespace BankingAppDDD.Identity.Services
             Random r = new Random();
             int tokenversion = r.Next();
             var request = new RefreshTokenRequest { UserId = userName, TokenVersion= tokenversion, Token = jwt.RefreshToken};
-            await _mongoService.SaveRefreshTokenAsync(request);
+            //await _mongoService.SaveRefreshTokenAsync(request);
             return jwt;
         }
         

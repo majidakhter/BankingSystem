@@ -24,6 +24,7 @@ var headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 services.AddEndpointsApiExplorer();
 services.AddCoreInfrastructure(builder.Configuration);
 services.AddHealthChecks();
+services.AddHttpContextAccessor();
 services.AddAuthorization();
 services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 // Kiota client

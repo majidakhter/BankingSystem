@@ -25,6 +25,7 @@ namespace BankingApp.AccountManagement
         public DbSet<AccountStatus> AccountStatuses { get; set; }
         public DbSet<Debit> Debits { get; set; }
         public DbSet<Credit> Credits { get; set; }
+        public DbSet<BeneficiaryGroup> Beneficaries { get; set; }
         public DbSet<Customer> Customers { get; set; }
 
 

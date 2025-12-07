@@ -1,0 +1,17 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v{version}/auth/login",
+      "UpstreamPathTemplate": "/api/v{version}/auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-identityserver",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ]
+    }
+
+  ]
+}

@@ -23,7 +23,7 @@ namespace BankingAppDDD.Common.Extension
             var clientId = configuration
             .GetValue<string>("Keycloak:ClientId")
             ?? throw new ArgumentNullException("Keycloak:ClientId section was not found");
-
+           
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {

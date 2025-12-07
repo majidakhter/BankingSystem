@@ -1,0 +1,88 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v{version}/loanapplication/createloanapplication",
+      "UpstreamPathTemplate": "/api/v{version}/loanapplication/createloanapplication",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-loanmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/loanapplication/evaluateloanapplication",
+      "UpstreamPathTemplate": "/api/v{version}/loanapplication/evaluateloanapplication",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-loanmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "PUT" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/loanapplication/acceptloanapplication",
+      "UpstreamPathTemplate": "/api/v{version}/loanapplication/acceptloanapplication",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-loanmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "PUT" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/loanapplication/rejectloanapplication",
+      "UpstreamPathTemplate": "/api/v{version}/loanapplication/rejectloanapplication",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-loanmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "PUT" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/loanapplication/getloanbyid/{loanapplicationid}",
+      "UpstreamPathTemplate": "/api/v{version}/loanapplication/getloanbyid/{loanapplicationid}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-loanmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/loanapplication/getloanbyparam/{applicationnumber}/{customeridentifier}/{decisionbyid}/{registeredbyid}",
+      "UpstreamPathTemplate": "/api/v{version}/loanapplication/getloanbyparam/{applicationnumber}/{customeridentifier}/{decisionbyid}/{registeredbyid}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-loanmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/loanapplication/createdebtorInfo",
+      "UpstreamPathTemplate": "/api/v{version}/loanapplication/createdebtorInfo",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-loanmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    }
+  ]
+}

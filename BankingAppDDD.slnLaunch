@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "src\\Services\\BankingApp.AccountManagement\\BankingApp.AccountManagement.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\Services\\BankingApp.CustomerManagement\\BankingApp.CustomerManagement.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

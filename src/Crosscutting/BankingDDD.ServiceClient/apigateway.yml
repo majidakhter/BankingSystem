@@ -592,7 +592,7 @@ tags:
   - name: Operator
 
 paths:
-  /api/Account/AddAccount:
+  /api/v2/account/addaccount:
     post:
        tags: 
         - Account
@@ -645,7 +645,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/Account/Deposit:
+  /api/v2/account/deposit:
      post:
        tags:
         - Account
@@ -698,7 +698,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/Account/Withdraw:
+  /api/v2/account/withdraw:
      post:
        tags:
         - Account
@@ -751,7 +751,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/Account/CloseAccount:
+  /api/v2/account/closeaccount:
      post:
        tags: 
         - Account
@@ -770,7 +770,7 @@ paths:
        responses: 
          '200': 
             description: OK
-  /api/Account/AddBeneficiary:
+  /api/v2/account/addbeneficiary:
      post:
        tags:
         - Account
@@ -823,7 +823,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/Account/GetAccountStatus:
+  /api/v2/account/getaccountstatus:
      get:
        tags:
          - Account
@@ -852,7 +852,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/AccountStatusDTO'
-  /api/Bank: 
+  /api/v2/bank: 
      post:
        tags: 
          - Bank
@@ -905,7 +905,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/Bank/{id}:
+  /api/v2/bank/{id}:
      get:
        tags:
          -  Bank
@@ -930,7 +930,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/BankDTO'
-  /api/Branch:
+  /api/v2/branch:
      post:
        tags:
          - Branch
@@ -983,7 +983,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/Branch/branchDetails:
+  /api/v2/branch/branchdetails:
      get:
        tags:
         - Branch
@@ -1007,7 +1007,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BranchDTO'
-  /api/Branch/{id}:
+  /api/v2/branch/{id}:
      get:
        tags:
         - Branch
@@ -1032,7 +1032,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/BranchDTO'
-  /api/Customer/GetCustomerAccountCount/{id}:
+  /api/v2/customer/getcustomeraccountcount/{id}:
      get:
        tags:
         - Customer
@@ -1057,7 +1057,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/CustomerAccountDTO'
-  /api/Auth/login:
+  /api/v2/auth/login:
      post:
        tags:
         - Auth
@@ -1110,7 +1110,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/Value/get-admin:
+  /api/v2/value/get-admin:
      get:
        tags:
         - Value
@@ -1128,7 +1128,7 @@ paths:
              text/json:
                schema:
                  type: string
-  /api/Value/get-general:
+  /api/v2/value/get-general:
      get:
        tags:
         - Value
@@ -1146,7 +1146,7 @@ paths:
              text/json:
                schema:
                  type: string
-  /api/Customer:
+  /api/v2/customer:
      post:
        tags:
         - Customer
@@ -1201,6 +1201,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
+  /api/v2/customer/updatecustomer:
      put:
        tags:
         - Customer
@@ -1253,7 +1254,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/Customer/customerDetails:
+  /api/v2/customer/customerdetails:
      get:
        tags:
         - Customer
@@ -1277,7 +1278,7 @@ paths:
                  type: array
                  items:
                    $ref: '#/components/schemas/CustomerDTO'
-  /api/Customer/{id}:
+  /api/v2/customer/{id}:
      get:
        tags:
         - Customer
@@ -1302,7 +1303,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/CustomerDTO'
-  /api/LoanApplication/CreateLoanApplication:
+  /api/v2/loanapplication/createloanapplication:
      post:
        tags:
          - LoanApplication
@@ -1355,7 +1356,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/LoanApplication/EvaluateLoanApplication:
+  /api/v2/loanapplication/evaluateloanapplication:
      put:
        tags:
         - LoanApplication
@@ -1420,7 +1421,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/LoanApplication/AcceptLoanApplication:
+  /api/v2/loanapplication/acceptloanapplication:
      put:
        tags:
          - LoanApplication
@@ -1485,7 +1486,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/LoanApplication/RejectLoanApplication:
+  /api/v2/loanapplication/rejectloanapplication:
      put:
        tags:
          - LoanApplication
@@ -1550,13 +1551,13 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/LoanApplication/GetLoanById/{loanApplicationid}:
+  /api/v2/loanapplication/getloanbyid/{loanapplicationid}:
      get:
        tags:
           - LoanApplication
        summary: ''
        parameters:
-         - name: loanApplicationid
+         - name: loanapplicationid
            in: path
            required: true
            schema:
@@ -1581,30 +1582,30 @@ paths:
                  type: array
                  items:
                    $ref: '#/components/schemas/LoanApplicationDTO'
-  /api/LoanApplication/GetLoanByParam/{applicationNumber}/{customerIdentifier}/{decisionById}/{registeredById}:
+  /api/v2/loanapplication/getloanbyparam/{applicationnumber}/{customeridentifier}/{decisionbyid}/{registeredbyid}:
      get:
        tags:
           - LoanApplication
        summary: ''
        parameters:
-         - name: applicationNumber
+         - name: applicationnumber
            in: path
            required: true
            schema:
              type: string
-         - name: customerIdentifier
-           in: path
-           required: true
-           schema:
-             type: string
-             format: uuid
-         - name: decisionById
+         - name: customeridentifier
            in: path
            required: true
            schema:
              type: string
              format: uuid
-         - name: registeredById
+         - name: decisionbyid
+           in: path
+           required: true
+           schema:
+             type: string
+             format: uuid
+         - name: registeredbyid
            in: path
            required: true
            schema:
@@ -1623,7 +1624,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/LoanApplicationSearchCriteriaDto'
-  /api/LoanApplication/CreateDebtorInfo:
+  /api/v2/loanapplication/createdebtorInfo:
      post:
        tags:
           - LoanApplication
@@ -1676,7 +1677,7 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/Operator:
+  /api/v2/operator:
      post:
        tags:
           - Operator
@@ -1729,6 +1730,8 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
+
+  /api/v2/operator/getoperator:
      get:
        tags:
           - Operator

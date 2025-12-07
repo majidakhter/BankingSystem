@@ -1,0 +1,16 @@
+{
+  "AuthenticationOptions": {
+    "AuthenticationProviderKey": "Bearer", // This must match the scheme you register in Program.cs
+    "AllowedScopes": [ "openid", "profile" ] // Optional: Define specific scopes required for this route
+  },
+  "RateLimitOptions": {
+    "ClientWhitelist": [],
+    "EnableRateLimiting": true,
+    "Period": "5s",
+    "PeriodTimespan": 1,
+    "Limit": 1
+  },
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000/"
+  }
+}

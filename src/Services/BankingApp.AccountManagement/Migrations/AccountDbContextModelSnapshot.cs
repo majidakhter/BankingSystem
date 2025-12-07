@@ -151,6 +151,8 @@ namespace BankingApp.AccountManagement.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountId");
+
                     b.ToTable("Beneficaries", (string)null);
                 });
 
@@ -287,6 +289,12 @@ namespace BankingApp.AccountManagement.Migrations
 
             modelBuilder.Entity("BankingApp.AccountManagement.Core.Accounts.Entities.BeneficiaryGroup", b =>
                 {
+                    b.HasOne("BankingApp.AccountManagement.Core.Accounts.Entities.Account", null)
+                        .WithMany("BeneficiaryGroups")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("BankingApp.AccountManagement.Core.Accounts.ValueObjects.Beneficiary", "Beneficiary", b1 =>
                         {
                             b1.Property<Guid>("BeneficiaryGroupId")
@@ -320,7 +328,7 @@ namespace BankingApp.AccountManagement.Migrations
 
             modelBuilder.Entity("BankingApp.AccountManagement.Core.Accounts.Entities.Credit", b =>
                 {
-                    b.HasOne("BankingApp.AccountManagement.Core.Accounts.Entities.Account", "Account")
+                    b.HasOne("BankingApp.AccountManagement.Core.Accounts.Entities.Account", null)
                         .WithMany("Credits")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -343,15 +351,13 @@ namespace BankingApp.AccountManagement.Migrations
                                 .HasForeignKey("CreditId");
                         });
 
-                    b.Navigation("Account");
-
                     b.Navigation("Amount")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("BankingApp.AccountManagement.Core.Accounts.Entities.Debit", b =>
                 {
-                    b.HasOne("BankingApp.AccountManagement.Core.Accounts.Entities.Account", "Account")
+                    b.HasOne("BankingApp.AccountManagement.Core.Accounts.Entities.Account", null)
                         .WithMany("Debits")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -373,8 +379,6 @@ namespace BankingApp.AccountManagement.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("DebitId");
                         });
-
-                    b.Navigation("Account");
 
                     b.Navigation("Amount")
                         .IsRequired();
@@ -518,6 +522,8 @@ namespace BankingApp.AccountManagement.Migrations
 
             modelBuilder.Entity("BankingApp.AccountManagement.Core.Accounts.Entities.Account", b =>
                 {
+                    b.Navigation("BeneficiaryGroups");
+
                     b.Navigation("Credits");
 
                     b.Navigation("Debits");

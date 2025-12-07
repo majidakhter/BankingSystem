@@ -6,7 +6,7 @@ using BankingAppDDD.Domains.Abstractions.Guards;
 
 namespace BankingApp.AccountManagement.Application.Accounts.Commands
 {
-    public sealed record AddBeneficiaryCommand(Guid accountId, string beneficiaryName, int beneficiaryAccount, string beneficiaryBankName) : Command;
+    public sealed record AddBeneficiaryCommand(Guid accountId, string beneficiaryName, int beneficiaryAccountNo, string beneficiaryBankName) : Command;
     public sealed class AddBeneficiaryCommandHandler : CommandHandler<AddBeneficiaryCommand>
     {
         private readonly IAccountRepository<Account> _repository;
@@ -20,7 +20,7 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
         protected override async Task<bool> HandleAsync(AddBeneficiaryCommand request)
         {
             var account = await _repository.GetByIdAsync(request.accountId);
-            var beneficiary = new BeneficiaryData(request.beneficiaryName, request.beneficiaryAccount, request.beneficiaryBankName);
+            var beneficiary = new BeneficiaryData(request.beneficiaryName, request.beneficiaryAccountNo, request.beneficiaryBankName);
             Guard.Against.NotFound(account);
             account!.AddBeneficiary(beneficiary);
             _repository.Update(account);

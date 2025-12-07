@@ -19,10 +19,10 @@ namespace BankingApp.AccountManagement.Controllers
         public AccountController(IMediator mediator)
         {
             _mediator = mediator;
-        }
+        } 
 
 
-        [HttpPost("AddAccount")]
+        [HttpPost("addaccount")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
@@ -34,7 +34,7 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         }
 
-        [HttpPost("Deposit")]
+        [HttpPost("deposit")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
@@ -46,7 +46,7 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         }
 
-        [HttpPost("Withdraw")]
+        [HttpPost("withdraw")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
@@ -58,7 +58,7 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         }
 
-        [HttpPost("CloseAccount")]
+        [HttpPost("closeaccount")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -70,7 +70,7 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         }
 
-        [HttpPost("AddBeneficiary")]
+        [HttpPost("addbeneficiary")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Customer")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
@@ -82,15 +82,15 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetAccountStatus")]
+        [HttpGet("getaccountstatus/{accountid}")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(AccountStatusDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetAccountStatus(AccountStatusQuery query)
+        public async Task<ActionResult> GetAccountStatus(Guid accountid)
         {
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(new AccountStatusQuery(accountid));
             return Ok(result);
         }
     }

@@ -48,6 +48,7 @@ namespace BankingAppDDD.CustomerManagement.Controllers
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut]
+        [Route("updatecustomer")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status202Accepted)]
@@ -62,11 +63,11 @@ namespace BankingAppDDD.CustomerManagement.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet, Route("customerDetails")]
+        [HttpGet, Route("customerdetails")]
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(List<CustomerDTO>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             var customers = await _mediator.Send(new GetCustomerQuery());
             return Ok(customers);
@@ -80,7 +81,7 @@ namespace BankingAppDDD.CustomerManagement.Controllers
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetBranchById(Guid id)
+        public async Task<IActionResult> GetCustomerById(Guid id)
         {
             var customer = await _mediator.Send(new GetCustomerQueryById(id));
             return Ok(customer);
