@@ -109,13 +109,13 @@ namespace BankingApp.LoanManagement.Controllers
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(LoanApplicationSearchCriteriaDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetLoanApplicationByOtherParam(string applic ationnumber, Guid customeridentifier, Guid decisionbyid, Guid registeredbyid)
+        public async Task<IActionResult> GetLoanApplicationByOtherParam(string aapplicationnumber, Guid customeridentifier, Guid decisionbyid, Guid registeredbyid)
         {
-            var branches = await _mediator.Send(new GetLoanApplicationByOtherParam(applicationnumber, customeridentifier, decisionbyid, registeredbyid));
+            var branches = await _mediator.Send(new GetLoanApplicationByOtherParam(aapplicationnumber, customeridentifier, decisionbyid, registeredbyid));
             return Ok(branches);
         }
 
-        [HttpPost, Route("createdebtorInfo")]
+        [HttpPost, Route("createdebtorInfo")] 
         [MapToApiVersion(ApiVersions.V2)]
         [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
