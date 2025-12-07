@@ -23,6 +23,18 @@
         }
       ],
       "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/bank/bankdetails",
+      "UpstreamPathTemplate": "/api/v{version}/bank/bankdetails",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
     }
   ]
 }

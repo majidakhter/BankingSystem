@@ -17,27 +17,27 @@ namespace BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccoun
     {
         /// <summary>Gets an item from the BankingDDD.ServiceClients.ApiGateway.api.v2.customer.getcustomeraccountcount.item collection</summary>
         /// <param name="position">Unique identifier of the item</param>
-        /// <returns>A <see cref="global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.GetcustomeraccountcountItemRequestBuilder"/></returns>
-        public global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.GetcustomeraccountcountItemRequestBuilder this[Guid position]
+        /// <returns>A <see cref="global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.WithCustomerItemRequestBuilder"/></returns>
+        public global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.WithCustomerItemRequestBuilder this[Guid position]
         {
             get
             {
                 var urlTplParams = new Dictionary<string, object>(PathParameters);
-                urlTplParams.Add("id", position);
-                return new global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.GetcustomeraccountcountItemRequestBuilder(urlTplParams, RequestAdapter);
+                urlTplParams.Add("customerid", position);
+                return new global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.WithCustomerItemRequestBuilder(urlTplParams, RequestAdapter);
             }
         }
         /// <summary>Gets an item from the BankingDDD.ServiceClients.ApiGateway.api.v2.customer.getcustomeraccountcount.item collection</summary>
         /// <param name="position">Unique identifier of the item</param>
-        /// <returns>A <see cref="global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.GetcustomeraccountcountItemRequestBuilder"/></returns>
+        /// <returns>A <see cref="global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.WithCustomerItemRequestBuilder"/></returns>
         [Obsolete("This indexer is deprecated and will be removed in the next major version. Use the one with the typed parameter instead.")]
-        public global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.GetcustomeraccountcountItemRequestBuilder this[string position]
+        public global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.WithCustomerItemRequestBuilder this[string position]
         {
             get
             {
                 var urlTplParams = new Dictionary<string, object>(PathParameters);
-                if (!string.IsNullOrWhiteSpace(position)) urlTplParams.Add("id", position);
-                return new global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.GetcustomeraccountcountItemRequestBuilder(urlTplParams, RequestAdapter);
+                if (!string.IsNullOrWhiteSpace(position)) urlTplParams.Add("customerid", position);
+                return new global::BankingDDD.ServiceClients.ApiGateway.Api.V2.Customer.Getcustomeraccountcount.Item.WithCustomerItemRequestBuilder(urlTplParams, RequestAdapter);
             }
         }
         /// <summary>

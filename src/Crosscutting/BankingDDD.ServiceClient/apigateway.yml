@@ -63,6 +63,33 @@ components:
           type: number
           format: double
       additionalProperties: false
+    AccountDTO:
+      type: object
+      properties:
+        accountId:
+          type: string
+          format: uuid
+        customerId:
+          type: string
+          format: uuid
+        accountNo:
+          type: integer
+          format: int32
+        accountTypeId:
+          type: integer
+          format: int32
+        accountStatusId:
+          type: integer
+          format: int32
+        dateAdded:
+          type: string
+          format: date-time
+          nullable: true
+        accountUpdatedDate:
+          type: string
+          format: date-time
+          nullable: true
+      additionalProperties: false
     AccountStatusDTO:
       type: object
       properties:
@@ -823,25 +850,21 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/Envelope'
-  /api/v2/account/getaccountstatus:
+  /api/v2/account/getaccountstatus/{accountid}:
      get:
        tags:
          - Account
        summary: ''
-       requestBody:
-         content:
-           application/json:
-             schema:
-               $ref: '#/components/schemas/AccountStatusQuery'
-           text/json:
-             schema:
-               $ref: '#/components/schemas/AccountStatusQuery'
-           application/*+json:
-             schema:
-               $ref: '#/components/schemas/AccountStatusQuery'
+       parameters: 
+        - name: accountid
+          in: path
+          required: true
+          schema: 
+            type: string
+            format: uuid
        responses:
          '200': 
-           description: OK,
+           description: OK
            content: 
              text/plain:
                schema:
@@ -852,6 +875,132 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/AccountStatusDTO'
+         '400': 
+           description: Bad Request
+           content: 
+             text/plain:
+               schema: 
+                 $ref: '#/components/schemas/Envelope'
+             application/json: 
+               schema: 
+                 $ref: '#/components/schemas/Envelope'
+             text/json:
+               schema:
+                 $ref: '#/components/schemas/Envelope'
+         '404':  
+           description: Not Found
+           content:
+             text/plain:
+               schema:
+                 $ref: '#/components/schemas/Envelope'
+             application/json:
+               schema:
+                 $ref: '#/components/schemas/Envelope'
+             text/json:
+               schema:
+                 $ref: '#/components/schemas/Envelope'
+  /api/v2/account/accountdetails:
+    get:
+      tags:
+        - Account
+      summary: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDTO'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+  '/api/v2/account/getaccount/{customerid}':
+    get:
+      tags:
+        - Account
+      parameters:
+        - name: customerid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDTO'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Envelope'
   /api/v2/bank: 
      post:
        tags: 
@@ -930,6 +1079,30 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/BankDTO'
+  /api/v2/bank/bankdetails:
+    get:
+      tags:
+        - Bank
+      summary: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankDTO'
   /api/v2/branch:
      post:
        tags:
@@ -1032,13 +1205,13 @@ paths:
              text/json:
                schema:
                  $ref: '#/components/schemas/BranchDTO'
-  /api/v2/customer/getcustomeraccountcount/{id}:
+  /api/v2/customer/getcustomeraccountcount/{customerid}:
      get:
        tags:
         - Customer
        summary: ''
        parameters:
-         - name: id
+         - name: customerid
            in: path
            required: true
            schema:

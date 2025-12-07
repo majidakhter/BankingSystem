@@ -93,5 +93,29 @@ namespace BankingApp.AccountManagement.Controllers
             var result = await _mediator.Send(new AccountStatusQuery(accountid));
             return Ok(result);
         }
+
+        [HttpGet("accountdetails")]
+        [MapToApiVersion(ApiVersions.V2)]
+        [Authorize(Roles = "Accountant")]
+        [ProducesResponseType(typeof(List<AccountDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetAccountDetails()
+        {
+            var result = await _mediator.Send(new GetAccountDetailsQuery());
+            return Ok(result);
+        }
+
+        [HttpGet("getaccount/{customerid}")]
+        [MapToApiVersion(ApiVersions.V2)]
+        [Authorize(Roles = "Customer")]
+        [ProducesResponseType(typeof(List<AccountDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetAccountByCustomerId(Guid customerid)
+        {
+            var result = await _mediator.Send(new GetAccountsByCustomerIdQuery(customerid));
+            return Ok(result);
+        }
     }
 }

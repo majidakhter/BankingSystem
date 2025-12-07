@@ -10,7 +10,7 @@
           "Port": 80
         }
       ],
-      "UpstreamHttpMethod": [ "POST","GET" ]
+      "UpstreamHttpMethod": [ "POST", "GET" ]
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/account/deposit",
@@ -63,6 +63,30 @@
     {
       "DownstreamPathTemplate": "/api/v{version}/account/getaccountstatus/{accountid}",
       "UpstreamPathTemplate": "/api/v{version}/account/getaccountstatus/{accountid}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/account/accountdetails",
+      "UpstreamPathTemplate": "/api/v{version}/account/accountdetails",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "banking-accountmanagement",
+          "Port": 80
+        }
+      ],
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/account/getaccount/{customerid}",
+      "UpstreamPathTemplate": "/api/v{version}/account/getaccount/{customerid}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

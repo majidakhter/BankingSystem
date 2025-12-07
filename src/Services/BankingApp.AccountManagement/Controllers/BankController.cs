@@ -43,5 +43,15 @@ namespace BankingApp.AccountManagement.Controllers
             var banks = await _mediator.Send(new GetBanksQuery(id));
             return Ok(banks);
         }
+
+        [HttpGet, Route("bankdetails")]
+        [MapToApiVersion(ApiVersions.V2)]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(List<BankDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            var customers = await _mediator.Send(new GetBankDetailsQuery());
+            return Ok(customers);
+        }
     }
 }
