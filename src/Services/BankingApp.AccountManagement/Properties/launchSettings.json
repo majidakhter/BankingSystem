@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Banking.AccountManagement": {
+    "http": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

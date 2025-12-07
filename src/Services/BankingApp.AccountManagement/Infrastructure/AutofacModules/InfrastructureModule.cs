@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using BankingApp.AccountManagement.Core.Accounts.Entities;
+using BankingApp.AccountManagement.Core.Customers.Entities;
 using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Common.Authentication;
 using Microsoft.EntityFrameworkCore;
@@ -41,14 +42,11 @@ namespace BankingApp.AccountManagement.Infrastructure.AutofacModules
                    .InstancePerLifetimeScope();
             // Register AccessTokenValidatorMiddleware
             builder.RegisterType<AccessTokenValidatorMiddleware>().AsSelf();
-
-
             builder.RegisterGeneric(typeof(AccountRepository<>))
                 .As(typeof(IAccountRepository<>)).InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository<Account>>()
               .As<IAccountRepository<Account>>()
               .InstancePerLifetimeScope();
-
             // builder.RegisterType<AccountRepository<Account>>().As<IAccountNonGenericRepo>().InstancePerLifetimeScope();
             //builder.RegisterType<NotificationsService>()
             // .AsImplementedInterfaces()

@@ -44,20 +44,22 @@ services:
       context: .
       dockerfile: ./KeyCloakDockerfile/Dockerfile
     environment:
-      KC_DB_URL_HOST: postgres
-      KC_DB: postgres 
-      KC_DB_URL_DATABASE: keycloak_db
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: keycloakpassword
-      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_DB_URL:  jdbc:postgresql://postgres:5432/keycloak_db 
-      KC_HTTP_ENABLED: "true"
-      KC_HOSTNAME_STRICT: "false"
-      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "false"
-      KC_HOSTNAME: keycloak
-      KC_HTTP_PORT: 8080
-      KC_HOSTNAME_BACKCHANNEL: http://keycloak:8080
+       KC_DB_URL_HOST: postgres
+       KC_DB: postgres 
+       KC_DB_URL_DATABASE: keycloak_db
+       KC_DB_USERNAME: keycloak
+       KC_DB_PASSWORD: keycloakpassword
+       KC_BOOTSTRAP_ADMIN_USERNAME: admin
+       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+       KC_HOSTNAME: localhost
+       KC_HOSTNAME_STRICT_BACKCHANNEL: "false"
+       KC_HOSTNAME_STRICT_HTTPS: "false"
+       KC_TRANSACTION_XA_ENABLED: "true" # default: true
+       QUARKUS_TRANSACTION_MANAGER_ENABLE_RECOVERY: "true"
+       KC_DB_URL:  jdbc:postgresql://postgres:5432/keycloak_db
+       KC_HTTP_ENABLED: "true"
+       KC_LOG_LEVEL: info
+       KC_METRICS_ENABLED: "true"
     volumes:
       - ./data/import:/opt/keycloak/data/import
     depends_on:
@@ -223,39 +225,7 @@ services:
         condition: service_healthy
       seq:
          condition: service_healthy
-  banking-accountmanagement:
-    image: banking-accountmanagement
-    container_name: banking-accountmanagement
-    build:
-      context: .
-      dockerfile: src/Services/BankingApp.AccountManagement/Dockerfile
-    environment:
-      ASPNETCORE_ENVIRONMENT: '${ASPNETCORE_ENVIRONMENT:-Development}'
-      ASPNETCORE_URLS: 'http://+:80'    
-    healthcheck:      
-      test: curl --fail http://banking-accountmanagement:80/health || exit 1      
-      interval: 40s
-      timeout: 30s
-      retries: 3
-      start_period: 60s
-      start_interval: 30s
-    ports:
-      - '5210:80'
-    networks:
-      - backend
-    restart: 
-      always
-    depends_on:
-      keycloak:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      seq:
-         condition: service_healthy
+ 
   banking-loanmanagement:
     image: banking-loanmanagement
     container_name: banking-loanmanagement
@@ -315,8 +285,6 @@ services:
       banking-identityserver:
         condition: service_started
       banking-customermanagement:
-        condition: service_started
-      banking-accountmanagement:
         condition: service_started
       banking-loanmanagement:
         condition: service_started

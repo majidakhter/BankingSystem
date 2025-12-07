@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BankingApp.AccountManagement.Application.Customers.Models;
 using BankingApp.AccountManagement.Core.Customers.Entities;
+using BankingApp.AccountManagement.Infrastructure.Repositories;
 using BankingAppDDD.Applications.Abstractions.Queries;
 using BankingAppDDD.Applications.Abstractions.Repositories;
 
@@ -10,10 +11,10 @@ namespace BankingApp.AccountManagement.Application.Customers.Queries
 
     public sealed class GetCustomerAccountCountByIdHandler : QueryHandler<GetCustomerAccountCountById, CustomerAccountDTO>
     {
-        private readonly IRepository<Customer> _repository;
+        private readonly IAccountRepository<Customer> _repository;
 
         public GetCustomerAccountCountByIdHandler(IMapper mapper,
-            IRepository<Customer> repository) : base(mapper)
+            IAccountRepository<Customer> repository) : base(mapper)
         {
             _repository = repository;
         }
