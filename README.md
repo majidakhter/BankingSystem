@@ -180,42 +180,27 @@ The microservices composing the backend are built to be as simple as possible, s
 
 &nbsp;   <ul>
 
-&nbsp;     <li>.NET 8</li>
-
-&nbsp;     <li><b>Koalesce.OpenAPI 0.1.1-alpha.2</b></li>
-
-&nbsp;     <li>Ocelot 23.4.3</li>
-
-&nbsp;     <li>RabbitMq</li>
-
-&nbsp;     <li>Redis</li>
-
-&nbsp;     <li>Seq</li>
-
-&nbsp;     <li>seq-input-gelf</li>
-
-&nbsp;     <li>Mongodb</li>
-
-&nbsp;     <li>Entity Framework Core 8.0.15</li>
-
-&nbsp;     <li>EF Core Migrations</li>
-
-&nbsp;     <li>Npgsql.EntityFrameworkCore.PostgreSQL 8.0.11</li>
-
-&nbsp;     <li>ASP.NET Core Authentication JwtBearer 8.0.15</li>
-
-&nbsp;     <li>Keycloak 26.1.2</li>
-
-&nbsp;     <li>SwaggerGen/SwaggerUI 8.1.1</li>
-
-&nbsp;     <li>Microsoft.Kiota.\* 1.17.2</li>
-
-&nbsp;   </ul>
+<li>.NET 8</li><br>
+<li><b>Koalesce.OpenAPI 0.1.1-alpha.2</b></li><br>
+<li>Ocelot 23.4.3</li><br>
+<li>RabbitMq</li><br>
+<li>Redis</li><br>
+<li>Seq</li><br>
+<li>seq-input-gelf</li><br>
+<li>Mongodb</li><br>
+<li>Entity Framework Core 8.0.15</li><br>
+<li>EF Core Migrations</li><br>
+<li>Npgsql.EntityFrameworkCore.PostgreSQL 8.0.11</li><br>
+<li>ASP.NET Core Authentication JwtBearer 8.0.15</li><br>
+<li>Keycloak 26.1.2</li><br>
+<li>SwaggerGen/SwaggerUI 8.1.1</li><br>
+ <li>Microsoft.Kiota.\* 1.17.2</li><br>
+</ul>
 
 &nbsp; </li>
 
 &nbsp; <li>
-
+Koalesce.OpenAPI  and Ocelot used for ApiGateway Seq and seq-input-gelf used for logging monitoring and telemetry Redis is used for caching while RabbitMQ is used for messaging
 &nbsp;   <a href='https://angular.io/' target="\_blank">Angular v19.2.7</a> and <a href='http://www.typescriptlang.org/' target="\_blank">TypeScript 5.5.4</a> for the frontend with:
 
 &nbsp;   <ul>
