@@ -178,87 +178,42 @@ The microservices composing the backend are built to be as simple as possible, s
 
 &nbsp;   for cross-platform backend with:
 
-&nbsp;   <ul>
+  <ul>
 
-&nbsp;     <li>.NET 8</li>
-
-&nbsp;     <li><b>Koalesce.OpenAPI 0.1.1-alpha.2</b></li>
-
-&nbsp;     <li>Ocelot 23.4.3</li>
-
-&nbsp;     <li>RabbitMq</li>
-
-&nbsp;     <li>Redis</li>
-
-&nbsp;     <li>Seq</li>
-
-&nbsp;     <li>seq-input-gelf</li>
-
-&nbsp;     <li>Mongodb</li>
-
-&nbsp;     <li>Entity Framework Core 8.0.15</li>
-
-&nbsp;     <li>EF Core Migrations</li>
-
-&nbsp;     <li>Npgsql.EntityFrameworkCore.PostgreSQL 8.0.11</li>
-
-&nbsp;     <li>ASP.NET Core Authentication JwtBearer 8.0.15</li>
-
-&nbsp;     <li>Keycloak 26.1.2</li>
-
-&nbsp;     <li>SwaggerGen/SwaggerUI 8.1.1</li>
-
-&nbsp;     <li>Microsoft.Kiota.\* 1.17.2</li>
-
-&nbsp;   </ul>
-
-&nbsp; </li>
-
-&nbsp; <li>
-
-&nbsp;   <a href='https://angular.io/' target="\_blank">Angular v19.2.7</a> and <a href='http://www.typescriptlang.org/' target="\_blank">TypeScript 5.5.4</a> for the frontend with:
-
-&nbsp;   <ul>
-
-&nbsp;     <li>Kiota 1.0.2</li>
-
-&nbsp;     <li>NgBootstrap 18.0.0/ Bootstrap 5.3.5</li>
-
-&nbsp;     <li>Font Awesome 6.7.2</li>
-
-&nbsp;   </ul>
-
-&nbsp; </li>
-
+<li>.NET 8</li><br>
+<li><b>Koalesce.OpenAPI 0.1.1-alpha.2</b></li><br>
+<li>Ocelot 23.4.3</li><br>
+<li>RabbitMq</li><br>
+<li>Redis</li><br>
+<li>Seq</li><br>
+<li>seq-input-gelf</li><br>
+<li>Mongodb</li><br>
+<li>Entity Framework Core 8.0.15</li><br>
+<li>EF Core Migrations</li><br>
+<li>Npgsql.EntityFrameworkCore.PostgreSQL 8.0.11</li><br>
+<li>ASP.NET Core Authentication JwtBearer 8.0.15</li><br>
+<li>Keycloak 26.1.2</li><br>
+<li>SwaggerGen/SwaggerUI 8.1.1</li><br>
+<li>Microsoft.Kiota.\* 1.17.2</li>
 </ul>
+</li>
+<li>
+<a href='https://angular.io/' target="\_blank">Angular v19.2.7</a> and <a href='http://www.typescriptlang.org/' target="\_blank">TypeScript 5.5.4</a> for the frontend with:
+<ul>
 
-
-
+<li>Kiota 1.0.2</li><br>
+<li>NgBootstrap 18.0.0/ Bootstrap 5.3.5</li><br>
+<li>Font Awesome 6.7.2</li>
+</ul>
+</li>
+</ul>
 ---
-
-
-
 \## What do you need to run it 
-
-
-
 \#### Running the microservices using Docker
-
-
-
 The project was designed to be easily run within docker containers, hence all you need is 1 command line to up everything. Make sure you have `Docker` installed and have fun!
-
-
-
-
-
 \- Download Docker: <a href="https://docs.docker.com/docker-for-windows/wsl/" target="\_blank">Docker Desktop with support for WLS 2</a>
-
 &nbsp;   
-
 <br/>
-
-
 Few additional  setup is required to run keycloak
 Go to solution directory where docker-compose.yml file exist and run below command
 Execute the command from docker-compose path docker exec -it (containerid of postgresdb) /bin/bash
@@ -323,17 +278,9 @@ Create the User password using credential tab set new password and turn off the 
 Assign above created role to user Select Filter By Clients then choose the role and click assign
 
 Using a terminal, run:
-
- 
-
 ```console
-
 &nbsp;$ docker-compose up or docker-compose up --build
-
 ``` 
-
-
-
 You can also set the `docker-compose.dcproj` as a Startup project on Visual Studio if you want to run it while debugging. 
  After launching the webapi using swagger ui you need to authenticate and authorize the user clicking on authorize button on top right side lock icon and via keycloak by using the created user then execute the end point 
 
