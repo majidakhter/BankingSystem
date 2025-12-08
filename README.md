@@ -1,7 +1,7 @@
-\## Welcome to Banking App DDD
+<h6> \## Welcome to Banking App DDD
 
 This project is an experimental full-stack application where still I am working on frontend and I have combined several cutting-edge technologies and architectural patterns. Thanks for getting here! please <b>give a ⭐</b> if you liked the project. It motivates me to keep improving it.
----
+--- </h6>
 \## Architecture
 
 
