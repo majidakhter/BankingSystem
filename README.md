@@ -1,39 +1,7 @@
 \## Welcome to Banking App DDD
 
 This project is an experimental full-stack application where still I am working on frontend and I have combined several cutting-edge technologies and architectural patterns. Thanks for getting here! please <b>give a ⭐</b> if you liked the project. It motivates me to keep improving it.
-Integration of Keycloak for authentication and Authorization with Authorization Code Flow
-<br><br>
-
-
-
-<a href="images/ecommerceddd-1.gif" target="\_blank">
-
-<img src="images/ecommerceddd-1.gif" width="600px"/>
-
-</a>
-
-
-
-<a href="images/ecommerceddd-2.gif" target="\_blank">
-
-<img src="images/ecommerceddd-2.gif" width="600px"/>
-
-</a>
-
-
-
-<a href="images/ecommerceddd-3.gif" target="\_blank">
-
-<img src="images/ecommerceddd-3.gif" width="600px"/>
-
-</a>
-
-
-
 ---
-
-
-
 \## Architecture
 
 
@@ -291,10 +259,58 @@ The project was designed to be easily run within docker containers, hence all yo
 <br/>
 
 
+Few additional  setup is required to run keycloak
+Go to solution directory where docker-compose.yml file exist and run below command
+Execute the command from docker-compose path docker exec -it (containerid of postgresdb) /bin/bash
+Then use psql -U keycloak -d keycloak_db 
+Create User which u want to use for database creation using CREATE ROLE User WITH LOGIN PASSWORD 'TestUser1';
+ALTER ROLE UserName WITH CREATEDB LOGIN REPLICATION ETC;—This will ceate new user in Login/Group Roles
+After executing above command you create another database Keycloak with above user 
 
+Similarly create mongodb
+Execute the command from docker-compose path docker exec -it (containerid of mongodb) /bin/bash
+root@2540e80be07d:/# mongosh -u root -p root123 --authenticationDatabase admin
+    test> use admin
+switched to db admin
+admin> show dbs
+admin   100.00 KiB
+config  108.00 KiB
+local    72.00 KiB
+11)	admin> use myUserInfo
+myUserInfo> db.createUser(
+... ...    {
+... ...      user: "TestUser",
+... ...      pwd:  passwordPrompt(),   // or cleartext password
+... ...      roles: [ { role: "readWrite", db: "myUserInfo" } ]
+... ...    }
+... ...  )
+    After entering password use below statement
+           myUserInfo> db.createCollection('UserInfo');
+           myUserInfo>  db.UserInfo.insertOne({ UserId: 1234, UserName : "TestUser", Address: "TestAddress" });
+    Now open studio 3T and create new connection using below connection string
+    mongodb://TestUser@localhost:27017/myUserInfo?authsource=myUserInfo
+ After creatung Database for keycloak you have to do a dns entry in /etc/hosts file as below
+ 127.0.0.1  keycloak --here keycloak is service name in docker-compose.yml file
+ 127.0.0.1  seq   -- here seq is service name in docker-compose.yml file
+ After doing above dns entry in etc/hosts file now you can browse keycloak using http://keycloak:8080 and seq for logging on
+ http://seq:8081/#/events
+ Using keycloak admin console you follow the steps
+ 1)Log into admin console using admin user and password admin
+ 2)Create realms bankaccount
+ 3)Create Clients accountmanagementclient customermanagementclient loanclient identityproviderclient and apigatewayclient
+ 4) After creating clients do the following setup
+ <img src="image/keycloak1.png"/>
+ <br>
+ <img src="image/keycloak2.png"/>
+ <br>
+ <img src="image/keycloak3.png"/>
+ <br>
+ <img src="image/keycloak4.png"/>
+ <br>
+ <img src="image/keycloak5.png"/>
 Using a terminal, run:
 
-
+ 
 
 ```console
 
