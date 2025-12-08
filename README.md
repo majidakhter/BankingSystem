@@ -297,7 +297,8 @@ myUserInfo> db.createUser(
  Using keycloak admin console you follow the steps
  1)Log into admin console using admin user and password admin
  2)Create realms bankaccount
- 3)Create Clients accountmanagementclient customermanagementclient loanclient identityproviderclient and apigatewayclient
+ 3)Create Clients accountmanagementclient customermanagementclient loanclient identityproviderclient and apigatewayclient and follow below steps for each client 
+
  4) After creating clients do the following setup
  <img src="image/keycloak1.png"/>
  <br>
@@ -308,6 +309,19 @@ myUserInfo> db.createUser(
  <img src="image/keycloak4.png"/>
  <br>
  <img src="image/keycloak5.png"/>
+ Using keycloak admin console you follow the steps
+ 1)Log into admin console using admin user and password admin
+ 2)Create realms bankaccount
+
+We have to do above setup for each client using url http://localhost:5263
+http://localhost:5157  http://localhost:5210  http://localhost:5273 and http://localhost:5000(this is the url for apigateway client)
+Copy the client secrets from credential tab and paste it in appsetting.json file for each webapi client
+After doing above setup create different role like Admin, Customer, Manager,Accountant,Operator and Underwriter in the role tab
+Create scope in client scope tab select accountmanagementclient dedicated and other client and configure a new mapper for UserClient and save changes
+Create User from User Menu where you have to enter firstname lame and Emailid and check the box email verified 
+Create the User password using credential tab set new password and turn off the temporary option
+Assign above created role to user Select Filter By Clients then choose the role and click assign
+
 Using a terminal, run:
 
  
@@ -321,6 +335,9 @@ Using a terminal, run:
 
 
 You can also set the `docker-compose.dcproj` as a Startup project on Visual Studio if you want to run it while debugging. 
+ After launching the webapi using swagger ui you need to authenticate and authorize the user clicking on authorize button on top right side lock icon and via keycloak by using the created user then execute the end point 
+
+
 
 
 
