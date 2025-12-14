@@ -35,7 +35,36 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.LoanManagement",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
+		..\aks\banking-accountmanagement-configmap.yaml = ..\aks\banking-accountmanagement-configmap.yaml
+		..\aks\banking-accountmanagement.yaml = ..\aks\banking-accountmanagement.yaml
+		..\aks\banking-customermanagement-configmap.yaml = ..\aks\banking-customermanagement-configmap.yaml
+		..\aks\banking-customermanagement.yaml = ..\aks\banking-customermanagement.yaml
+		..\aks\banking-identityserver-configmap.yaml = ..\aks\banking-identityserver-configmap.yaml
+		..\aks\banking-identityserver.yaml = ..\aks\banking-identityserver.yaml
+		..\aks\banking-loanmanagement-configmap.yaml = ..\aks\banking-loanmanagement-configmap.yaml
+		..\aks\banking-loanmanagement.yaml = ..\aks\banking-loanmanagement.yaml
+		..\aks\bankingautoscale.yaml = ..\aks\bankingautoscale.yaml
+		..\aks\commands.txt = ..\aks\commands.txt
 		KeyCloakDockerfile\Dockerfile = KeyCloakDockerfile\Dockerfile
+		..\aks\keycloak-configmap.yaml = ..\aks\keycloak-configmap.yaml
+		..\aks\keycloak-secret.yaml = ..\aks\keycloak-secret.yaml
+		..\aks\keycloak.yaml = ..\aks\keycloak.yaml
+		..\aks\mongo-configmap.yaml = ..\aks\mongo-configmap.yaml
+		..\aks\mongo-secret.yaml = ..\aks\mongo-secret.yaml
+		..\aks\mongo.yaml = ..\aks\mongo.yaml
+		..\aks\postgres-accountmanagement-configmap.yaml = ..\aks\postgres-accountmanagement-configmap.yaml
+		..\aks\postgres-accountmanagement.yaml = ..\aks\postgres-accountmanagement.yaml
+		..\aks\postgres-customermanagement-configmap.yaml = ..\aks\postgres-customermanagement-configmap.yaml
+		..\aks\postgres-customermanagement.yaml = ..\aks\postgres-customermanagement.yaml
+		..\aks\postgres-loanmanagement-configmap.yaml = ..\aks\postgres-loanmanagement-configmap.yaml
+		..\aks\postgres-keycloak-configmap.yaml = ..\aks\postgres-keycloak-configmap.yaml
+		..\aks\postgres-keycloak.yaml = ..\aks\postgres-keycloak.yaml
+		..\aks\postgres-loanmanagement.yaml = ..\aks\postgres-loanmanagement.yaml
+		..\aks\postgres-secret.yaml = ..\aks\postgres-secret.yaml
+		..\aks\rabbitmq.yaml = ..\aks\rabbitmq.yaml
+		..\aks\redis.yaml = ..\aks\redis.yaml
+		..\aks\seq.yaml = ..\aks\seq.yaml
+		..\aks\seq-input-gelf.yaml = ..\aks\seq-input-gelf.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certs", "Certs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
