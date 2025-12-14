@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-config
+data:
+  # Name of the database to use
+  DB_DATABASE: "keycloak" 
+  # Service name of your existing PostgreSQL deployment
+  DB_HOST: "postgres" 
+  # Keycloak server URL setting (adjust if you are using ingress/reverse proxy)
+  KC_HOSTNAME: "keycloak" 
+  
