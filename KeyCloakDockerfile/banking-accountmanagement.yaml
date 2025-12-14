@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-accountmanagement-deployment
+  labels:
+    app: banking-accountmanagement
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: banking-accountmanagement
+  template:
+    metadata:
+      labels:
+        app: banking-accountmanagement
+    spec:
+      containers:
+        - name: banking-accountmanagement
+          image: bankingappacr.azurecr.io/banking-accountmanagement:1.1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+                - curl --fail http://banking-accountmanagement:80/health || exit 1
+            failureThreshold: 3
+            initialDelaySeconds: 60
+            periodSeconds: 40
+            timeoutSeconds: 30
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          restartPolicy: Always
+          envFrom:
+          - configMapRef:
+              name: banking-accountmanagement-configmap
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.3"
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: banking-accountmanagement
+spec:
+  type: LoadBalancer
+  selector:
+    app: banking-accountmanagement
+  ports:
+    - protocol: TCP
+    - name: "5210"
+      port: 5210
+      targetPort: 80

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-identityserver-deployment
+  labels:
+    app: banking-identityserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banking-identityserver
+  template:
+    metadata:
+      labels:
+        app: banking-identityserver
+    spec:
+      containers:
+        - name: banking-identityserver
+          image: bankingappacr.azurecr.io/banking-identityserver:1.1
+          imagePullPolicy: IfNotPresent 
+          livenessProbe:
+            exec:
+              command:
+                - curl --fail http://banking-identityserver:80/health || exit 1
+            failureThreshold: 3
+            initialDelaySeconds: 60
+            periodSeconds: 40
+            timeoutSeconds: 30
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          restartPolicy: Always
+          envFrom:
+          - configMapRef:
+              name: banking-identityserver-configmap
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.3"
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: banking-identityserver
+spec:  
+  selector:
+    app: banking-identityserver
+  ports:
+    - protocol: TCP
+    - name: "5263"
+      port: 5263
+      targetPort: 80
