@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-apigateway-deployment
+  labels:
+    app: banking-apigateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banking-apigateway
+  template:
+    metadata:
+      labels:
+        app: banking-apigateway
+    spec:
+      imagePullSecrets:
+      - name: bankingapp-secret
+      containers:
+        - name: banking-apigateway
+          image: bankingappacr.azurecr.io/banking-apigateway:1.4
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          restartPolicy: Always
+          envFrom:
+          - configMapRef:
+              name: banking-apigateway-configmap
+          resources:
+            requests:
+              memory: "384Mi"
+              cpu: "375m"
+     
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: banking-apigateway
+spec:
+  type: LoadBalancer
+  selector:
+    app: banking-apigateway
+  ports:
+    - name: "5000"
+      port: 5000
+      targetPort: 80
+  clusterIP: 10.100.1.80

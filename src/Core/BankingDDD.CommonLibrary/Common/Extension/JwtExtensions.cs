@@ -23,12 +23,14 @@ namespace BankingAppDDD.Common.Extension
             var clientId = configuration
             .GetValue<string>("Keycloak:ClientId")
             ?? throw new ArgumentNullException("Keycloak:ClientId section was not found");
-           
+            var audience = configuration
+           .GetValue<string>("Keycloak:Audience")
+           ?? throw new ArgumentNullException("Keycloak:ClientId section was not found");
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.Authority = $"{baseUrl}/realms/{realm}"; // e.g., https://localhost:8080/realms/myrealm
-                options.Audience = $"{clientId}"; // The Client ID of your confidential client
+                options.Audience = $"{audience}"; // The Client ID of your confidential client
                 options.RequireHttpsMetadata = false; // Set to false only for development with http
                 options.SaveToken = true;
                 options.IncludeErrorDetails = true;

@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: banking-customermanagement-configmap
+data:
+  DbContextSettings__ConnectionString: "HOST=postgres; User ID=majid;Password=Alm1ghty1;Port=5432;Database=CMSAccount;Pooling=true;" # Internal DNS name of your Postgres Service
+  RabbitMqUrl__Host: "rabbitmq" # Internal DNS name of your RabbitMQ Service
+  RabbitMqUrl__Username: "guest"       # User name of your RabbitMQ Service
+  RabbitMqUrl__Password: "guest"       # password of your RabbitMQ Service
+  RABBITMQ_VHOST: "/"
+  REDIS_HOST: "redis"    # Connection string of Redis Service
+  REDIS_PORT: "6379"
+  Keycloak__BaseUrl: "http://keycloak:8080" # DNS name  of Keycloak
+  Keycloak__Realm: "bankaccount" # DNS name  of Keycloak 
+  Keycloak__ClientId: "customermanagementclient" # DNS name  of Keycloak
+  Keycloak__ClientSecret: "ezLtPmXs89mk0MsyQf0nBXSveHm2tAJJ" # DNS name  of Keycloak
+  Keycloak__Audience: "account" # DNS name  of Keycloak
+  Keycloak__Authority: "https://demo.identityserver.io" # DNS name  of Keycloak
+  ApiGatewayBaseUrl: "http://host.docker.internal:5000"
+  swagger__enabled: "true"
+  swagger__reDocEnabled: "false" 
+  swagger__name: "v2"
+  swagger__title: "CustomerManagement Service"
+  swagger__version: "v2"
+  swagger__routePrefix: ""
+  swagger__includeSecurity: "true"
+  ASPNETCORE_ENVIRONMENT: "Development"
+  ASPNETCORE_URLS : http://+:80
+  serilog_config.json: |
+    {
+      "Serilog": {
+    "Using": [
+      "Serilog.Sinks.Console",
+      "Serilog.Sinks.Seq",
+    ],
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
+    },
+    "WriteTo": [
+      { "Name": "Console" },
+      {
+        "Name": "Seq",
+        "Args": {
+          "serverUrl": "http://seq:5341"
+        }
+      }
+    ],
+    "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ],
+    "Properties": {
+      "Application": "CustomerManagementService"
+    }
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://seq:5341/ingest/otlp/v1/traces"
+  OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"

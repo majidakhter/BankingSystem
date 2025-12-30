@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rabbitmq-data
+spec:
+  accessModes:
+    # ReadWriteOnce means the volume can be mounted as read-write by a single node
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi # Request 1GiB of storage (adjust as needed)
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      imagePullSecrets:
+      - name: bankingapp-secret
+      containers:
+      - name: rabbitmq
+        image: bankingappacr.azurecr.io/rabbitmq:3-management # Image with management UI
+        ports:
+        - containerPort: 5672 # AMQP port
+          protocol: TCP
+        - containerPort: 15672 # Management UI port
+          protocol: TCP
+        env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: "guest"
+            - name: RABBITMQ_DEFAULT_PASS
+              value: "guest"
+        resources:
+            requests:
+              cpu: 10m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+        volumeMounts:
+        - name: rabbitmq-data
+          mountPath: /var/lib/rabbitmq:rw # Mount path for persistent data
+      volumes:
+      - name: rabbitmq-data
+        persistentVolumeClaim:
+          claimName: rabbitmq-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+spec:  
+  selector:
+    app: rabbitmq
+  type: LoadBalancer
+  ports:
+   - name: "15672"
+     port: 15672
+     targetPort: 15672
+   - name: "5672"
+     port: 5672
+     targetPort: 5672

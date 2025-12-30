@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-customermanagement-deployment
+  labels:
+    app: banking-customermanagement
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banking-customermanagement
+  template:
+    metadata:
+      labels:
+        app: banking-customermanagement
+    spec:
+      imagePullSecrets:
+      - name: bankingapp-secret
+      initContainers:
+      - name: run-ef-migrations1
+        image: bankingappacr.azurecr.io/banking-customermanagement:1.8 # The same image as your main app, but this time used to run the bundle
+        command: ["./efbundle", "--connection", "$(DB_CONNECTION_STRING)"] # Execute the bundle
+        env:
+        - name: DB_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+              name: banking-customermanagement-secret # Your Kubernetes secret name
+              key: connection-string # The key in the secret that holds the Postgres connection string
+      containers:
+        - name: banking-customermanagement
+          image: bankingappacr.azurecr.io/banking-customermanagement:1.8
+          imagePullPolicy: IfNotPresent    
+          ports:
+            - containerPort: 5157
+              protocol: TCP
+          restartPolicy: Always
+          envFrom:
+          - configMapRef:
+              name: banking-customermanagement-configmap
+          resources:
+            requests:
+              memory: "384Mi"
+              cpu: "375m"
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: banking-customermanagement
+spec:
+  type: LoadBalancer
+  selector:
+    app: banking-customermanagement
+  ports:
+    - name: "5157"
+      port: 5157
+      targetPort: 80   
+  clusterIP: 10.100.1.60

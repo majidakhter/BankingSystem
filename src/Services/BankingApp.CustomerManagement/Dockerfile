@@ -29,6 +29,10 @@ COPY . .
 WORKDIR "/src/src/Services/BankingApp.CustomerManagement"
 RUN dotnet build "./BankingApp.CustomerManagement.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+RUN dotnet tool install --global dotnet-ef --version 9.0.11
+ENV PATH="${PATH}:/root/.dotnet/tools"
+RUN dotnet ef migrations bundle --output /app/publish/efbundle --startup-project ./BankingApp.CustomerManagement.csproj --self-contained  --runtime linux-x64 --configuration Release
+
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
@@ -38,4 +42,8 @@ RUN dotnet publish "./BankingApp.CustomerManagement.csproj" -c $BUILD_CONFIGURAT
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BankingApp.CustomerManagement.dll"]
+
+# ENTRYPOINT ["dotnet", "BankingApp.CustomerManagement.dll"]
+COPY src/Services/BankingApp.CustomerManagement/customermanagement-entrypoint.sh /app/publish/customermanagement-entrypoint.sh
+# Set the wrapper script as the *single* ENTRYPOINT
+ENTRYPOINT ["/app/publish/customermanagement-entrypoint.sh"]

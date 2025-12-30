@@ -56,15 +56,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\aks\postgres-accountmanagement.yaml = ..\aks\postgres-accountmanagement.yaml
 		..\aks\postgres-customermanagement-configmap.yaml = ..\aks\postgres-customermanagement-configmap.yaml
 		..\aks\postgres-customermanagement.yaml = ..\aks\postgres-customermanagement.yaml
-		..\aks\postgres-loanmanagement-configmap.yaml = ..\aks\postgres-loanmanagement-configmap.yaml
 		..\aks\postgres-keycloak-configmap.yaml = ..\aks\postgres-keycloak-configmap.yaml
 		..\aks\postgres-keycloak.yaml = ..\aks\postgres-keycloak.yaml
+		..\aks\postgres-loanmanagement-configmap.yaml = ..\aks\postgres-loanmanagement-configmap.yaml
 		..\aks\postgres-loanmanagement.yaml = ..\aks\postgres-loanmanagement.yaml
 		..\aks\postgres-secret.yaml = ..\aks\postgres-secret.yaml
 		..\aks\rabbitmq.yaml = ..\aks\rabbitmq.yaml
 		..\aks\redis.yaml = ..\aks\redis.yaml
-		..\aks\seq.yaml = ..\aks\seq.yaml
 		..\aks\seq-input-gelf.yaml = ..\aks\seq-input-gelf.yaml
+		..\aks\seq.yaml = ..\aks\seq.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certs", "Certs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
@@ -76,6 +76,45 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingDDD.ServiceClient", "src\Crosscutting\BankingDDD.ServiceClient\BankingDDD.ServiceClient.csproj", "{036A5967-5728-4A23-906E-180143F2A6C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.ApiGateway", "src\Crosscutting\BankingApp.ApiGateway\BankingApp.ApiGateway.csproj", "{2DAF3F81-4190-4433-8114-3A427F85BB63}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aks", "aks", "{BA645A63-9DD7-43C9-9961-916D0E767B03}"
+	ProjectSection(SolutionItems) = preProject
+		aks\banking-accountmanagement-configmap.yaml = aks\banking-accountmanagement-configmap.yaml
+		aks\banking-accountmanagement-secret.yaml = aks\banking-accountmanagement-secret.yaml
+		aks\banking-accountmanagement.yaml = aks\banking-accountmanagement.yaml
+		aks\banking-apigateway-configmap.yaml = aks\banking-apigateway-configmap.yaml
+		aks\banking-apigateway-secret.yaml = aks\banking-apigateway-secret.yaml
+		aks\banking-apigateway.yaml = aks\banking-apigateway.yaml
+		aks\banking-customermanagement-configmap.yaml = aks\banking-customermanagement-configmap.yaml
+		aks\banking-customermanagement-secret.yaml = aks\banking-customermanagement-secret.yaml
+		aks\banking-customermanagement.yaml = aks\banking-customermanagement.yaml
+		aks\banking-identityserver-configmap.yaml = aks\banking-identityserver-configmap.yaml
+		aks\banking-identityserver.yaml = aks\banking-identityserver.yaml
+		aks\banking-loanmanagement-configmap.yaml = aks\banking-loanmanagement-configmap.yaml
+		aks\banking-loanmanagement-secret.yaml = aks\banking-loanmanagement-secret.yaml
+		aks\banking-loanmanagement.yaml = aks\banking-loanmanagement.yaml
+		aks\bankingapp-intercept = aks\bankingapp-intercept
+		aks\bankingapp-intercept1.env = aks\bankingapp-intercept1.env
+		aks\bankingautoscale.yaml = aks\bankingautoscale.yaml
+		aks\commands.txt = aks\commands.txt
+		aks\get_helm.sh = aks\get_helm.sh
+		aks\google-chrome-stable_current_amd64.deb = aks\google-chrome-stable_current_amd64.deb
+		aks\keycloak-configmap.yaml = aks\keycloak-configmap.yaml
+		aks\keycloak-secret.yaml = aks\keycloak-secret.yaml
+		aks\keycloak.yaml = aks\keycloak.yaml
+		aks\kubectl = aks\kubectl
+		aks\mongo-configmap.yaml = aks\mongo-configmap.yaml
+		aks\mongo-secret.yaml = aks\mongo-secret.yaml
+		aks\mongo.yaml = aks\mongo.yaml
+		aks\pgadmin.yaml = aks\pgadmin.yaml
+		aks\postgres-configmap.yaml = aks\postgres-configmap.yaml
+		aks\postgres-secret.yaml = aks\postgres-secret.yaml
+		aks\postgres.yaml = aks\postgres.yaml
+		aks\rabbitmq.yaml = aks\rabbitmq.yaml
+		aks\redis.yaml = aks\redis.yaml
+		aks\seq-input-gelf.yaml = aks\seq-input-gelf.yaml
+		aks\seq.yaml = aks\seq.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

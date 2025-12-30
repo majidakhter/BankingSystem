@@ -29,13 +29,25 @@ COPY . .
 WORKDIR "/src/src/Services/BankingApp.LoanManagement"
 RUN dotnet build "./BankingApp.LoanManagement.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+RUN dotnet tool install --global dotnet-ef --version 9.0.11
+ENV PATH="${PATH}:/root/.dotnet/tools"
+RUN dotnet ef migrations bundle --output /app/publish/efbundle --startup-project ./BankingApp.LoanManagement.csproj --self-contained  --runtime linux-x64 --configuration Release
+
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./BankingApp.LoanManagement.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BankingApp.LoanManagement.dll"]
+
+
+# Set the script as the one and only ENTRYPOINT
+# ENTRYPOINT ["dotnet", "BankingApp.LoanManagement.dll"]
+
+COPY src/Services/BankingApp.LoanManagement/loanmanagement-entrypoint.sh /app/publish/loanmanagement-entrypoint.sh
+# Set the wrapper script as the *single* ENTRYPOINT
+ENTRYPOINT ["/app/publish/loanmanagement-entrypoint.sh"]
