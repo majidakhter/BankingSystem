@@ -50,6 +50,7 @@ services.AddKoalesce(builder.Configuration)
 var headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 
 const string corsPolicy = "AllowOrigin";
+
 services
    .AddCors(options =>
    {

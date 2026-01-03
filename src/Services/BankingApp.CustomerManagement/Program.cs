@@ -56,11 +56,12 @@ services.AddMassTransit(configure =>
         config.ConfigureEndpoints(context);
     });
 });
+var corsOriginUrl = builder.Configuration["CorsOrigin"] ?? throw new ArgumentNullException("CorsOrigin section was not found");
 services
    .AddCors(options =>
    {
        options.AddPolicy("AllowOrigin",
-                    builder => builder.WithOrigins("http://localhost:5157") //url here need to change from http to https if we are doing ssl communication
+                    builder => builder.WithOrigins(corsOriginUrl) //url here need to change from http to https if we are doing ssl communication
                              .AllowAnyHeader()
                              .AllowAnyMethod()
                          .AllowCredentials()

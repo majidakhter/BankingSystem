@@ -18,7 +18,7 @@ spec:
       - name: bankingapp-secret
       initContainers:
       - name: run-ef-migrations
-        image: bankingappacr.azurecr.io/banking-accountmanagement:1.7 # The same image as your main app, but this time used to run the bundle
+        image: bankingappacr.azurecr.io/banking-accountmanagement:1.8 # The same image as your main app, but this time used to run the bundle
         command: ["./efbundle", "--connection", "$(DB_CONNECTION_STRING)"] # Execute the bundle
         env:
         - name: DB_CONNECTION_STRING
@@ -28,7 +28,7 @@ spec:
               key: connection-string # The key in the secret that holds the Postgres connection string
       containers:
         - name: banking-accountmanagement
-          image: bankingappacr.azurecr.io/banking-accountmanagement:1.7
+          image: bankingappacr.azurecr.io/banking-accountmanagement:1.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5210

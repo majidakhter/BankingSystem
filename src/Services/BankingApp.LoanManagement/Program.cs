@@ -51,11 +51,12 @@ services.AddMassTransit(configure =>
 
     });
 });
+var corsOriginUrl = builder.Configuration["CorsOrigin"] ?? throw new ArgumentNullException("CorsOrigin section was not found");
 services
    .AddCors(options =>
    {
        options.AddPolicy("AllowOrigin",
-                    builder => builder.WithOrigins("http://localhost:5273")
+                    builder => builder.WithOrigins(corsOriginUrl)
                              .AllowAnyHeader()
                              .AllowAnyMethod()
                          .AllowCredentials()

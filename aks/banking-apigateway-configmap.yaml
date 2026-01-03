@@ -11,16 +11,14 @@ data:
   Keycloak__ClientSecret: "YzIafNYXUoPWh9i7xoIsvcqUWuyWX8US" # DNS name  of Keycloak
   Keycloak__Audience: "account" # DNS name  of Keycloak
   Keycloak__Authority: "https://demo.identityserver.io" # DNS name  of Keycloak
-  Koalesce__OpenApiVersion: "3.0.1"
-  Koalesce__Title: "BankingApp DDD API Gateway" 
-  Koalesce__SourceOpenApiUrls: [
-      "http://host.docker.internal:5263/swagger/v2/swagger.json",
-      "http://host.docker.internal:5157/swagger/v2/swagger.json",
-      "http://host.docker.internal:5210/swagger/v2/swagger.json",
-      "http://host.docker.internal:5273/swagger/v2/swagger.json"
-    ]
-  Koalesce__MergedOpenApiPath: "/swagger/v2/apigateway.yaml"
-  Koalesce__ApiGatewayBaseUrl: "http://localhost:5000"
+  APPLICATION_CONFIG: |-
+    Koalesce:
+      OpenApiVersion: 3.0.1
+      Title: BankingApp DDD API Gateway
+      SourceOpenApiUrls:
+        - 'http://192.168.58.1:5263/swagger/v2/swagger.json'
+      MergedOpenApiPath: /swagger/v2/apigateway.yaml
+      ApiGatewayBaseUrl: 'http://localhost:5000'
   ASPNETCORE_ENVIRONMENT: "Development"
   ASPNETCORE_URLS : http://+:80
  

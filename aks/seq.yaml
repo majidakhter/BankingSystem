@@ -46,7 +46,7 @@ spec:
       - name: bankingapp-secret
       containers:
         - name: seq
-          image: bankingappacr.azurecr.io/datalust/seq:2024.4 # Using the latest official seq image
+          image: bankingappacr.azurecr.io/datalust/seq:2024.3 # Using the latest official seq image
           ports:
             - containerPort: 5341
               protocol: TCP

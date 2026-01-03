@@ -18,19 +18,74 @@ spec:
       - name: bankingapp-secret
       containers:
         - name: banking-apigateway
-          image: bankingappacr.azurecr.io/banking-apigateway:1.4
+          image: bankingappacr.azurecr.io/banking-apigateway:1.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
               protocol: TCP
           restartPolicy: Always
-          envFrom:
-          - configMapRef:
-              name: banking-apigateway-configmap
+          env:
+          - name: REDIS_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: REDIS_HOST
+          - name: REDIS_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: REDIS_PORT
+          - name: Keycloak__BaseUrl
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Keycloak__BaseUrl
+          - name: Keycloak__Realm
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Keycloak__Realm
+          - name: Keycloak__ClientId
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Keycloak__ClientId
+          - name: Keycloak__ClientSecret
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Keycloak__ClientSecret
+          - name: Keycloak__Audience
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Keycloak__Audience
+          - name: Keycloak__Authority
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Keycloak__Authority
+          - name: ASPNETCORE_ENVIRONMENT
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: ASPNETCORE_ENVIRONMENT
+          - name: ASPNETCORE_URLS
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: ASPNETCORE_URLS
+          - name: APP_CONFIG_YAML
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: APPLICATION_CONFIG
           resources:
             requests:
               memory: "384Mi"
               cpu: "375m"
+          
+          
      
 ---
 apiVersion: v1

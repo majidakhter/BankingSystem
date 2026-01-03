@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgres-accountmanagement-configmap
+  name: postgres-configmap
 data:
   # The key name "init.sh" is used here to store the script content as a value.
   init.sh: |

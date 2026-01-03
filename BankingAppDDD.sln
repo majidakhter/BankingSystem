@@ -69,8 +69,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certs", "Certs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\..\..\OpenSSL\bin\bankingdomainapp.crt = ..\..\..\..\..\..\OpenSSL\bin\bankingdomainapp.crt
-		..\..\..\..\..\..\OpenSSL\bin\bankingdomainapp.key = ..\..\..\..\..\..\OpenSSL\bin\bankingdomainapp.key
+		..\..\OpenSSL\bin\bankingdomainapp.crt = ..\..\OpenSSL\bin\bankingdomainapp.crt
+		..\..\OpenSSL\bin\bankingdomainapp.key = ..\..\OpenSSL\bin\bankingdomainapp.key
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingDDD.ServiceClient", "src\Crosscutting\BankingDDD.ServiceClient\BankingDDD.ServiceClient.csproj", "{036A5967-5728-4A23-906E-180143F2A6C8}"
@@ -93,16 +93,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aks", "aks", "{BA645A63-9DD
 		aks\banking-loanmanagement-configmap.yaml = aks\banking-loanmanagement-configmap.yaml
 		aks\banking-loanmanagement-secret.yaml = aks\banking-loanmanagement-secret.yaml
 		aks\banking-loanmanagement.yaml = aks\banking-loanmanagement.yaml
-		aks\bankingapp-intercept = aks\bankingapp-intercept
-		aks\bankingapp-intercept1.env = aks\bankingapp-intercept1.env
 		aks\bankingautoscale.yaml = aks\bankingautoscale.yaml
 		aks\commands.txt = aks\commands.txt
-		aks\get_helm.sh = aks\get_helm.sh
-		aks\google-chrome-stable_current_amd64.deb = aks\google-chrome-stable_current_amd64.deb
 		aks\keycloak-configmap.yaml = aks\keycloak-configmap.yaml
 		aks\keycloak-secret.yaml = aks\keycloak-secret.yaml
 		aks\keycloak.yaml = aks\keycloak.yaml
-		aks\kubectl = aks\kubectl
 		aks\mongo-configmap.yaml = aks\mongo-configmap.yaml
 		aks\mongo-secret.yaml = aks\mongo-secret.yaml
 		aks\mongo.yaml = aks\mongo.yaml

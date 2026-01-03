@@ -58,7 +58,7 @@ spec:
                   key: DB_KEYCLOAK_USER_PASS
           envFrom:
             - configMapRef:
-                name: postgres-accountmanagement-configmap # Reference to the ConfigMap
+                name: postgres-configmap # Reference to the ConfigMap
           livenessProbe:
             exec:
               command:
