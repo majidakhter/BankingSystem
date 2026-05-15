@@ -7,6 +7,8 @@ using BankingAppDDD.Common.Mongo.Helper;
 using BankingAppDDD.Common.Types;
 using BankingAppDDD.Identity.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -17,7 +19,9 @@ services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddCoreInfrastructure(builder.Configuration);
 services.AddHealthChecks();
-
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+{
+}); 
 services.AddAuthorization();
 services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 //services.Configure<Collections>(builder.Configuration.GetSection("MongoDbSettings").GetSection("Collections"));

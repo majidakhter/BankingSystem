@@ -7,18 +7,15 @@ data:
   REDIS_PORT: "6379"
   Keycloak__BaseUrl: "http://keycloak:8080" # DNS name  of Keycloak
   Keycloak__Realm: "bankaccount" # DNS name  of Keycloak 
-  Keycloak__ClientId: "accountmanagementclient" # DNS name  of Keycloak
-  Keycloak__ClientSecret: "YzIafNYXUoPWh9i7xoIsvcqUWuyWX8US" # DNS name  of Keycloak
+  Keycloak__ClientId: "apigatewayclient" # DNS name  of Keycloak
+  Keycloak__ClientSecret: "u4Bm8jR7aQddoxCXcNt4nq8YPYOV2FHO" # DNS name  of Keycloak
   Keycloak__Audience: "account" # DNS name  of Keycloak
   Keycloak__Authority: "https://demo.identityserver.io" # DNS name  of Keycloak
-  APPLICATION_CONFIG: |-
-    Koalesce:
-      OpenApiVersion: 3.0.1
-      Title: BankingApp DDD API Gateway
-      SourceOpenApiUrls:
-        - 'http://192.168.58.1:5263/swagger/v2/swagger.json'
-      MergedOpenApiPath: /swagger/v2/apigateway.yaml
-      ApiGatewayBaseUrl: 'http://localhost:5000'
+  Koalesce__OpenApiVersion: "3.0.1"
+  Koalesce__Title: "BankingApp DDD API Gateway"
+  Koalesce__SourceOpenApiUrls: '["http://banking-identityserver:5263/swagger/v2/swagger.json, http://banking-customermanagement:5157/swagger/v2/swagger.json, http://banking-accountmanagement:5210/swagger/v2/swagger.json, http://banking-loanmanagement:5273/swagger/v2/swagger.json"]'
+  Koalesce__MergedOpenApiPath: "/swagger/v2/apigateway.yaml"
+  Koalesce__ApiGatewayBaseUrl: "http://banking-apigateway:5000"
   ASPNETCORE_ENVIRONMENT: "Development"
-  ASPNETCORE_URLS : http://+:80
+  ASPNETCORE_URLS: "http://+:80"
  

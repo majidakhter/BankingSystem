@@ -22,10 +22,10 @@ data:
    Keycloak__BaseUrl: "http://keycloak:8080/" # DNS name  of Keycloak
    Keycloak__Realm: "bankaccount" # DNS name  of Keycloak
    Keycloak__ClientId: "identityproviderclient" # DNS name  of Keycloak
-   Keycloak__ClientSecret: "UzCUCiIMBdjmnIF4xM4BhechsU8cGTmA" # DNS name  of Keycloak
+   Keycloak__ClientSecret: "bBwrJu8KAb235wgLDvnLclRwA0LQtNy7" # DNS name  of Keycloak
    Keycloak__Audience: "account" # DNS name  of Keycloak
    Keycloak__Authority: "https://demo.identityserver.io" # DNS name  of Keycloak
-   ApiGatewayBaseUrl: "http://host.docker.internal:5000"
+   ApiGatewayBaseUrl: "http://banking-apigateway:5000"
    CorsOrigin: "http://10.100.0.50:5263"
    swagger__enabled: "true"
    swagger__reDocEnabled: "false" 
@@ -35,7 +35,7 @@ data:
    swagger__routePrefix: ""
    swagger__includeSecurity: "true"
    ASPNETCORE_ENVIRONMENT: "Development"
-   ASPNETCORE_URLS : http://+:80
+   ASPNETCORE_URLS : http://+:8180
    serilog_config.json: |
     {
       "Serilog": {

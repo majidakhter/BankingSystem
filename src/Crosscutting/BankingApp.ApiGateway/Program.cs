@@ -17,16 +17,18 @@ IServiceCollection services = builder.Services;
 
 // Load merged ocelot.json
 builder.Configuration
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("Ocelot/ocelot.json", optional: false, reloadOnChange: true)
+    .SetBasePath(Directory.GetCurrentDirectory()) // Use ContentRootPath for consistency
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("Ocelot/ocelot.json", optional: false, reloadOnChange: true) // Ocelot primary file
     .AddOcelot(
         folder: "Ocelot",
         env: builder.Environment,
         mergeTo: MergeOcelotJson.ToFile,
         primaryConfigFile: "Ocelot/ocelot.json",
         reloadOnChange: true
-    )
-    .AddEnvironmentVariables();
+    )                                                              
+    .AddEnvironmentVariables(); // Environment variables added last to override all JSON
 
 // Add services to the container.
 services.AddApiVersioning(ApiVersions.V2);
@@ -41,7 +43,6 @@ services.AddRedis(builder.Configuration);
 services.AddTransient<IAccessTokenService, AccessTokenService>();
 services.AddTransient<AccessTokenValidatorMiddleware>();
 services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
-//services.Configure<Collections>(builder.Configuration.GetSection("MongoDbSettings").GetSection("Collections"));
 
 services.AddOcelot(builder.Configuration);
 // Register Koalesce

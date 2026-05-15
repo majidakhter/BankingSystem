@@ -12,11 +12,10 @@ spec:
 ---
 
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: postgres-statefulset
+  name: postgres-deployment
 spec:
-  serviceName: "postgres"
   replicas: 1
   selector:
     matchLabels:
@@ -33,6 +32,8 @@ spec:
           image: bankingappacr.azurecr.io/postgres:16.4 # Use the latest PostgreSQL image
           imagePullPolicy: IfNotPresent
           env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata # Point to a subdirectory
             - name: POSTGRES_DB
               value: keycloak_db
             - name: POSTGRES_USER
@@ -73,14 +74,11 @@ spec:
               protocol: TCP
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: postgres-storage
-            - mountPath: /docker-entrypoint-initdb.d
-              name: postgres-claim1
+              name: postgres-data
       volumes:
-        - name: postgres-storage
+        - name: postgres-data
           persistentVolumeClaim:
             claimName: postgres-pvc
-        - name: postgres-claim1
 ---
 
 apiVersion: v1

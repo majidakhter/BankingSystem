@@ -16,12 +16,10 @@ spec:
     spec:
       imagePullSecrets:
       - name: bankingapp-secret
-      hostNetwork: true
       containers:
         - name: banking-identityserver
-          image: bankingappacr.azurecr.io/banking-identityserver:1.8
+          image: bankingappacr.azurecr.io/banking-identityserver:1.9
           imagePullPolicy: IfNotPresent 
-          restartPolicy: Always
           envFrom:
           - configMapRef:
               name: banking-identityserver-configmap
@@ -45,4 +43,3 @@ spec:
     - name: "5263"
       port: 5263
       targetPort: 80
-  clusterIP: 10.100.0.50

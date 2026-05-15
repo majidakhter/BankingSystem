@@ -8,9 +8,9 @@ This project is an experimental full-stack application where still I am working 
 
 \### High-Level System Architecture
 
-<a href="images/BankingAppDDD-hl-architecture.png" target="\_blank">
+<a href="image/BankingAppDDD-hl-architecture.png" target="\_blank">
 
-<img src="images/BankingAppDDD-hl-architecture.png"/>
+<img src="image/BankingAppDDD-hl-architecture.png"/>
 
 </a>
 

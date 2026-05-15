@@ -55,4 +55,4 @@ spec:
     - name: "5273"
       port: 5273
       targetPort: 80    
-  clusterIP: 10.100.1.80
+  clusterIP: 10.100.2.60

@@ -18,7 +18,7 @@ spec:
       - name: bankingapp-secret
       containers:
         - name: banking-apigateway
-          image: bankingappacr.azurecr.io/banking-apigateway:1.8
+          image: bankingappacr.azurecr.io/banking-apigateway:1.9
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
@@ -75,11 +75,31 @@ spec:
               configMapKeyRef:
                 name: banking-apigateway-configmap
                 key: ASPNETCORE_URLS
-          - name: APP_CONFIG_YAML
+          - name: Koalesce__OpenApiVersion
             valueFrom:
               configMapKeyRef:
                 name: banking-apigateway-configmap
-                key: APPLICATION_CONFIG
+                key: Koalesce__OpenApiVersion
+          - name: Koalesce__Title
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Koalesce__Title
+          - name: Koalesce__SourceOpenApiUrls
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Koalesce__SourceOpenApiUrls
+          - name: Koalesce__MergedOpenApiPath
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Koalesce__MergedOpenApiPath
+          - name: Koalesce__ApiGatewayBaseUrl
+            valueFrom:
+              configMapKeyRef:
+                name: banking-apigateway-configmap
+                key: Koalesce__ApiGatewayBaseUrl
           resources:
             requests:
               memory: "384Mi"

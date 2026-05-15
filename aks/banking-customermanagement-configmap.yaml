@@ -16,7 +16,7 @@ data:
   Keycloak__ClientSecret: "ezLtPmXs89mk0MsyQf0nBXSveHm2tAJJ" # DNS name  of Keycloak
   Keycloak__Audience: "account" # DNS name  of Keycloak
   Keycloak__Authority: "https://demo.identityserver.io" # DNS name  of Keycloak
-  ApiGatewayBaseUrl: "http://host.docker.internal:5000"
+  ApiGatewayBaseUrl: "http://banking-apigateway:5000"
   swagger__enabled: "true"
   swagger__reDocEnabled: "false" 
   swagger__name: "v2"
