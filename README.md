@@ -20,9 +20,9 @@ This project is an experimental full-stack application where still I am working 
 
 \### Detailed Architecture
 
-<a href="images/BankingAppDDD-detailed-architecture.png" target="\_blank">
+<a href="image/BankingAppDDD-detailed-architecture.png" target="\_blank">
 
-<img src="images/BankingAppDDD-detailed-architecture.png"/>
+<img src="image/BankingAppDDD-detailed-architecture.png"/>
 
 </a>
 
