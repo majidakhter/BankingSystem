@@ -193,7 +193,7 @@ Koalesce.OpenAPI  and Ocelot used for ApiGateway Seq and seq-input-gelf used for
 
 &nbsp;   <ul>
 
-     <li>Kiota 1.0.2</li>
+&nbsp;    <li>Kiota 1.0.2</li>
 
 &nbsp;     <li>NgBootstrap 18.0.0/ Bootstrap 5.3.5</li>
 
