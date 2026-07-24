@@ -1,0 +1,36 @@
+<div [formGroup]="addressForm">
+    <div class="row">
+  <div class="col-md-6">
+            <div class="mb-6">
+              <label for="street" class="form-label">Street:</label>
+              <input id="street" type="text" class="form-control" formControlName="street" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="city" class="form-label">City:</label>
+              <input id="city" type="text" class="form-control" formControlName="city" />
+            </div>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-md-6">
+    <div class="mb-3">
+    <label for="state" class="form-label">State:</label>
+    <input id="state" class="form-control" formControlName="state" type="text" />
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="mb-3">
+    <label for="zipcode" class="form-label">Zipcode:</label>
+    <input id="zipcode" class="form-control" formControlName="zipcode" type="text" />
+    </div>
+  </div>
+  </div>
+  <div class="col-md-6">
+    <div class="mb-3">
+    <label for="country" class="form-label">Country:</label>
+    <input id="country" class="form-control" formControlName="country" type="text" />
+    </div>
+  </div>
+</div>

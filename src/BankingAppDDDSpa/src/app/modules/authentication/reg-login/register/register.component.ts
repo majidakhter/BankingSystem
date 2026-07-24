@@ -3,12 +3,13 @@ import { MemberShipService } from '../../../../core/services/membership.service'
 import { Router } from '@angular/router';
 import {CommonModule} from "@angular/common";
 import { FormBuilder, FormGroup,ReactiveFormsModule, Validators } from '@angular/forms';
+import { AddressComponent } from '../address/address.component';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, AddressComponent],
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
@@ -24,8 +25,6 @@ export class RegisterComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
       mobileNo: [''],
       address: [''],
       dob: [''],
@@ -34,28 +33,20 @@ export class RegisterComponent implements OnInit {
       nid: [''],
       accountType: [''],
       createDate: [new Date()],
-      balance: ['']
-    }
-    ,{ validators: this.passwordMatchValidator });
+    });
   }
   onImageSelected(event: any): void {
       this.selectedImage = event.target.files[0];
     }
 
-  passwordMatchValidator(formGroup: FormGroup) {
-    const password = formGroup.get('password')?.value;
-    const confirmPassword = formGroup.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
-  }
-
-  onSubmit() {
+  onSubmit() { 
     if (this.registerForm.invalid) {
       return;
     }
 
-    const { firstName, lastName, email, password, mobileNo, address, dob, gender, image, nid, accountType, createDate, balance } = this.registerForm.value;
+    const { firstName, lastName, email, mobileNo, address, dob, gender, image, nid, accountType, createDate } = this.registerForm.value;
 
-    this.authService.register({ firstName, lastName, email, password, mobileNo, address, dob, gender, image, nid, accountType, createDate, balance }).subscribe(
+    this.authService.register({ firstName, lastName, email, mobileNo, address, dob, gender, image, nid, accountType, createDate }).subscribe(
    {
 
     next: AuthResponse => {

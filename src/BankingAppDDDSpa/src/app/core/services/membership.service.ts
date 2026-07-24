@@ -11,7 +11,8 @@ import { AuthResponse } from '../domain/AuthResponse';
 })
 export class MemberShipService {
 
-  private apiUrl = 'http://localhost:8084';
+  //private apiUrl = 'http://localhost:8084';
+  private apiUrl = 'http://localhost:5157';
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   private userRoleSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
@@ -93,8 +94,8 @@ export class MemberShipService {
   // }
 
   
-  register(user: { firstName: string; lastName: string, email: string; password: string; mobileNo: string; address: string; dob: Date; gender: string; image: string; nid: string; accountType: string; createDate: Date; balance: number }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`,
+  register(user: { firstName: string; lastName: string, email: string; mobileNo: string; address: string; dob: Date; gender: string; image: string; nid: string; accountType: string; createDate: Date; }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/api/v2/customer`,
       user, { headers: this.headers }).pipe(
         map((response: AuthResponse) => {
           if (this.isBrowser() && response.token) {
