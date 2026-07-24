@@ -4,8 +4,6 @@ This project is an experimental full-stack application where still I am working 
 ---
 \## Architecture
 
-
-
 \### High-Level System Architecture
 
 <a href="image/BankingAppDDD-hl-architecture.png" target="\_blank">
@@ -26,10 +24,7 @@ This project is an experimental full-stack application where still I am working 
 
 </a>
 
-
-
-
-
+## Project Directory Structure
 ```
 
 ├── Core
@@ -52,9 +47,7 @@ This project is an experimental full-stack application where still I am working 
 
 │   ├── IdentityServer
 
-│   
 
-│
 
 ├── Services
 
@@ -80,37 +73,34 @@ This project is an experimental full-stack application where still I am working 
 
 ```
 
+We have implemented below architectural patterns in this repository.
 
+Microservices Architecture
+Clean Code Architecture
+Domain-Driven Design (DDD)
+Command Query Responsibility Segregation (CQRS) with MediatR
+Outbox Pattern for Reliable Messaging
+Cross-cutting concerns Logging, Global Exception Handling and Health Checks
 
 \- \*\*Domains\*\* <br/>
 
 It defines the building blocks and abstractions used on all underlying projects. Its nature is very abstract, with no implementations.
 
-
-
 \- \*\*Infrastructure\*\* <br/>
 
 It holds some abstractions and implementation for infrastructure to be used by all microservices and underlying dependencies.
-
-
 
 \- \*\*Applications\*\* <br/>
 
 It defines the building blocks and abstractions used on all underlying projects and implementation for application to be used by all the services.
 
-
-
 \- \*\*Common\*\* <br/>
 
 It defines the building blocks and abstractions used on all underlying projects and implementation for application to be used by all the services.
 
-
-
 \- \*\*Crosscutting\*\* <br/>
 
 It contains building blocks and implementation to be used by all the services`.
-
-
 
 \- \*\*Services\*\* <br/>
 
@@ -178,7 +168,7 @@ The microservices composing the backend are built to be as simple as possible, s
 
 &nbsp;   for cross-platform backend with:
 
-&nbsp;   <ul>
+<ul>
 
 <li>.NET 8</li><br>
 <li><b>Koalesce.OpenAPI 0.1.1-alpha.2</b></li><br>
@@ -196,22 +186,20 @@ The microservices composing the backend are built to be as simple as possible, s
 <li>SwaggerGen/SwaggerUI 8.1.1</li><br>
  <li>Microsoft.Kiota.\* 1.17.2</li><br>
 </ul>
-
-&nbsp; </li>
-
+</li>
 &nbsp; <li>
 Koalesce.OpenAPI  and Ocelot used for ApiGateway Seq and seq-input-gelf used for logging monitoring and telemetry Redis is used for caching while RabbitMQ is used for messaging
 &nbsp;   <a href='https://angular.io/' target="\_blank">Angular v19.2.7</a> and <a href='http://www.typescriptlang.org/' target="\_blank">TypeScript 5.5.4</a> for the frontend with:
 
 &nbsp;   <ul>
 
-&nbsp;     <li>Kiota 1.0.2</li>
+&nbsp;    <li>Kiota 1.0.2</li>
 
 &nbsp;     <li>NgBootstrap 18.0.0/ Bootstrap 5.3.5</li>
 
 &nbsp;     <li>Font Awesome 6.7.2</li>
 
-&nbsp;   </ul>
+   </ul>
 
 &nbsp; </li>
 
@@ -237,9 +225,7 @@ The project was designed to be easily run within docker containers, hence all yo
 
 
 
-\- Download Docker: <a href="https://docs.docker.com/docker-for-windows/wsl/" target="\_blank">Docker Desktop with support for WLS 2</a>
-
-&nbsp;   
+\- Download Docker: <a href="https://docs.docker.com/docker-for-windows/wsl/" target="\_blank">Docker Desktop with support for WLS 2</a>  
 
 <br/>
 
