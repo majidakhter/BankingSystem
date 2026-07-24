@@ -1,0 +1,64 @@
+<div class="transaction-list">
+  <h2 style="text-align: center;">Transaction List</h2>
+   @if(errorMessage)
+   {
+    <p class="error">{{ errorMessage }}</p>
+   }
+  @if(transactions.length > 0)
+  {
+  <table >
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Transaction Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Transaction Type</th>
+
+        <th>Target <br> Account <br> Number</th>
+        <th>Status</th>
+        <!-- <th>Actions</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      @for(transaction of transactions; track transaction.id)
+      {
+        <tr>
+        <td>{{ transaction.id }}</td>
+        <td>{{ transaction.transactionDate | date: 'medium' }}</td>
+        <td>{{ transaction.description }}</td>
+        <td>{{ transaction.amount | currency }}</td>
+        <td>{{ transaction.transactionType }}</td>
+        <td>{{ transaction.targetAccountNumber }}</td>
+        <td>
+          @if(transaction.status === 'PENDING')
+          {
+            <button 
+            (click)="changeTransactionStatus(transaction.id, 'APPROVED')">Approve</button>
+            <br>
+            <button 
+            (click)="changeTransactionStatus(transaction.id, 'DECLINED')">Decline</button>
+          }
+          @if(transaction.status === 'APPROVED')
+          {
+            <span  class="approved">Approved</span>
+          }
+          @if(transaction.status === 'DECLINED')
+          {
+            <span  class="declined">Declined</span>
+          }
+        </td>
+        <!-- <td>{{ transaction.status ? 'Completed' : 'Pending' }}</td> -->
+        <!-- <td>
+            <button (click)="deleteTransaction(transaction.id)">Delete</button>
+          </td> -->
+      </tr>
+      }
+    </tbody>
+  </table>
+  }
+  @if(transactions.length === 0)
+   {
+    <p>No transactions available.</p>
+   }
+</div>

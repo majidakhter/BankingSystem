@@ -1,0 +1,53 @@
+<div class="loan-list">
+    <h2 style="text-align: center;">Loan List</h2>
+  @if(errorMessage)
+   {
+    <p class="error">{{ errorMessage }}</p>
+   }
+  @if(loans.length > 0)
+  {
+    <table>
+      <thead>
+        <tr>
+          <!-- <th>ID</th> -->
+          <th>Loan <br> Type</th>
+          <th>Amount</th>
+          <th>Interest <br> Rate</th>
+          <th>Monthly <br> Payment</th>
+          <th>Duration <br> (Months)</th>
+          <th>Start <br> Date</th>
+          <th>End <br> Date</th>
+          <th>Remaining <br> Balance</th>
+          <!-- <th>Status</th> -->
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      @for(loan of loans; track loan.id)
+      {
+        <tr>
+          <!-- <td>{{ loan.id }}</td> -->
+          <td>{{ loan.loanType }}</td>
+          <td>{{ loan.loanAmount | currency }}</td>
+          <td>{{ loan.interestRate }}%</td>
+          <td>{{ loan.monthlyPayment | currency }}</td>
+          <td>{{ loan.durationInMonths }}</td>
+          <td>{{ loan.startDate }}</td>
+          <td>{{ loan.endDate }}</td>
+          <td>{{ loan.balanceRemaining | currency }}</td>
+          <!-- <td>{{ loan.status ? 'Approved' : 'Pending' }}</td> -->
+          <td>
+            <button (click)="navigateToPayment(loan.id)">Make Payment</button>
+            <button (click)="deleteLoan(loan.id)">Delete</button>
+          </td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  }
+  @if(loans.length === 0)
+   {
+    <p>No loans available.</p>
+   }
+  </div>
+  

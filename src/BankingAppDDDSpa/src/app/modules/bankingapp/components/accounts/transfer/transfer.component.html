@@ -1,0 +1,35 @@
+<div class="transfer-form">
+    <h2>Transfer Funds</h2>
+     @if(message)
+     {
+       <p class="success">{{ message }}</p>
+     }
+     @if(errorMessage)
+     {
+       <p class="error">{{ errorMessage }}</p>
+     }
+    <form (ngSubmit)="makeTransfer()">
+      <div>
+        <label for="senderId">Sender ID:</label>
+        <input type="number" id="senderId" [(ngModel)]="senderId" name="senderId" required />
+      </div>
+  
+      <div>
+        <label for="receiverId">Receiver ID:</label>
+        <input type="number" id="receiverId" [(ngModel)]="receiverId" name="receiverId" required />
+      </div>
+  
+      <div>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" [(ngModel)]="amount" name="amount" required min="1" />
+      </div>
+  
+      <div>
+        <label for="description">Description:</label>
+        <input type="text" id="description" [(ngModel)]="description" name="description" />
+      </div>
+  
+      <button type="submit">Transfer</button>
+    </form>
+  </div>
+  

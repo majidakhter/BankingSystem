@@ -1,0 +1,68 @@
+.withdraw-form {
+    width: 400px;
+    margin: 30px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #e2fdff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .withdraw-form h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .withdraw-form div {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  input[type="number"], input[type="text"] {
+    width: calc(100% - 12px); /* Adjust the width to include padding */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+  
+  input[type="number"]:focus, input[type="text"]:focus {
+    border-color: #66afe9;
+    outline: none;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.5);
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #d00101;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  button:hover {
+    background-color: #b30000;
+  }
+  
+  .success {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+  

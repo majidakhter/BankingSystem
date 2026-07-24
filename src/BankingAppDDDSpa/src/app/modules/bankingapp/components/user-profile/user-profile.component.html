@@ -1,0 +1,48 @@
+@if(user){
+<div class="user-profile">
+  <h2>Profile</h2>
+  <div class="profile-image" *ngIf="user.image">
+    <img [src]="user!.image" alt="Profile Image" />
+  </div>
+
+  <div class="profile-details">
+    <div class="profile-item">
+      <strong>Account Number:</strong> {{ user!.accountNumber }}
+    </div>
+    <div class="profile-item">
+      <strong>Full Name:</strong> {{ user!.firstName }} {{ user!.lastName }}
+    </div>
+    <div class="profile-item">
+    </div>
+    <div class="profile-item">
+      <strong>Gender:</strong> {{ user!.gender }}
+    </div>
+    <div class="profile-item">
+      <strong>Address:</strong> {{ user!.address }}
+    </div>
+    <div class="profile-item">
+      <strong>Mobile No:</strong> {{ user!.mobileNo }}
+    </div>
+    <div class="profile-item">
+      <strong>NID:</strong> {{ user!.nid }}
+    </div>
+    <div class="profile-item">
+      <strong>Date of Birth:</strong> {{ user!.dob }}
+    </div>
+    <div class="profile-item">
+      <strong>Account Type:</strong> {{ user!.accountType }}
+    </div>
+    <div class="profile-item">
+      <strong>Account Balance:</strong> {{ user!.balance }}
+    </div>
+    <div class="profile-item">
+      <strong>Account Status:</strong> {{ user!.status ? 'Active' : 'Inactive' }}
+    </div>
+  </div>
+</div>
+}
+@if(errorMessage){
+  <p class="error">{{ errorMessage }}</p>
+}
+
+ 

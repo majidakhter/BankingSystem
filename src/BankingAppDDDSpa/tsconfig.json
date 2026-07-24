@@ -1,0 +1,50 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "@core/*": ["src/app/core/*"],
+      "@modules/bankingapp/*": ["src/app/modules/bankingapp/*"],
+      "@modules/authentication/*": ["src/app/modules/authentication/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@environments/*": ["src/environments/*"]
+    },
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "useDefineForClassFields": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "module": "es2022",
+    "lib": ["es2022", "dom"],
+    "esModuleInterop": true, 
+   "allowSyntheticDefaultImports": true,
+    "isolatedModules": true
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  
+  "references": [
+    {
+      "path": "./tsconfig.app.json",
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+.transaction-list {
+    margin: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #e2fdff;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .approved {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .declined {
+    color: red;
+    font-weight: bold;
+  }
+  
+  button {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+  }
+  

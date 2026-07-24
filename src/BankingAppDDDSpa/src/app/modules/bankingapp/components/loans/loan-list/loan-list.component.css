@@ -1,0 +1,91 @@
+.loan-list {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.loan-list h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+thead th {
+  background-color: #00346c;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+tbody td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+button {
+  padding: 5px 10px;
+  margin: 7px auto;
+  background-color: #1284fd;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+p {
+  text-align: center;
+  margin-top: 10px;
+  color: #666;
+}
+
+
+
+
+/* .loan-list {
+    margin: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #e2fdff;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+   */

@@ -1,0 +1,36 @@
+.hero {
+    background: url('https://png.pngtree.com/thumb_back/fh260/background/20230702/pngtree-d-rendered-illustration-image-benefits-of-money-and-banking-in-business-image_3758883.jpg') no-repeat center center/cover;
+    height: 100vh;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: rgb(0, 217, 255);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.hero button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+/* Add styles for the other sections */
+

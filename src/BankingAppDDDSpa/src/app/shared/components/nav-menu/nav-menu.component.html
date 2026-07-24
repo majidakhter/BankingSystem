@@ -1,0 +1,38 @@
+<header>
+    <div class="main-title-container">
+    <a class="navbar-brand" [routerLink]="['/home']">
+      <h2 class="app-title">Coperative Bank App</h2>
+    </a>
+  </div>
+   <div class="nav-container">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container justify-content-center">
+        <a class="navbar-brand" href="#"></a>
+          <button
+            class="navbar-toggler"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbar"
+            >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div
+              class="navbar-collapse collapse"
+              id="navbar">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/home']">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/customer']">Customer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/loan']">Loan</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </nav>
+    </div>
+</header>
+
+
