@@ -1,318 +1,265 @@
-\## Welcome to Banking App DDD
+# Welcome to Banking App DDD
 
-This project is an experimental full-stack application where I am working on frontend and I have combined several cutting-edge technologies and architectural patterns. Thanks for getting here! please <b>give a ⭐</b> if you liked the project. It motivates me to keep improving it.
+This project is an experimental full-stack banking application combining cutting-edge technologies and modern architectural patterns. Thanks for visiting! Please **give a ⭐** if you like this project — it motivates me to keep improving it!
+
 ---
-\## Architecture
 
-\### High-Level System Architecture
+## Features Provided
 
-<a href="image/BankingAppDDD-hl-architecture.png" target="\_blank">
+This system provides a comprehensive suite of banking features to clients:
 
-<img src="image/BankingAppDDD-hl-architecture.png"/>
+- **Account Registration & Opening**: Open a new bank account by providing Full Name, Username, Account Password, Account Type, Branch, and Initial Deposit. A unique Account ID is automatically generated for each user.
+  
+  [![Open Account](image/openaccount.png)](image/openaccount.png)
 
-</a>
+- **Authentication & Login**: Secure login using unique Account ID / Email and Account Password. Full handling for invalid credentials and session token validation.
+  
+  [![Login Page](image/login.png)](image/login.png)
 
+- **User Profile Management**: View and edit user profile details, SSN, contact details, address, and profile photo.
+  
+  [![User Profile](image/userprofile.png)](image/userprofile.png)
 
+- **Balance & Cash Operations**: Real-time balance check, cash deposit, and cash withdrawal with validation against negative amounts or insufficient funds.
+- **Internal & External Fund Transfer**: Transfer money to accounts within the same bank or across external banks with account validation and balance checks.
+  
+  [![User Dashboard](image/userdashboard1.png)](image/userdashboard1.png)
 
+- **Payment Gateway Processing**: Fund transfers using multiple payment methods including **NEFT**, **RTGS**, and **UPI**.
+  
+  [![Fund Transfer](image/fundtransfer.png)](image/fundtransfer.png)
 
+- **Transaction History**: Comprehensive transaction history with filtering and details.
+  
+  [![Transaction History](image/userdashboard2.png)](image/userdashboard2.png)
 
-\### Detailed Architecture
+- **Account Summary**: View detailed balances, account numbers, statuses, and branch info.
+  
+  [![Account Summary](image/accountsummary.png)](image/accountsummary.png)
 
-<a href="image/BankingAppDDD-detailed-architecture.png" target="\_blank">
+- **Beneficiary / Payee Management**: Add and manage payees for quick and safe transfers.
+  
+  [![Add Payee](image/addpayee.png)](image/addpayee.png)
 
-<img src="image/BankingAppDDD-detailed-architecture.png"/>
+- **Loan Application & Evaluation**: Submit loan applications, evaluate applications, search loan applications by ID, and process manager decisions.
+  
+  [![Loan Application](image/loanapplication.png)](image/loanapplication.png)
+  
+  [![Loan Decision](image/loandecision.png)](image/loandecision.png)
+  
+  [![Loan Search](image/loansearch.png)](image/loansearch.png)
 
-</a>
+- **Operator Hub**: Dedicated operator dashboard for bank staff to monitor operations and customer requests.
+  
+  [![Operator Hub](image/operatorhub.png)](image/operatorhub.png)
+
+---
+
+## System Architecture
+
+### High-Level Architecture
+
+[![High-Level System Architecture](image/BankingAppDDD-hl-architecture.png)](image/BankingAppDDD-hl-architecture.png)
+
+### Detailed Architecture
+
+[![Detailed System Architecture](image/BankingAppDDD-detailed-architecture.png)](image/BankingAppDDD-detailed-architecture.png)
+
+---
 
 ## Project Directory Structure
-```
 
+```
 ├── Core
-
-│   ├── Applications
-
-│   ├── Common
-
-│   ├── Domains
-
-│   └── Infrastructures
-
-
-
+│   ├── Applications
+│   ├── Common
+│   ├── Domains
+│   └── Infrastructures
+│
 ├── Crosscutting
-
-│   ├── ServiceClients
-
-│   ├── ApiGateway
-
-│   ├── IdentityServer
-
-
-
+│   ├── ApiGateway
+│   ├── IdentityServer
+│   └── ServiceClients
+│
 ├── Services
-
-│   ├── CustomerManagement
-
-│   ├── AccountManagement
-
-│   ├── LoanManagement
-
-|      └─ BankingApp.LoanManagement
-
-│         ├── API
-
-│         ├── Application
-
-│         ├── Core(Domain)
-
-│         └── Infrastructure
-
-├── SPA
-
+│   ├── AccountManagement
+│   ├── CustomerManagement
+│   ├── LoanManagement
+│   │   └── BankingApp.LoanManagement
+│   │       ├── API
+│   │       ├── Application
+│   │       ├── Core (Domain)
+│   │       └── Infrastructure
+│   └── PaymentProcessing
+│
+├── SPA (BankingAppDDDSpa)
 └── docker-compose
-
 ```
 
-We have implemented below architectural patterns in this repository.
+---
 
-Microservices Architecture
-Clean Code Architecture
-Domain-Driven Design (DDD)
-Command Query Responsibility Segregation (CQRS) with MediatR
-Outbox Pattern for Reliable Messaging
-Cross-cutting concerns Logging, Global Exception Handling and Health Checks
+## Architectural Patterns Implemented
 
-\- \*\*Domains\*\* <br/>
+- **Microservices Architecture**: Vertically sliced services built for scalability and isolation.
+- **Clean Architecture & Domain-Driven Design (DDD)**: Aggregate roots, entity boundaries, value objects, domain services, repository abstractions, and domain events.
+- **CQRS (Command Query Responsibility Segregation)**: Separate read and write models powered by MediatR.
+- **Outbox Pattern**: Reliable domain event publishing across service boundaries.
+- **Saga Pattern**: Distributed transactions implemented using choreography and orchestration.
+- **Circuit Breaker**: Fault-tolerance mechanisms for cross-service calls.
+- **Cross-Cutting Concerns**: Centralized logging with Seq, global exception handling, Polly resilience, and ASP.NET Core Health Checks.
 
-It defines the building blocks and abstractions used on all underlying projects. Its nature is very abstract, with no implementations.
+### Layer Responsibilities
 
-\- \*\*Infrastructure\*\* <br/>
-
-It holds some abstractions and implementation for infrastructure to be used by all microservices and underlying dependencies.
-
-\- \*\*Applications\*\* <br/>
-
-It defines the building blocks and abstractions used on all underlying projects and implementation for application to be used by all the services.
-
-\- \*\*Common\*\* <br/>
-
-It defines the building blocks and abstractions used on all underlying projects and implementation for application to be used by all the services.
-
-\- \*\*Crosscutting\*\* <br/>
-
-It contains building blocks and implementation to be used by all the services`.
-
-\- \*\*Services\*\* <br/>
-
-The microservices composing the backend are built to be as simple as possible, structured as a vertically sliced structure with  `API`, `Application`, `Core,` and `Infrastructure.`
-
-
-
-&nbsp;   ```
-
-&nbsp;     ├── BankingApp.CustomerManagement
-
-&nbsp;     │   ├── Controller(API)
-
-&nbsp;     │   ├── Application
-
-&nbsp;     │   ├── Core(Domain)
-
-&nbsp;     │   └── Infrastructure
-
-&nbsp;   ```
-
-
-
-&nbsp; - \*\*API\*\* <br/>
-
-&nbsp; RESTful API for enabling communication between client and server.
-
-
-
-&nbsp; - \*\*Application\*\* <br/> 
-
-&nbsp; It orchestrates the interactions between the external world and the domain to perform application tasks through use cases by `handling commands and queries`. 
-
-
-
-&nbsp; - \*\*Domain\*\* <br/>
-
-&nbsp; A structured implementation of the domain through aggregates, commands, value objects, domain services, repository definitions, and domain events.
-
-
-
-&nbsp; - \*\*Infrastructure\*\* <br/>
-
-&nbsp; It is a supporting library for upper layers, handling infrastructural matters such as data persistence with \*implementing repositories\*, database mapping, and external integrations.
-
-
-
-&nbsp; - \*\*SPA (Single Page Application)\*\* <br/>
-
-&nbsp; A lightweight Angular-based `SPA` providing a functional and user-friendly UI on which still work is going on.
-
-
+- **Core / Domain**: Building blocks and abstractions used across projects (Aggregates, Value Objects, Domain Events). Pure domain logic without infrastructure dependencies.
+- **Infrastructure**: Persistence implementations, Entity Framework Core mappings, database contexts, and external integrations.
+- **Application**: Application use cases, command/query handlers, DTOs, and event consumers.
+- **Common**: Shared utilities, helper classes, base controllers, and common middleware.
+- **Services (Vertically Sliced)**:
+  ```
+  ├── Services
+  │   ├── BankingApp.AccountManagement
+  │   │   ├── API
+  │   │   ├── Application
+  │   │   ├── Core (Domain)
+  │   │   └── Infrastructure
+  ```
+- **SPA (Single Page Application)**: Modern Angular frontend built with Angular Standalone components, Reactive Forms, NgBootstrap, and FontAwesome.
 
 ---
 
+## Technologies Used
 
+### Backend Stack
 
-\## Technologies used
+- **Framework**: .NET 8 / C# 12
+- **API Gateway**: Ocelot 23.4.3 & Koalesce.OpenAPI
+- **Databases & ORM**: PostgreSQL, MongoDB, Redis, Entity Framework Core 8.0.15, Npgsql.EntityFrameworkCore.PostgreSQL 8.0.11
+- **Messaging & Event Bus**: RabbitMQ with MassTransit
+- **Identity & Auth**: Keycloak 26.1.2 with ASP.NET Core JwtBearer 8.0.15
+- **Logging & Monitoring**: Seq & GELF logging input (`seq-input-gelf`)
+- **Documentation & Kiota**: SwaggerGen / SwaggerUI 8.1.1, Microsoft.Kiota
 
-<ul>
+### Frontend Stack
 
-&nbsp; <li>
-
-&nbsp;   <a href='https://get.asp.net' target="\_blank">ASP.NET Core API</a> and <a href='https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12' target="\_blank">C# 12</a>
-
-&nbsp;   for cross-platform backend with:
-
-<ul>
-
-<li>.NET 8</li><br>
-<li><b>Koalesce.OpenAPI 0.1.1-alpha.2</b></li><br>
-<li>Ocelot 23.4.3</li><br>
-<li>RabbitMq</li><br>
-<li>Redis</li><br>
-<li>Seq</li><br>
-<li>seq-input-gelf</li><br>
-<li>Mongodb</li><br>
-<li>Entity Framework Core 8.0.15</li><br>
-<li>EF Core Migrations</li><br>
-<li>Npgsql.EntityFrameworkCore.PostgreSQL 8.0.11</li><br>
-<li>ASP.NET Core Authentication JwtBearer 8.0.15</li><br>
-<li>Keycloak 26.1.2</li><br>
-<li>SwaggerGen/SwaggerUI 8.1.1</li><br>
- <li>Microsoft.Kiota.\* 1.17.2</li><br>
-</ul>
-</li>
-&nbsp; <li>
-Koalesce.OpenAPI  and Ocelot used for ApiGateway Seq and seq-input-gelf used for logging monitoring and telemetry Redis is used for caching while RabbitMQ is used for messaging
-&nbsp;   <a href='https://angular.io/' target="\_blank">Angular v19.2.7</a> and <a href='http://www.typescriptlang.org/' target="\_blank">TypeScript 5.5.4</a> for the frontend with:
-
-&nbsp;   <ul>
-
-&nbsp;    <li>Kiota 1.0.2</li>
-
-&nbsp;     <li>NgBootstrap 18.0.0/ Bootstrap 5.3.5</li>
-
-&nbsp;     <li>Font Awesome 6.7.2</li>
-
-   </ul>
-
-&nbsp; </li>
-
-</ul>
-
-
+- **Framework**: Angular v19.2 / TypeScript 5.5
+- **UI Components**: Bootstrap 5.3.5 / NgBootstrap 18.0.0
+- **Icons & Styling**: Font Awesome 6.7.2, Vanilla CSS
 
 ---
 
+## Prerequisites & How to Run
 
+### 1. Requirements
 
-\## What do you need to run it 
+- Install **Docker Desktop** with WSL 2 support: [Docker Desktop Download](https://docs.docker.com/docker-for-windows/wsl/)
+- **.NET 8 SDK** & **Node.js** (for local development)
 
+### 2. Database & Identity Setup
 
+#### Keycloak PostgreSQL Setup
+Execute the commands below from your terminal:
 
-\#### Running the microservices using Docker
+```bash
+# Connect to PostgreSQL container
+docker exec -it <container_id_of_postgres> /bin/bash
 
+# Log into PostgreSQL prompt
+psql -U keycloak -d keycloak_db
 
+# Create User and Roles
+CREATE ROLE TestUser WITH LOGIN PASSWORD 'TestUser1';
+ALTER ROLE TestUser WITH CREATEDB LOGIN REPLICATION;
+```
 
-The project was designed to be easily run within docker containers, hence all you need is 1 command line to up everything. Make sure you have `Docker` installed and have fun!
+#### MongoDB Setup
+```bash
+# Connect to MongoDB container
+docker exec -it <container_id_of_mongodb> /bin/bash
 
+# Open MongoDB shell
+mongosh -u root -p root123 --authenticationDatabase admin
 
+# Create user database
+use myUserInfo
+db.createUser({
+  user: "TestUser",
+  pwd: "TestUser1",
+  roles: [ { role: "readWrite", db: "myUserInfo" } ]
+})
+```
 
+Connect using **Studio 3T** or **MongoDB Compass**:
+```
+mongodb://TestUser:TestUser1@localhost:27017/myUserInfo?authSource=myUserInfo
+```
 
+[![MongoDB Studio 3T](image/mongostudio3t.png)](image/mongostudio3t.png)
 
-\- Download Docker: <a href="https://docs.docker.com/docker-for-windows/wsl/" target="\_blank">Docker Desktop with support for WLS 2</a>  
+#### Local DNS Hosts Configuration
+Add the following entries to your `/etc/hosts` file (or `C:\Windows\System32\drivers\etc\hosts` on Windows):
 
-<br/>
+```text
+127.0.0.1 keycloak
+127.0.0.1 seq
+```
 
+### 3. Keycloak Realm & Client Configuration
 
-Few additional  setup is required to run keycloak
-Go to solution directory where docker-compose.yml file exist and run below command
-Execute the command from docker-compose path docker exec -it (containerid of postgresdb) /bin/bash
-Then use psql -U keycloak -d keycloak_db 
-Create User which u want to use for database creation using CREATE ROLE User WITH LOGIN PASSWORD 'TestUser1';
-ALTER ROLE UserName WITH CREATEDB LOGIN REPLICATION ETC;—This will ceate new user in Login/Group Roles
-After executing above command you create another database Keycloak with above user 
+1. Open Keycloak Admin Console at [http://keycloak:8080](http://keycloak:8080) (or `http://localhost:8080`).
+2. Log in using `admin` / `admin`.
+3. Create Realm: `bankaccount`.
+4. Create Client: `customermanagementclient`.
+5. Configure client settings according to the screenshots below:
 
-Similarly create mongodb
-Execute the command from docker-compose path docker exec -it (containerid of mongodb) /bin/bash
-root@2540e80be07d:/# mongosh -u root -p root123 --authenticationDatabase admin
-    test> use admin
-switched to db admin
-admin> show dbs
-admin   100.00 KiB
-config  108.00 KiB
-local    72.00 KiB
-11)	admin> use myUserInfo
-myUserInfo> db.createUser(
-... ...    {
-... ...      user: "TestUser",
-... ...      pwd:  passwordPrompt(),   // or cleartext password
-... ...      roles: [ { role: "readWrite", db: "myUserInfo" } ]
-... ...    }
-... ...  )
-    After entering password use below statement
-           myUserInfo> db.createCollection('UserInfo');
-           myUserInfo>  db.UserInfo.insertOne({ UserId: 1234, UserName : "TestUser", Address: "TestAddress" });
-    Now open studio 3T and create new connection using below connection string
-    mongodb://TestUser@localhost:27017/myUserInfo?authsource=myUserInfo
- After creatung Database for keycloak you have to do a dns entry in /etc/hosts file as below
- 127.0.0.1  keycloak --here keycloak is service name in docker-compose.yml file
- 127.0.0.1  seq   -- here seq is service name in docker-compose.yml file
- After doing above dns entry in etc/hosts file now you can browse keycloak using http://keycloak:8080 and seq for logging on
- http://seq:8081/#/events
- Using keycloak admin console you follow the steps
- 1)Log into admin console using admin user and password admin
- 2)Create realms bankaccount
- 3)Create Clients accountmanagementclient customermanagementclient loanclient identityproviderclient and apigatewayclient and follow below steps for each client 
+   [![Keycloak Setup 1](image/keycloak1.png)](image/keycloak1.png)
+   
+   [![Keycloak Setup 2](image/keycloak2.png)](image/keycloak2.png)
+   
+   [![Keycloak Setup 3](image/keycloak3.png)](image/keycloak3.png)
+   
+   [![Keycloak Setup 4](image/keycloak4.png)](image/keycloak4.png)
+   
+   [![Keycloak Setup 5](image/keycloak5.png)](image/keycloak5.png)
 
- 4) After creating clients do the following setup
- <img src="image/keycloak1.png"/>
- <br>
- <img src="image/keycloak2.png"/>
- <br>
- <img src="image/keycloak3.png"/>
- <br>
- <img src="image/keycloak4.png"/>
- <br>
- <img src="image/keycloak5.png"/>
- Using keycloak admin console you follow the steps
- 1)Log into admin console using admin user and password admin
- 2)Create realms bankaccount
+6. Configure Web API clients for endpoints:
+   - `http://localhost:5263`
+   - `http://localhost:5157`
+   - `http://localhost:5210`
+   - `http://localhost:5273`
+   - `http://localhost:5000` (API Gateway Client)
+7. Copy the client secret from the **Credentials** tab and paste it into the respective `appsettings.json` files for your Web API services.
+8. In the **Roles** tab, create roles: `Admin`, `Customer`, `Operator`, `Underwriter`.
+9. In **Client Scopes**, select `customermanagementclient-dedicated` and add a new mapper for `UserClient`.
+10. In `customermanagementclient` -> **Service Account Roles**, click **Assign Roles**, filter by clients, and assign `realm-management -> manage-users` to allow user creation via Keycloak REST API.
 
-We have to do above setup for each client using url http://localhost:5263
-http://localhost:5157  http://localhost:5210  http://localhost:5273 and http://localhost:5000(this is the url for apigateway client)
-Copy the client secrets from credential tab and paste it in appsetting.json file for each webapi client
-After doing above setup create different role like Admin, Customer, Manager,Accountant,Operator and Underwriter in the role tab
-Create scope in client scope tab select accountmanagementclient dedicated and other client and configure a new mapper for UserClient and save changes
-Create User from User Menu where you have to enter firstname lame and Emailid and check the box email verified 
-Create the User password using credential tab set new password and turn off the temporary option
-Assign above created role to user Select Filter By Clients then choose the role and click assign
+---
 
-Using a terminal, run:
+## Running with Docker Compose
 
- 
+Run the following command from the repository root:
 
-```console
+```bash
+docker-compose up --build
+```
 
-&nbsp;$ docker-compose up or docker-compose up --build
+You can also set `docker-compose.dcproj` as the Startup Project in Visual Studio for debugging.
 
-``` 
+---
 
+## Service Endpoints & Dashboards
 
+- **Angular Frontend SPA**: [http://localhost:4200](http://localhost:4200)
+- **API Gateway**: [http://localhost:5000](http://localhost:5000)
+- **Seq Log Server**: [http://localhost:8081/#/events](http://localhost:8081/#/events)
+  
+  [![Seq Log Server](image/seqlog.png)](image/seqlog.png)
 
-You can also set the `docker-compose.dcproj` as a Startup project on Visual Studio if you want to run it while debugging. 
- After launching the webapi using swagger ui you need to authenticate and authorize the user clicking on authorize button on top right side lock icon and via keycloak by using the created user then execute the end point 
+- **RabbitMQ Dashboard**: [http://localhost:15672](http://localhost:15672) (`guest` / `guest`)
+  
+  [![RabbitMQ Dashboard](image/rabbitmq.png)](image/rabbitmq.png)
 
-
-
-
-
-
-
-
-
+- **PgAdmin Database Manager**: [http://localhost:5050](http://localhost:5050)
+  
+  [![PgAdmin Interface 1](image/pgadmininterface.png)](image/pgadmininterface.png)
+  
+  [![PgAdmin Interface 2](image/pgadminin1terface.png)](image/pgadminin1terface.png)
