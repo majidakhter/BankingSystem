@@ -1,0 +1,179 @@
+<div class="accounts-summary-wrapper py-4">
+  <div class="container" style="max-width: 1140px;">
+    
+    <div class="row g-4">
+      
+      <!-- LEFT MAIN CONTENT COLUMN -->
+      <div class="col-lg-8">
+        
+        <!-- Accounts Main Card -->
+        <div class="card main-account-card border-0 shadow-sm p-4 rounded-4 bg-white position-relative overflow-hidden">
+          
+          <!-- Top Row: Piggy/Wallet Icon + Account No + Available Balance -->
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            
+            <div class="d-flex align-items-start gap-3">
+              <div class="account-icon-badge rounded-3 p-2 bg-light-blue text-primary d-flex align-items-center justify-content-center">
+                <i class="bi bi-wallet2 fs-2 text-primary"></i>
+              </div>
+              <div>
+                <h5 class="account-title fw-bold text-dark m-0 d-flex align-items-center gap-2">
+                  Savings A/c <span class="font-monospace text-primary fs-5">{{ maskedAccountNumber }}</span>
+                  <i class="bi" [class.bi-eye-slash]="isAccountNoMasked" [class.bi-eye]="!isAccountNoMasked" (click)="toggleMaskedAccountNo()" role="button"></i>
+                </h5>
+                <span class="user-fullname-text text-uppercase fw-semibold text-secondary small d-block mt-1">
+                  {{ userName }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Balance Top Right -->
+            <div class="text-end">
+              <h3 class="balance-title fw-bold text-dark m-0">
+                @if (showBalance) {
+                  ₹{{ currentBalance | number:'1.2-2' }}
+                } @else {
+                  ••••••••
+                }
+              </h3>
+              <span class="available-balance-label text-muted small d-inline-flex align-items-center gap-1 mt-1">
+                Available Balance <i class="bi bi-info-circle text-muted" title="Total cleared funds available in account"></i>
+              </span>
+            </div>
+
+          </div>
+
+          <!-- Branch & IFSC Row -->
+          <div class="branch-ifsc-bar my-3 pt-2">
+            <span class="text-muted small fw-medium">Branch & IFSC : </span>
+            <span class="fw-bold text-dark small text-uppercase ms-1">{{ branchName }}, {{ branchCode }}</span>
+            <button type="button" class="btn btn-sm btn-link p-0 ms-2 text-primary" (click)="copyBranchIfsc()" title="Copy Branch & IFSC">
+              <i class="bi bi-copy"></i>
+            </button>
+            @if (copySuccess) {
+              <span class="badge bg-success ms-2 small">Copied!</span>
+            }
+            <div class="branch-address-sub text-muted small mt-1">
+              <i class="bi bi-geo-alt-fill me-1 text-primary"></i> {{ branchAddress }}
+            </div>
+          </div>
+
+          <hr class="my-3 border-slate-200" />
+
+          <!-- Account Balance & Overdraft Breakdown -->
+          <div class="account-breakdown-section py-2">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-semibold text-dark fs-6">Account Balance</span>
+              <span class="fw-bold text-dark fs-6">
+                @if (showBalance) {
+                  ₹{{ currentBalance | number:'1.2-2' }}
+                } @else {
+                  ••••••••
+                }
+              </span>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted small">
+                + Total Overdraft 
+                <a href="javascript:void(0)" class="text-primary text-decoration-none fw-semibold ms-2" (click)="navigateTo('/user-profile')">Enable Now</a>
+              </span>
+              <span class="fw-semibold text-muted small">₹0.00</span>
+            </div>
+          </div>
+
+          <hr class="my-3 border-slate-200" />
+
+          <!-- Bottom Action Buttons Row -->
+          <div class="d-flex justify-content-between align-items-center pt-2 flex-wrap gap-2">
+            
+            <!-- More Dropdown -->
+            <div class="dropdown">
+              <button class="btn btn-link text-primary text-decoration-none fw-bold dropdown-toggle p-0" type="button" data-bs-toggle="dropdown">
+                More
+              </button>
+              <ul class="dropdown-menu shadow border-0">
+                <li><a class="dropdown-item cursor-pointer" (click)="navigateTo('/bank-statement')"><i class="bi bi-file-earmark-text me-2"></i>Bank Statement</a></li>
+                <li><a class="dropdown-item cursor-pointer" (click)="navigateTo('/transfer')"><i class="bi bi-send me-2"></i>Transfer Funds</a></li>
+                <li><a class="dropdown-item cursor-pointer" (click)="navigateTo('/add-payee')"><i class="bi bi-person-plus me-2"></i>Add Payee</a></li>
+                <li><a class="dropdown-item cursor-pointer" (click)="navigateTo('/deposit')"><i class="bi bi-piggy-bank me-2"></i>Open Deposit</a></li>
+              </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-3">
+              <button type="button" class="btn btn-outline-primary action-btn-outline fw-semibold px-4 py-2 d-inline-flex align-items-center gap-2" (click)="navigateTo('/user-profile')">
+                <i class="bi bi-person-circle fs-5"></i> Account Details
+              </button>
+
+              <button type="button" class="btn btn-primary action-btn-solid fw-semibold px-4 py-2 d-inline-flex align-items-center gap-2" (click)="navigateTo('/transaction-list')">
+                <i class="bi bi-journal-text fs-5"></i> Recent Transaction
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDEBAR COLUMN: QUICK LINKS -->
+      <div class="col-lg-4">
+        
+        <div class="card quick-links-card border-0 shadow-sm p-4 rounded-4 bg-white">
+          <h4 class="fw-bold text-dark mb-4 fs-4">Quick Links</h4>
+          
+          <ul class="list-group list-group-flush border-0">
+            
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="navigateTo('/transfer')">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium">
+                <i class="bi bi-card-text text-primary fs-5"></i> Cash, Cheque & Demand Draft
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="navigateTo('/register')">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium">
+                <i class="bi bi-person-plus-fill text-primary fs-5"></i> Open a Savings Account
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="navigateTo('/transfer')">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium">
+                <i class="bi bi-currency-exchange text-primary fs-5"></i> Foreign Currency Inward Remittance
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="navigateTo('/deposit')">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium">
+                <i class="bi bi-piggy-bank-fill text-primary fs-5"></i> Open a Deposit
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="navigateTo('/deposit')">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium">
+                <i class="bi bi-percent text-primary fs-5"></i> View FD Interest Rates
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="navigateTo('/user-profile')">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium">
+                <i class="bi bi-shield-lock-fill text-primary fs-5"></i> Safe Deposit Lockers
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

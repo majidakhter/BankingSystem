@@ -1,1 +1,253 @@
-<p>loans works!</p>
+<div class="loans-management-container py-4">
+  <div class="container" style="max-width: 1000px;">
+
+    <!-- Top Card Header -->
+    <div class="card border-0 shadow-sm p-4 mb-4 rounded-4 bg-white">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+          <h3 class="fw-bold text-dark m-0 d-flex align-items-center gap-2">
+            <i class="bi bi-bank2 text-primary fs-2"></i> Loan Management Hub
+          </h3>
+          <p class="text-muted small m-0 mt-1">Manage loan applications, underwriter evaluations, and operator registrations.</p>
+        </div>
+        <button class="btn btn-outline-secondary btn-sm" (click)="setTab('apply')">
+          <i class="bi bi-plus-circle me-1"></i> New Application
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-pills mt-4 border-bottom pb-2">
+        <li class="nav-item">
+          <button class="nav-link fw-semibold" [class.active]="activeTab === 'apply'" (click)="setTab('apply')">
+            <i class="bi bi-pencil-square me-1"></i> Apply for Loan
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-semibold" [class.active]="activeTab === 'evaluate'" (click)="setTab('evaluate')">
+            <i class="bi bi-check2-square me-1"></i> Underwriter & Decisioning
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-semibold" [class.active]="activeTab === 'operators'" (click)="setTab('operators')">
+            <i class="bi bi-people-fill me-1"></i> Operators Hub
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-semibold" [class.active]="activeTab === 'search'" (click)="setTab('search')">
+            <i class="bi bi-search me-1"></i> Search Application
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Alert Messages -->
+    @if (errorMessage) {
+      <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ errorMessage }}
+      </div>
+    }
+    @if (successMessage) {
+      <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> {{ successMessage }}
+      </div>
+    }
+
+    <!-- TAB 1: Apply for Loan (LoanApplicationController -> createloanapplication) -->
+    @if (activeTab === 'apply') {
+      <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
+        <h4 class="fw-bold mb-3 text-dark">Loan Application Submission</h4>
+        <p class="text-muted small mb-4">Submits <code class="text-primary">LoanApplicationSubmittedCommand</code> to <code class="text-secondary">LoanApplicationController</code>.</p>
+
+        <form (ngSubmit)="onSubmitLoanApplication()">
+          
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-dark">Loan Type</label>
+              <select class="form-select custom-input" [(ngModel)]="loanTypeId" name="loanTypeId">
+                <option [ngValue]="1">Personal Loan</option>
+                <option [ngValue]="2">Home Loan</option>
+                <option [ngValue]="3">Education Loan</option>
+                <option [ngValue]="4">Business Loan</option>
+                <option [ngValue]="5">Car Loan</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-dark">Loan Amount ($)</label>
+              <input type="number" class="form-control custom-input" [(ngModel)]="loanAmount" name="loanAmount" required />
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-dark">Loan Duration (Years)</label>
+              <input type="number" class="form-control custom-input" [(ngModel)]="loanYears" name="loanYears" min="1" max="30" required />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-dark">Interest Rate (%)</label>
+              <input type="number" step="0.1" class="form-control custom-input" [(ngModel)]="interestPercent" name="interestPercent" required />
+            </div>
+          </div>
+
+          <hr class="my-4" />
+          <h5 class="fw-bold mb-3 text-secondary">Applicant & Asset Details</h5>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-dark">National Identifier / SSN / NID</label>
+              <input type="text" class="form-control custom-input" [(ngModel)]="customerNid" name="customerNid" placeholder="Optional / Auto-extracted" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-dark">Monthly Income ($)</label>
+              <input type="number" class="form-control custom-input" [(ngModel)]="monthlyIncome" name="monthlyIncome" required />
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <label class="form-label fw-semibold text-dark">Property / Asset Value ($)</label>
+              <input type="number" class="form-control custom-input" [(ngModel)]="propertyValue" name="propertyValue" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold text-dark">Property Street</label>
+              <input type="text" class="form-control custom-input" [(ngModel)]="propertyStreet" name="propertyStreet" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold text-dark">City & Zip</label>
+              <input type="text" class="form-control custom-input" [(ngModel)]="propertyCity" name="propertyCity" />
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-3 mt-4">
+            <button type="submit" class="btn btn-primary px-5 py-2 fw-semibold" [disabled]="isLoading">
+              @if (isLoading) {
+                <span class="spinner-border spinner-border-sm me-2"></span> Submitting...
+              } @else {
+                <i class="bi bi-send-fill me-2"></i> Submit Application
+              }
+            </button>
+          </div>
+
+        </form>
+      </div>
+    }
+
+    <!-- TAB 2: Underwriter & Decisioning (LoanApplicationController -> evaluate, accept, reject) -->
+    @if (activeTab === 'evaluate') {
+      <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
+        <h4 class="fw-bold mb-3 text-dark">Underwriter Evaluation & Decisioning</h4>
+        <p class="text-muted small mb-4">Executes underwriter commands: <code class="text-primary">evaluateloanapplication</code>, <code class="text-success">acceptloanapplication</code>, and <code class="text-danger">rejectloanapplication</code>.</p>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold text-dark">Target Loan Application ID (GUID)</label>
+            <input type="text" class="form-control custom-input" [(ngModel)]="targetApplicationId" placeholder="e.g. 3fa85f64-5717-4562-b3fc-2c963f66afa6" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold text-dark">Underwriter ID (GUID)</label>
+            <input type="text" class="form-control custom-input" [(ngModel)]="underwriterId" placeholder="Underwriter user ID" />
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold text-dark">Accepted Loan Amount ($)</label>
+            <input type="number" class="form-control custom-input" [(ngModel)]="acceptedAmount" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold text-dark">Rejection Reason (If rejecting)</label>
+            <input type="text" class="form-control custom-input" [(ngModel)]="rejectionReason" />
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <button type="button" class="btn btn-info text-white px-4 fw-semibold" (click)="onEvaluateApplication()" [disabled]="isLoading">
+            <i class="bi bi-search me-1"></i> Evaluate Application
+          </button>
+          <button type="button" class="btn btn-success px-4 fw-semibold" (click)="onAcceptApplication()" [disabled]="isLoading">
+            <i class="bi bi-check-circle me-1"></i> Accept Loan
+          </button>
+          <button type="button" class="btn btn-danger px-4 fw-semibold" (click)="onRejectApplication()" [disabled]="isLoading">
+            <i class="bi bi-x-circle me-1"></i> Reject Loan
+          </button>
+        </div>
+
+      </div>
+    }
+
+    <!-- TAB 3: Operators Hub (OperatorController -> getoperators, addOperator) -->
+    @if (activeTab === 'operators') {
+      <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
+        <h4 class="fw-bold mb-3 text-dark">Operator Management</h4>
+        <p class="text-muted small mb-4">Integrates with <code class="text-primary">OperatorController</code> (<code class="text-secondary">/api/v2/operator</code>).</p>
+
+        <!-- Add Operator Card -->
+        <div class="p-3 bg-light rounded-3 mb-4">
+          <h6 class="fw-bold text-dark mb-2">Register New Operator</h6>
+          <div class="row g-2 align-items-center">
+            <div class="col-md-8">
+              <input type="number" class="form-control custom-input" [(ngModel)]="operatorCompetence" placeholder="Competence Level Amount ($)" />
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary w-100 fw-semibold" (click)="onAddOperator()" [disabled]="isLoading">
+                <i class="bi bi-person-plus-fill me-1"></i> Add Operator
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Operators List Table -->
+        <h6 class="fw-bold text-dark mb-3">Active Operators</h6>
+        <div class="table-responsive">
+          <table class="table align-middle table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Operator ID</th>
+                <th>Competence Level</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (operatorsList && operatorsList.length > 0) {
+                @for (op of operatorsList; track op.id) {
+                  <tr>
+                    <td class="font-monospace text-muted">{{ op.id || op.operatorId || 'N/A' }}</td>
+                    <td class="fw-bold text-success">${{ (op.competenceLevelAmount || op.competenceLevel || 100000) | number:'1.2-2' }}</td>
+                    <td><span class="badge bg-success">Active</span></td>
+                  </tr>
+                }
+              } @else {
+                <tr>
+                  <td colspan="3" class="text-center text-muted py-3">No operator records found.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    }
+
+    <!-- TAB 4: Search Application (LoanApplicationController -> getloanbyid) -->
+    @if (activeTab === 'search') {
+      <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
+        <h4 class="fw-bold mb-3 text-dark">Search Loan Application</h4>
+        <p class="text-muted small mb-4">Integrates with <code class="text-primary">GET /api/v2/loanapplication/getloanbyid/{{ '{' }}loanapplicationid{{ '}' }}</code>.</p>
+
+        <div class="input-group mb-4">
+          <input type="text" class="form-control custom-input" [(ngModel)]="searchAppId" placeholder="Enter Loan Application ID (GUID)" />
+          <button class="btn btn-primary px-4 fw-semibold" type="button" (click)="onSearchLoan()" [disabled]="isLoading">
+            <i class="bi bi-search me-1"></i> Search
+          </button>
+        </div>
+
+        @if (searchResult) {
+          <div class="p-3 bg-light rounded-3 border">
+            <h6 class="fw-bold text-primary mb-2">Loan Application Result</h6>
+            <pre class="m-0 bg-white p-3 rounded text-dark small" style="max-height: 300px; overflow-y: auto;">{{ searchResult | json }}</pre>
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</div>

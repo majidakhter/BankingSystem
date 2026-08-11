@@ -8,7 +8,6 @@ namespace BankingAppDDD.Common.Extension
 {
     public static class Extensions
     {
-
         public static IServiceCollection AddSwaggerDocs(this IServiceCollection services)
         {
             SwaggerOptions options;
@@ -22,61 +21,15 @@ namespace BankingAppDDD.Common.Extension
             }
 
             if (!options.Enabled)
-            {
+            { 
                 return services;
             }
             var appSettings = configuration!.Get<AppSettings>();
-            var authurl = $"{appSettings!.Keycloak.BaseUrl}/realms/{appSettings!.Keycloak.Realm}/protocol/openid-connect/auth";
-            var keycloaktokenUrl = $"{appSettings!.Keycloak.BaseUrl}/realms/{appSettings!.Keycloak.Realm}/protocol/openid-connect/token";
             return services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(options.Version, new OpenApiInfo { Title = options.Title, Version = options.Version });
                 c.DescribeAllParametersInCamelCase();
                 c.CustomSchemaIds(x => x.FullName);
-                if (options.IncludeSecurity)
-                {
-                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                    {
-                        Type = SecuritySchemeType.OAuth2,
-                        In = ParameterLocation.Header,
-                        Name = "Authorization",
-                        Scheme = "Bearer",
-                        Flows = new OpenApiOAuthFlows
-                        {
-                            AuthorizationCode = new OpenApiOAuthFlow
-                            {
-                                AuthorizationUrl = new Uri(authurl),
-                                TokenUrl = new Uri(keycloaktokenUrl),
-                                Scopes = new Dictionary<string, string>
-                                {
-                                    { "openid", "openid" },
-                                    { "profile", "profile" },
-                                }
-                            }
-                        },
-
-                    });
-                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                     {
-                        {
-                          new OpenApiSecurityScheme
-                          {
-                           Reference = new OpenApiReference
-                            {
-                            Type = ReferenceType.SecurityScheme,
-                             Id = "Bearer"
-                             },
-                           Scheme = "Bearer",
-                           Name = "Bearer",
-                           In = ParameterLocation.Header,
-
-                          },
-                         new[] { "openid", "profile"}
-                        }
-                     });
-                    // c.OperationFilter<AuthorizeOperationFilter>();
-                }
-
             });
         }
 
@@ -94,31 +47,19 @@ namespace BankingAppDDD.Common.Extension
             }
             var appSettings = configuration!.Get<AppSettings>();
             var routePrefix = string.IsNullOrWhiteSpace(options.RoutePrefix) ? "swagger" : options.RoutePrefix;
+            builder.UseSwagger();
+            builder.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint($"/{routePrefix}/{options.Version ?? ApiVersions.V2}/swagger.json", options.Title);
+                c.RoutePrefix = routePrefix; // Sets Swagger UI at root/swagger
+            });
 
-            builder.UseStaticFiles()
-                .UseSwagger(c => c.RouteTemplate = routePrefix + "/{documentName}/swagger.json");
-            return options.ReDocEnabled
-                ? builder.UseReDoc(c =>
-                {
-                    c.RoutePrefix = routePrefix;
-                    c.SpecUrl = $"{options.Version}/swagger.json";
-                })
-                : builder.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint($"/{routePrefix}/{options.Version ?? ApiVersions.V2}/swagger.json", options.Title);
-                    c.RoutePrefix = routePrefix;
-                    c.OAuthClientId(appSettings!.Keycloak.ClientId); // The client ID configured in Keycloak
-                    c.OAuthClientSecret(appSettings!.Keycloak.ClientSecret);
-                    c.OAuthScopes("openid profile");
-                    c.OAuthAppName("Identity Service API - Keycloak Integration");
-                    c.OAuthUsePkce();
-                });
+            return builder;
+
         }
     }
+    
 }
-
-// Replace the GetOptions extension method to use Activator.CreateInstance instead of new()
-// This allows instantiation of types with required members (C# 11+)
 public static class Extensions
 {
     public static TModel GetOptions<TModel>(this IConfiguration configuration, string section) where TModel : class

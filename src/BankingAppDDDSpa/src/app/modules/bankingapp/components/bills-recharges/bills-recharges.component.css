@@ -1,0 +1,57 @@
+.bills-recharges-wrapper {
+  background-color: #f8fafc;
+  min-height: calc(100vh - 70px);
+}
+
+.custom-input {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+}
+
+.custom-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.recharge-now-btn {
+  border-radius: 8px;
+  border: 1.5px solid #1d4ed8;
+  color: #1d4ed8;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.recharge-now-btn:hover {
+  background-color: #1d4ed8;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
+}
+
+.bg-light-blue {
+  background-color: #eff6ff;
+}
+
+/* Quick Links Styling */
+.quick-links-card {
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.quick-link-item {
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  border-radius: 10px;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.quick-link-item:hover {
+  background-color: #f1f5f9;
+  transform: translateX(4px);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

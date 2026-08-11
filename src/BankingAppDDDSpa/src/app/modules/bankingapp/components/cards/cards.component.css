@@ -1,0 +1,87 @@
+.cards-management-wrapper {
+  background-color: #f8fafc;
+  min-height: calc(100vh - 70px);
+}
+
+.tab-btn {
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.tab-btn:hover {
+  opacity: 1;
+}
+
+.active-tab {
+  opacity: 1 !important;
+  border-bottom: 3px solid #ffffff !important;
+  border-radius: 0 !important;
+}
+
+/* Blue MasterCard Credit Card Graphic */
+.blue-credit-card {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 195px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Black Debit Card Graphic */
+.black-debit-card {
+  background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+  min-height: 195px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* MasterCard Circles */
+.mc-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mc-red {
+  background-color: #eb001b;
+}
+
+.mc-yellow {
+  background-color: #f79e1b;
+  opacity: 0.9;
+}
+
+.ms-n2 {
+  margin-left: -10px;
+}
+
+.bg-light-blue {
+  background-color: #eff6ff;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Quick Links Styling */
+.quick-links-card {
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.quick-link-item {
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  border-radius: 10px;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.quick-link-item:hover {
+  background-color: #f1f5f9;
+  transform: translateX(4px);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

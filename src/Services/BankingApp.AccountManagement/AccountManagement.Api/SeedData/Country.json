@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "name": "India",
+    "code": "IN"
+  },
+  {
+    "id": 2,
+    "name": "USA",
+    "code": "US"
+  },
+  {
+    "id": 3,
+    "name": "UK",
+    "code": "GB"
+  },
+  {
+    "id": 4,
+    "name": "Canada",
+    "code": "CA"
+  },
+  {
+    "id": 5,
+    "name": "Australia",
+    "code": "AU"
+  }
+]

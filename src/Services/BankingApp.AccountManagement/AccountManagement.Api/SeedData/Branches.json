@@ -1,0 +1,44 @@
+[
+  {
+    "branchId": "b9429258-f553-4ae2-a176-bca043453cdc",
+    "name": "Gandhi Bazaar",
+    "branchCode": "COB0007",
+    "ifscCode": "COB0004487",
+    "micrCode": "700002025",
+    "dateAdded": "2025-08-16T08:30:00Z",
+    "bankId": "e8bab6e7-fb02-4bcc-ad63-8fefddd295a5",
+    "street": "Bow Bazar Street",
+    "city": "kolkata",
+    "state": "west bengal",
+    "country": "India",
+    "zipCode": "700001"
+  },
+  {
+    "branchId": "5cd92c82-80ac-45ee-aef0-f341546b4ace",
+    "name": "Jaynagak",
+    "branchCode": "COB0008",
+    "ifscCode": "COB0004488",
+    "micrCode": "700002026",
+    "dateAdded": "2025-08-16T08:30:00Z",
+    "bankId": "e8bab6e7-fb02-4bcc-ad63-8fefddd295a5",
+    "street": "Princep Street",
+    "city": "kolkata",
+    "state": "west bengal",
+    "country": "India",
+    "zipCode": "700002"
+  },
+  {
+    "branchId": "9186f6ce-4955-4bb6-9a0f-afdcbacc639b",
+    "name": "Lindsay street",
+    "branchCode": "COB0009",
+    "ifscCode": "COB0004489",
+    "micrCode": "700002027",
+    "dateAdded": "2025-08-16T08:30:00Z",
+    "bankId": "e8bab6e7-fb02-4bcc-ad63-8fefddd295a5",
+    "street": "Zakaria Street",
+    "city": "kolkata",
+    "state": "west bengal",
+    "country": "India",
+    "zipCode": "700003"
+  }
+]

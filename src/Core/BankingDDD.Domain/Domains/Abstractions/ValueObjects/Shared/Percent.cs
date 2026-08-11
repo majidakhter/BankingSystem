@@ -1,5 +1,5 @@
 ﻿
-namespace BankingAppDDD.Domains.Abstractions.ValueObjects
+namespace BankingAppDDD.Domains.Abstractions.ValueObjects.Shared
 {
     public class Percent : ValueObject, IComparable<Percent>
     {

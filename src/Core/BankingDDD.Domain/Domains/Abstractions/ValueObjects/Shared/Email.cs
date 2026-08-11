@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace BankingAppDDD.Domains.Abstractions.ValueObjects
+namespace BankingAppDDD.Domains.Abstractions.ValueObjects.Shared
 {
     public sealed class Email : ValueObject
     {

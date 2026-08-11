@@ -1,21 +1,30 @@
-﻿using BankingAppDDD.Applications.Abstractions.Repositories;
+using BankingAppDDD.Applications.Abstractions.Repositories;
 using MediatR;
 
 namespace BankingAppDDD.Applications.Abstractions.Commands
 {
     public abstract class CommandHandler
     {
-        protected readonly IUnitOfWork UnitOfWork;
-        protected CommandHandler(IUnitOfWork unitOfWork)
+        protected readonly IUnitOfWork? UnitOfWork;
+        protected CommandHandler(IUnitOfWork? unitOfWork = null)
         {
             UnitOfWork = unitOfWork;
         }
     }
 
+    public abstract class CoordinatedCommandHandler
+    {
+        protected readonly IAppCoordinationUnitOfWork? UnitOfWork;
+        
+        protected CoordinatedCommandHandler(IAppCoordinationUnitOfWork? unitOfWork = null)
+        {
+            UnitOfWork = unitOfWork;
+        }
+    }
 
     public abstract class CommandHandler<TCommand> : CommandHandler, IRequestHandler<TCommand, Unit> where TCommand : Command
     {
-        protected CommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+        protected CommandHandler(IUnitOfWork? unitOfWork = null) : base(unitOfWork)
         {
 
         }
@@ -31,7 +40,7 @@ namespace BankingAppDDD.Applications.Abstractions.Commands
 
     public abstract class UpdateCommandHandler<TCommand, TResponse> : CommandHandler, IRequestHandler<TCommand, TResponse> where TCommand : IUpdateCommand<TResponse>
     {
-        protected UpdateCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+        protected UpdateCommandHandler(IUnitOfWork? unitOfWork = null) : base(unitOfWork)
         {
 
         }
@@ -39,9 +48,10 @@ namespace BankingAppDDD.Applications.Abstractions.Commands
         public abstract Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken);
 
     }
+
     public abstract class CreateCommandHandler<TCommand, TResponse> : CommandHandler, IRequestHandler<TCommand, TResponse> where TCommand : ICreateCommand<TResponse>
     {
-        protected CreateCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+        protected CreateCommandHandler(IUnitOfWork? unitOfWork = null) : base(unitOfWork)
         {
 
         }
@@ -49,9 +59,10 @@ namespace BankingAppDDD.Applications.Abstractions.Commands
         public abstract Task<TResponse> Handle(TCommand request, CancellationToken cancellationToken);
 
     }
+
     public abstract class CreateCommandHandler<TCommand> : CommandHandler, IRequestHandler<TCommand, Guid> where TCommand : CreateCommand
     {
-        protected CreateCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+        protected CreateCommandHandler(IUnitOfWork? unitOfWork = null) : base(unitOfWork)
         {
 
         }
@@ -64,5 +75,18 @@ namespace BankingAppDDD.Applications.Abstractions.Commands
         protected abstract Task<Guid> HandleAsync(TCommand request);
     }
 
+    public abstract class CreateCoordinatedCommandHandler<TCommand> : CoordinatedCommandHandler, IRequestHandler<TCommand, Guid> where TCommand : CreateCommand
+    {
+        protected CreateCoordinatedCommandHandler(IAppCoordinationUnitOfWork? unitOfWork = null) : base(unitOfWork)
+        {
 
+        }
+
+        public async Task<Guid> Handle(TCommand request, CancellationToken cancellationToken)
+        {
+            return await HandleAsync(request);
+        }
+
+        protected abstract Task<Guid> HandleAsync(TCommand request);
+    }
 }

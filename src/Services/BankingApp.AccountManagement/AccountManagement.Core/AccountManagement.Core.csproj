@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\BankingDDD.CommonLibrary\Common\Common.csproj" />
+    <ProjectReference Include="..\..\..\Core\BankingDDD.Domain\Domains\Domains.csproj" />
+  </ItemGroup>
+
+</Project>

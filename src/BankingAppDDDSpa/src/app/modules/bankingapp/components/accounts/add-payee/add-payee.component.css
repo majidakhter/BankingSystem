@@ -1,0 +1,100 @@
+.add-payee-container {
+  background-color: #f8fafc;
+  min-height: calc(100vh - 70px);
+}
+
+.payee-card {
+  border-radius: 16px;
+  background-color: #ffffff;
+}
+
+/* Mode Tab Buttons (Domestic / International) */
+.mode-tabs-container {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mode-tab-btn {
+  border-radius: 8px !important;
+  font-weight: 600;
+  padding: 8px 24px;
+  font-size: 0.95rem;
+}
+
+.mode-tab-btn.btn-primary {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+
+.mode-tab-btn.btn-outline-primary {
+  border-color: #1d4ed8;
+  color: #1d4ed8;
+  background-color: transparent;
+}
+
+.mode-tab-btn.btn-outline-primary:hover {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+/* Grey Form Section Card */
+.grey-section-card {
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.nickname-input, .custom-input, .custom-select {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+}
+
+.nickname-input:focus, .custom-input:focus, .custom-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.char-counter {
+  pointer-events: none;
+  font-size: 0.85rem;
+}
+
+/* Relation Oval Pill Buttons */
+.relation-pill {
+  border-radius: 20px;
+  border: 1.5px solid #2563eb;
+  color: #2563eb;
+  font-weight: 500;
+  padding: 6px 22px;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.relation-pill:hover {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+.relation-pill.active {
+  background-color: #1d4ed8;
+  color: #ffffff;
+  border-color: #1d4ed8;
+}
+
+/* Continue Primary Action Button */
+.continue-btn {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(29, 78, 216, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.continue-btn:hover {
+  background-color: #1e40af;
+  border-color: #1e40af;
+}

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\BankingDDD.Application\Applications\Applications.csproj" />
+    <ProjectReference Include="..\..\..\Core\BankingDDD.CommonLibrary\Common\Common.csproj" />
+    <ProjectReference Include="..\UserManagement.Core\UserManagement.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.5.2" />
+    <PackageReference Include="Refit" Version="14.0.1" />
+	  <PackageReference Include="Polly" Version="8.7.0" />
+</ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Users\Repositories\" />
+  </ItemGroup>
+
+</Project>

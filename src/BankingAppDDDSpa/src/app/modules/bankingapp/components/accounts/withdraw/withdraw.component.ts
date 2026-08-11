@@ -1,12 +1,14 @@
 import { Component, inject } from '@angular/core';
-import {CommonModule} from "@angular/common";
+import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
-import { TransactionService } from '@core/services/transaction.service'; 
+import { RouterModule } from '@angular/router';
+import { TransactionService } from '@core/services/transaction.service';
+
 @Component({
   selector: 'app-withdraw',
   templateUrl: './withdraw.component.html',
   styleUrl: './withdraw.component.css',
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class WithdrawComponent {
   userId: number = 0;
@@ -25,7 +27,6 @@ export class WithdrawComponent {
     this.transactionService.withdrawMoney(this.userId, this.amount, this.description).subscribe({
       next: (response) => {
         alert("Your withdraw of "+`${this.amount}`+" is pending approval. Once approved by the admin, your balance will be updated.");
-        // this.message = `Successfully withdrew ${this.amount} for user ${this.userId}.`;
         this.errorMessage = '';
         this.clearForm();
       },

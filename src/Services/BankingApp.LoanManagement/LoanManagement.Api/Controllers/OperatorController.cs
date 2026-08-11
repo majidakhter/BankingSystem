@@ -1,0 +1,46 @@
+﻿using BankingApp.LoanManagement.Application.OperatorsCommand;
+using BankingApp.LoanManagement.Application.OperatorsQueries;
+using BankingAppDDD.Common.Types;
+using BankingAppDDD.Domains.Operators.Models;
+using BankingAppDDD.Infrastructures.ActionResults;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BankingApp.LoanManagement.Controllers
+{
+    [ApiController]
+    [Route("api/v{version:apiVersion}/operator")]
+    public class OperatorController : ControllerBase
+    {
+        readonly IMediator _mediator;
+        public OperatorController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+
+        [HttpPost]
+        [MapToApiVersion(ApiVersions.V2)]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(CreatedResultEnvelope), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> AddOperator([FromBody] AddOperatorCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("getoperators")]
+        [MapToApiVersion(ApiVersions.V2)]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(List<OperatorDTO>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> GetOperators()
+        {
+            var result = await _mediator.Send(new GetOperatorQuery());
+            return Ok(result);
+        }
+    }
+}

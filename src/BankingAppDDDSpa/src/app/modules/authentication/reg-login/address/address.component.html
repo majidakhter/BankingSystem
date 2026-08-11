@@ -1,36 +1,50 @@
 <div [formGroup]="addressForm">
-    <div class="row">
-  <div class="col-md-6">
-            <div class="mb-6">
-              <label for="street" class="form-label">Street:</label>
-              <input id="street" type="text" class="form-control" formControlName="street" />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="city" class="form-label">City:</label>
-              <input id="city" type="text" class="form-control" formControlName="city" />
-            </div>
-  </div>
-  </div>
   <div class="row">
-  <div class="col-md-6">
-    <div class="mb-3">
-    <label for="state" class="form-label">State:</label>
-    <input id="state" class="form-control" formControlName="state" type="text" />
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="street" class="form-label">Street:</label>
+        <input id="street" type="text" class="form-control" formControlName="street" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="city" class="form-label">City:</label>
+        <input id="city" type="text" class="form-control" formControlName="city" />
+      </div>
     </div>
   </div>
-  <div class="col-md-6">
-    <div class="mb-3">
-    <label for="zipcode" class="form-label">Zipcode:</label>
-    <input id="zipcode" class="form-control" formControlName="zipcode" type="text" />
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="country" class="form-label">Country:</label>
+        <select id="country" class="form-select" formControlName="country">
+          <option value="">Select Country</option>
+          @for (cnt of countries; track cnt.id || cnt.name) {
+            <option [value]="cnt.name">{{ cnt.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="state" class="form-label">State:</label>
+        <select id="state" class="form-select" formControlName="state">
+          <option value="">Select State</option>
+          @for (st of filteredStates; track st.id || st.name) {
+            <option [value]="st.name">{{ st.name }}</option>
+          }
+        </select>
+      </div>
     </div>
   </div>
-  </div>
-  <div class="col-md-6">
-    <div class="mb-3">
-    <label for="country" class="form-label">Country:</label>
-    <input id="country" class="form-control" formControlName="country" type="text" />
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="zipcode" class="form-label">Zipcode:</label>
+        <input id="zipcode" class="form-control" formControlName="zipcode" type="text" />
+      </div>
     </div>
   </div>
 </div>

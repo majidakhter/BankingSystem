@@ -1,21 +1,48 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-6">
-      <h2 class="text-center">Register</h2>
+    <div class="col-md-8 col-lg-6">
+      <h2 class="text-center mb-4">Register / Open Account</h2>
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="userName" class="form-label">UserName:</label>
+              <input id="userName" type="text" class="form-control" formControlName="userName" />
+              @if(registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched) {
+                <div class="text-danger">
+                  @if(registerForm.get('userName')?.errors?.['required']) {
+                    <small>UserName is required.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="password" class="form-label">Password:</label>
+              <input id="password" type="password" class="form-control" formControlName="password" />
+              @if(registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+                <div class="text-danger">
+                  @if (registerForm.get('password')?.errors?.['required']) {
+                    <small>Password is required.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
               <label for="firstName" class="form-label">First Name:</label>
               <input id="firstName" type="text" class="form-control" formControlName="firstName" />
-              @if(registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched)
-              {
+              @if(registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
                 <div class="text-danger">
-                  @if(registerForm.get('firstName')?.errors?.['required'])
-                  {
-                    <small>Name is required.</small>
+                  @if(registerForm.get('firstName')?.errors?.['required']) {
+                    <small>First Name is required.</small>
                   }
-              </div>
+                </div>
               }
             </div>
           </div>
@@ -23,71 +50,90 @@
             <div class="mb-3">
               <label for="lastName" class="form-label">Last Name:</label>
               <input id="lastName" type="text" class="form-control" formControlName="lastName" />
-              @if(registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched)
-              {
+              @if(registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
                 <div class="text-danger">
-                  @if (registerForm.get('lastName')?.errors?.['required']) 
-                  {
-                     <small>Name is required.</small>
+                  @if (registerForm.get('lastName')?.errors?.['required']) {
+                    <small>Last Name is required.</small>
                   }
-              </div>
+                </div>
               }
             </div>
           </div>
         </div>
+
         <div class="row">
           <div class="col-md-6">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email:</label>
-          <input id="email" type="email" class="form-control" formControlName="email" />
-          @if(registerForm.get('email')?.invalid && registerForm.get('email')?.touched)
-          {
-             <div class="text-danger">
-              @if(registerForm.get('email')?.errors?.['required'])
-              {
-                <small>Email is required.</small>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input id="email" type="email" class="form-control" formControlName="email" />
+              @if(registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+                <div class="text-danger">
+                  @if(registerForm.get('email')?.errors?.['required']) {
+                    <small>Email is required.</small>
+                  }
+                  @if(registerForm.get('email')?.errors?.['email']) {
+                    <small>Invalid email address.</small>
+                  }
+                </div>
               }
-              @if(registerForm.get('email')?.errors?.['email'])
-              {
-                <small>Invalid email address.</small>
-              }
+            </div>
           </div>
-          }
-          </div>
-        </div>
-        <div class="col-md-6">
+          <div class="col-md-6">
             <div class="mb-3">
               <label for="accountType" class="form-label">Account Type:</label>
               <select id="accountType" class="form-select" formControlName="accountType">
                 <option value="">Select Account Type</option>
-                <option value="Savings">Savings</option>
-                <option value="Checking">Checking</option>
-                <option value="Business">Business</option>
+                <option value="1">Savings</option>
+                <option value="2">Current</option>
+                <option value="3">Loan</option>
+                <option value="4">PPF</option>
               </select>
             </div>
           </div>
-          </div>
-        
+        </div>
+
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12">
             <div class="mb-3">
-              <label for="mobileNo" class="form-label">Cell:</label>
-              <input id="mobileNo" type="text" class="form-control" formControlName="mobileNo" />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="nid" class="form-label">National Id:</label>
-              <input id="nid" type="text" class="form-control" formControlName="nid" />
+              <label for="branchId" class="form-label">Bank Branch:</label>
+              <select id="branchId" class="form-select" formControlName="branchId">
+                <option value="">-- Select Preferred Bank Branch --</option>
+                @for (branch of branches; track branch.branchId || branch.id || branch.name) {
+                  <option [value]="branch.branchId || branch.id">
+                    {{ branch.name }} ({{ branch.branchCode || branch.ifscCode }})
+                  </option>
+                }
+              </select>
+              @if(registerForm.get('branchId')?.invalid && registerForm.get('branchId')?.touched) {
+                <div class="text-danger">
+                  <small>Please select a bank branch.</small>
+                </div>
+              }
             </div>
           </div>
         </div>
-        
+
+
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
-              <label for="dob" class="form-label">Date of Birth:</label>
-              <input id="dob" type="date" class="form-control" formControlName="dob" />
+              <label for="phoneNo" class="form-label">Phone Number:</label>
+              <input id="phoneNo" type="text" class="form-control" formControlName="phoneNo" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="ssnNumber" class="form-label">SSN / National ID:</label>
+              <input id="ssnNumber" type="text" class="form-control" formControlName="ssnNumber" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="dateofBirth" class="form-label">Date of Birth:</label>
+              <input id="dateofBirth" type="date" class="form-control" formControlName="dateofBirth" />
             </div>
           </div>
           <div class="col-md-6">
@@ -101,27 +147,24 @@
               </select>
             </div>
           </div>
-          
-        </div>
-        <div class="row">
-          <app-address></app-address>
         </div>
 
-        <div class="form-group">
-          <label for="image" class="form-label">Profile Image:</label>
-          <input type="file" id="image" (change)="onImageSelected($event)" class="form-control" formControlName="image" />
+        <div class="row">
+          <app-address formControlName="address"></app-address>
         </div>
-        <!-- <div class="mb-3">
-          <label for="image" class="form-label">Image URL:</label>
-          <input id="image" type="text" class="form-control" formControlName="image" />
-        </div> -->
-        <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
+
+        <div class="form-group mb-3 mt-3">
+          <label for="image" class="form-label">Profile Image:</label>
+          <input type="file" id="image" (change)="onImageSelected($event)" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Register</button>
       </form>
-      @if(errorMessage){
+      @if(errorMessage) {
         <div class="alert alert-danger mt-3">{{ errorMessage }}</div>
       }
-      @if(successMessage){
-        <div  class="alert alert-success mt-3">{{ successMessage }}</div>
+      @if(successMessage) {
+        <div class="alert alert-success mt-3">{{ successMessage }}</div>
       }
     </div>
   </div>

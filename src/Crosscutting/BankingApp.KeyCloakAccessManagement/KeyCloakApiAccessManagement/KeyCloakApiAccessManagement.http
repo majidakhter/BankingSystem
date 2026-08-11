@@ -1,0 +1,6 @@
+@KeyCloakApiAccessManagement_HostAddress = http://localhost:5067
+
+GET {{KeyCloakApiAccessManagement_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

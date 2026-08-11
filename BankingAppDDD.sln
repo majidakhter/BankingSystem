@@ -13,13 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{E1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "src\Crosscutting\BankingDDD.IdentityServer\Identity\Identity.csproj", "{DDB8FDEA-3143-41E0-A6E8-85C96093A7ED}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoOpBankCustomerMgmt", "CoOpBankCustomerMgmt", "{74D4D034-C6E6-4A25-A573-5BBA6589B417}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoOpBankAccountMgmt", "CoOpBankAccountMgmt", "{0092A781-B144-4863-BD27-D18046EECBD6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructures", "src\Core\BankingDDD.Infrastructure\Infrastructures\Infrastructures.csproj", "{6BF011E1-FC35-4A88-A729-7A28AE028F42}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoOpBankLoanMgmt", "CoOpBankLoanMgmt", "{8B87C16E-C62F-40CB-8288-675092B772F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoOpBankUserMgmt", "CoOpBankUserMgmt", "{FED75DD1-E61B-4538-83EF-2635370A5F42}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9A7392E9-3ACA-4A70-BDAB-45DD99F14FE4}"
 EndProject
@@ -27,11 +27,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applications", "src\Core\Ba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "src\Core\BankingDDD.CommonLibrary\Common\Common.csproj", "{97EB0FD3-34B5-4547-968B-FA8119A286D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.AccountManagement", "src\Services\BankingApp.AccountManagement\BankingApp.AccountManagement.csproj", "{F1B8C12D-FBB1-B322-B20F-1764CB554C0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.AccountManagement", "src\Services\BankingApp.AccountManagement\AccountManagement.Api\BankingApp.AccountManagement.csproj", "{F1B8C12D-FBB1-B322-B20F-1764CB554C0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.CustomerManagement", "src\Services\BankingApp.CustomerManagement\BankingApp.CustomerManagement.csproj", "{19E2046D-283D-BCE6-5F27-FB8A0065E9EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.UserManagement", "src\Services\BankingApp.UserManagement\UserManagement.Api\BankingApp.UserManagement.csproj", "{5C105A24-441A-4423-8C51-F728D898A743}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.LoanManagement", "src\Services\BankingApp.LoanManagement\BankingApp.LoanManagement.csproj", "{98793A5C-924E-AE94-A1C7-83E77893A24B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.LoanManagement", "src\Services\BankingApp.LoanManagement\LoanManagement.Api\BankingApp.LoanManagement.csproj", "{98793A5C-924E-AE94-A1C7-83E77893A24B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
@@ -95,9 +95,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aks", "aks", "{BA645A63-9DD
 		aks\banking-loanmanagement.yaml = aks\banking-loanmanagement.yaml
 		aks\bankingautoscale.yaml = aks\bankingautoscale.yaml
 		aks\commands.txt = aks\commands.txt
+		aks\customermanagement-hostendpoint.yaml = aks\customermanagement-hostendpoint.yaml
 		aks\identitymanagement-hostendpoint.yaml = aks\identitymanagement-hostendpoint.yaml
 		aks\keycloak-configmap.yaml = aks\keycloak-configmap.yaml
-		aks\customermanagement-hostendpoint.yaml = aks\customermanagement-hostendpoint.yaml
 		aks\keycloak-secret.yaml = aks\keycloak-secret.yaml
 		aks\keycloak.yaml = aks\keycloak.yaml
 		aks\loanmanagement-hostendpoint.yaml = aks\loanmanagement-hostendpoint.yaml
@@ -113,6 +113,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aks", "aks", "{BA645A63-9DD
 		aks\seq-input-gelf.yaml = aks\seq-input-gelf.yaml
 		aks\seq.yaml = aks\seq.yaml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManagement.Core", "src\Services\BankingApp.AccountManagement\AccountManagement.Core\AccountManagement.Core.csproj", "{94F8B538-2FDB-9C2B-1D53-0AD46D2973DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManagement.Application", "src\Services\BankingApp.AccountManagement\AccountManagement.Application\AccountManagement.Application.csproj", "{B945D17A-1CE6-4CFD-A680-5780D8423866}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManagement.Infrastructure", "src\Services\BankingApp.AccountManagement\AccountManagement.Infrastructure\AccountManagement.Infrastructure.csproj", "{0AA47839-FD35-4E5E-892F-C11381A90F5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagement.Core", "src\Services\BankingApp.LoanManagement\LoanManagement.Core\LoanManagement.Core.csproj", "{846507AE-8881-4A24-8EEC-A232C88124E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagement.Application", "src\Services\BankingApp.LoanManagement\LoanManagement.Application\LoanManagement.Application.csproj", "{C92A58CB-14C8-4BB8-A04A-6F0A49C9B669}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagement.Infrastructure", "src\Services\BankingApp.LoanManagement\LoanManagement.Infrastructure\LoanManagement.Infrastructure.csproj", "{42DFF014-7C40-470E-B29C-50BFD9A9FF13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Core", "src\Services\BankingApp.UserManagement\UserManagement.Core\UserManagement.Core.csproj", "{878EA8E1-70BD-47E3-8CE1-262016C99693}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Application", "src\Services\BankingApp.UserManagement\UserManagement.Application\UserManagement.Application.csproj", "{81853B7D-1824-41F4-8C3B-453FFA7F3211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Infrastructure", "src\Services\BankingApp.UserManagement\UserManagement.Infrastructure\UserManagement.Infrastructure.csproj", "{7A81997F-4115-4C36-96B3-6A740C270596}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingAppDDD.KeyCloakClientLibrary", "src\Crosscutting\BankingAppDDD.KeyCloakClientLibrary\BankingAppDDD.KeyCloakClientLibrary.csproj", "{0D3B0E31-2E52-402F-AFB4-0F7E17CB99BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoOpBankPaymentServices", "CoOpBankPaymentServices", "{3ADF690E-B94A-40CE-A926-A501C3A3290D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApp.PaymentProcessing", "src\Services\BankingApp.PaymentProcessing\BankingApp.PaymentProcessing.csproj", "{FC5FF5AB-0E3E-D024-9D3D-11941D3ABC52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -148,10 +172,10 @@ Global
 		{F1B8C12D-FBB1-B322-B20F-1764CB554C0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1B8C12D-FBB1-B322-B20F-1764CB554C0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1B8C12D-FBB1-B322-B20F-1764CB554C0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19E2046D-283D-BCE6-5F27-FB8A0065E9EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19E2046D-283D-BCE6-5F27-FB8A0065E9EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19E2046D-283D-BCE6-5F27-FB8A0065E9EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19E2046D-283D-BCE6-5F27-FB8A0065E9EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C105A24-441A-4423-8C51-F728D898A743}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C105A24-441A-4423-8C51-F728D898A743}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C105A24-441A-4423-8C51-F728D898A743}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C105A24-441A-4423-8C51-F728D898A743}.Release|Any CPU.Build.0 = Release|Any CPU
 		{98793A5C-924E-AE94-A1C7-83E77893A24B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{98793A5C-924E-AE94-A1C7-83E77893A24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98793A5C-924E-AE94-A1C7-83E77893A24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -164,6 +188,50 @@ Global
 		{2DAF3F81-4190-4433-8114-3A427F85BB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DAF3F81-4190-4433-8114-3A427F85BB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DAF3F81-4190-4433-8114-3A427F85BB63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94F8B538-2FDB-9C2B-1D53-0AD46D2973DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94F8B538-2FDB-9C2B-1D53-0AD46D2973DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94F8B538-2FDB-9C2B-1D53-0AD46D2973DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94F8B538-2FDB-9C2B-1D53-0AD46D2973DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B945D17A-1CE6-4CFD-A680-5780D8423866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B945D17A-1CE6-4CFD-A680-5780D8423866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B945D17A-1CE6-4CFD-A680-5780D8423866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B945D17A-1CE6-4CFD-A680-5780D8423866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA47839-FD35-4E5E-892F-C11381A90F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA47839-FD35-4E5E-892F-C11381A90F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA47839-FD35-4E5E-892F-C11381A90F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA47839-FD35-4E5E-892F-C11381A90F5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{846507AE-8881-4A24-8EEC-A232C88124E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{846507AE-8881-4A24-8EEC-A232C88124E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{846507AE-8881-4A24-8EEC-A232C88124E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{846507AE-8881-4A24-8EEC-A232C88124E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C92A58CB-14C8-4BB8-A04A-6F0A49C9B669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C92A58CB-14C8-4BB8-A04A-6F0A49C9B669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C92A58CB-14C8-4BB8-A04A-6F0A49C9B669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C92A58CB-14C8-4BB8-A04A-6F0A49C9B669}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42DFF014-7C40-470E-B29C-50BFD9A9FF13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42DFF014-7C40-470E-B29C-50BFD9A9FF13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42DFF014-7C40-470E-B29C-50BFD9A9FF13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42DFF014-7C40-470E-B29C-50BFD9A9FF13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{878EA8E1-70BD-47E3-8CE1-262016C99693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{878EA8E1-70BD-47E3-8CE1-262016C99693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{878EA8E1-70BD-47E3-8CE1-262016C99693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{878EA8E1-70BD-47E3-8CE1-262016C99693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81853B7D-1824-41F4-8C3B-453FFA7F3211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81853B7D-1824-41F4-8C3B-453FFA7F3211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81853B7D-1824-41F4-8C3B-453FFA7F3211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81853B7D-1824-41F4-8C3B-453FFA7F3211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A81997F-4115-4C36-96B3-6A740C270596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A81997F-4115-4C36-96B3-6A740C270596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A81997F-4115-4C36-96B3-6A740C270596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A81997F-4115-4C36-96B3-6A740C270596}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D3B0E31-2E52-402F-AFB4-0F7E17CB99BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D3B0E31-2E52-402F-AFB4-0F7E17CB99BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D3B0E31-2E52-402F-AFB4-0F7E17CB99BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D3B0E31-2E52-402F-AFB4-0F7E17CB99BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC5FF5AB-0E3E-D024-9D3D-11941D3ABC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC5FF5AB-0E3E-D024-9D3D-11941D3ABC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC5FF5AB-0E3E-D024-9D3D-11941D3ABC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC5FF5AB-0E3E-D024-9D3D-11941D3ABC52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,17 +239,29 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8AF9D836-F065-46FF-BD73-F519E32AC151} = {9C772555-5A11-43B7-B720-1E637E02F915}
 		{DDB8FDEA-3143-41E0-A6E8-85C96093A7ED} = {EA3EB546-597C-47DA-87BA-15962CBF61AE}
-		{74D4D034-C6E6-4A25-A573-5BBA6589B417} = {E17DF4E1-B61A-4B03-91B5-CF0360B54210}
 		{0092A781-B144-4863-BD27-D18046EECBD6} = {E17DF4E1-B61A-4B03-91B5-CF0360B54210}
 		{6BF011E1-FC35-4A88-A729-7A28AE028F42} = {9C772555-5A11-43B7-B720-1E637E02F915}
 		{8B87C16E-C62F-40CB-8288-675092B772F4} = {E17DF4E1-B61A-4B03-91B5-CF0360B54210}
+		{FED75DD1-E61B-4538-83EF-2635370A5F42} = {E17DF4E1-B61A-4B03-91B5-CF0360B54210}
 		{97D9506B-503C-4C6F-9CE7-355C781615E3} = {9C772555-5A11-43B7-B720-1E637E02F915}
 		{97EB0FD3-34B5-4547-968B-FA8119A286D1} = {9C772555-5A11-43B7-B720-1E637E02F915}
 		{F1B8C12D-FBB1-B322-B20F-1764CB554C0F} = {0092A781-B144-4863-BD27-D18046EECBD6}
-		{19E2046D-283D-BCE6-5F27-FB8A0065E9EA} = {74D4D034-C6E6-4A25-A573-5BBA6589B417}
+		{5C105A24-441A-4423-8C51-F728D898A743} = {FED75DD1-E61B-4538-83EF-2635370A5F42}
 		{98793A5C-924E-AE94-A1C7-83E77893A24B} = {8B87C16E-C62F-40CB-8288-675092B772F4}
 		{036A5967-5728-4A23-906E-180143F2A6C8} = {EA3EB546-597C-47DA-87BA-15962CBF61AE}
 		{2DAF3F81-4190-4433-8114-3A427F85BB63} = {EA3EB546-597C-47DA-87BA-15962CBF61AE}
+		{94F8B538-2FDB-9C2B-1D53-0AD46D2973DA} = {0092A781-B144-4863-BD27-D18046EECBD6}
+		{B945D17A-1CE6-4CFD-A680-5780D8423866} = {0092A781-B144-4863-BD27-D18046EECBD6}
+		{0AA47839-FD35-4E5E-892F-C11381A90F5B} = {0092A781-B144-4863-BD27-D18046EECBD6}
+		{846507AE-8881-4A24-8EEC-A232C88124E6} = {8B87C16E-C62F-40CB-8288-675092B772F4}
+		{C92A58CB-14C8-4BB8-A04A-6F0A49C9B669} = {8B87C16E-C62F-40CB-8288-675092B772F4}
+		{42DFF014-7C40-470E-B29C-50BFD9A9FF13} = {8B87C16E-C62F-40CB-8288-675092B772F4}
+		{878EA8E1-70BD-47E3-8CE1-262016C99693} = {FED75DD1-E61B-4538-83EF-2635370A5F42}
+		{81853B7D-1824-41F4-8C3B-453FFA7F3211} = {FED75DD1-E61B-4538-83EF-2635370A5F42}
+		{7A81997F-4115-4C36-96B3-6A740C270596} = {FED75DD1-E61B-4538-83EF-2635370A5F42}
+		{0D3B0E31-2E52-402F-AFB4-0F7E17CB99BA} = {EA3EB546-597C-47DA-87BA-15962CBF61AE}
+		{3ADF690E-B94A-40CE-A926-A501C3A3290D} = {E17DF4E1-B61A-4B03-91B5-CF0360B54210}
+		{FC5FF5AB-0E3E-D024-9D3D-11941D3ABC52} = {3ADF690E-B94A-40CE-A926-A501C3A3290D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47989F9D-F280-412E-A02C-99362644B8B9}

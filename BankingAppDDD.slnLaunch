@@ -3,11 +3,15 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "src\\Services\\BankingApp.AccountManagement\\BankingApp.AccountManagement.csproj",
+        "Path": "src\\Services\\BankingApp.AccountManagement\\AccountManagement.Api\\BankingApp.AccountManagement.csproj",
         "Action": "Start"
       },
       {
-        "Path": "src\\Services\\BankingApp.CustomerManagement\\BankingApp.CustomerManagement.csproj",
+        "Path": "src\\Services\\BankingApp.UserManagement\\UserManagement.Api\\BankingApp.UserManagement.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\Crosscutting\\BankingDDD.IdentityServer\\Identity\\Identity.csproj",
         "Action": "Start"
       }
     ]

@@ -1,0 +1,87 @@
+.topbar {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  a {
+    color: #94a3b8 !important;
+    font-size: 13px;
+
+    &:hover {
+      color: #38bdf8 !important;
+    }
+  }
+
+  .text-primary {
+    color: #38bdf8 !important;
+  }
+}
+
+.sticky-top {
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.navbar {
+  .navbar-brand {
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a !important;
+      display: flex;
+      align-items: center;
+
+      i {
+        color: #2563eb !important;
+      }
+    }
+  }
+
+  .nav-link {
+    font-family: var(--font-heading, 'Outfit', sans-serif);
+    font-weight: 600;
+    color: #334155 !important;
+    font-size: 15px;
+    padding: 8px 16px !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #2563eb !important;
+    }
+  }
+
+  .dropdown-menu {
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+    padding: 8px;
+
+    .dropdown-item {
+      font-size: 14px;
+      font-weight: 500;
+      color: #334155;
+      padding: 10px 16px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #f1f5f9;
+        color: #2563eb;
+      }
+    }
+  }
+
+  .custom-fdrd-dropdown {
+    background-color: #111827 !important;
+    border: 1px solid #374151 !important;
+    min-width: 200px;
+
+    .dropdown-item {
+      color: #f9fafb !important;
+      &:hover {
+        background-color: #1f2937 !important;
+        color: #38bdf8 !important;
+      }
+    }
+  }
+}

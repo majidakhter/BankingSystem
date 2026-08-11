@@ -1,0 +1,22 @@
+﻿
+namespace BankingAppDDD.Domains.Branches.Model
+{
+    public class BranchDTO
+    {
+        public Guid BranchId { get; set; }
+        public string? Name { get; set; }
+        public string BranchCode { get; set; } = string.Empty;
+        public string IfscCode { get; set; } = string.Empty;
+        public int MicrCode { get; set; }
+        public DateTime? DateAdded { get; set; }
+        public string? PhoneNumber { get; set; }
+        public Guid BankId { get; set; }
+        public string? Street { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? ZipCode { get; set; }
+        public string? Country { get; set; }
+
+
+    }
+}

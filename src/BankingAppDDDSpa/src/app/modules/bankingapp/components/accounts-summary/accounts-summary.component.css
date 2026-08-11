@@ -1,0 +1,67 @@
+.accounts-summary-wrapper {
+  background-color: #f8fafc;
+  min-height: calc(100vh - 70px);
+}
+
+.main-account-card {
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.bg-light-blue {
+  background-color: #eff6ff;
+  width: 54px;
+  height: 54px;
+}
+
+.action-btn-outline {
+  border-radius: 12px;
+  border: 1.5px solid #1d4ed8;
+  color: #1d4ed8;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.action-btn-outline:hover {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+.action-btn-solid {
+  border-radius: 12px;
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+  transition: all 0.2s ease-in-out;
+}
+
+.action-btn-solid:hover {
+  background-color: #1e40af;
+  border-color: #1e40af;
+  box-shadow: 0 6px 16px rgba(29, 78, 216, 0.35);
+}
+
+/* Quick Links Styling */
+.quick-links-card {
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.quick-link-item {
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  border-radius: 10px;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.quick-link-item:hover {
+  background-color: #f1f5f9;
+  transform: translateX(4px);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

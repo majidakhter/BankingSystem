@@ -1,4 +1,4 @@
-﻿using BankingAppDDD.Common.Mongo.Helper;
+using BankingAppDDD.Common.Mongo.Helper;
 using BankingAppDDD.Common.Mongo.Interfaces.Collection;
 using BankingAppDDD.Common.Mongo.Interfaces.Operations;
 using Microsoft.Extensions.Options;
@@ -8,44 +8,60 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace BankingAppDDD.Common.Mongo
+namespace BankingAppDDD.MongoService.Application.Mongo
 {
     public class MongoDbContext : IMongoDbContext
     {
-
         private readonly IMongoDatabase _mongoDatabase;
-        private readonly Collections configCollectionName;
-        public MongoDbContext(IMongoDatabase mongodatabase, IOptions<Collections> mySettingsOptions)
+        private readonly Collections? configCollectionName;
+
+        public MongoDbContext(IMongoDatabase mongodatabase, IOptions<Collections>? mySettingsOptions)
         {
             _mongoDatabase = mongodatabase;
-            configCollectionName = mySettingsOptions.Value;
-            CreateMongoCollection();
+            configCollectionName = mySettingsOptions?.Value;
+            if (configCollectionName != null)
+            {
+                CreateMongoCollection();
+            }
         }
 
         private void CreateMongoCollection()
         {
-            var configcollectionData = GetAllCollection(configCollectionName);
-            List<string> dbcollectionNames = _mongoDatabase.ListCollectionNames().ToList();
-            var resultcollectionname = configcollectionData.Except(dbcollectionNames);
-            foreach (var item in resultcollectionname)
+            try
             {
-                _mongoDatabase?.CreateCollectionAsync(item, new CreateCollectionOptions
+                if (configCollectionName == null || _mongoDatabase == null) return;
+                var configcollectionData = GetAllCollection(configCollectionName);
+                List<string> dbcollectionNames = _mongoDatabase.ListCollectionNames().ToList();
+                var resultcollectionname = configcollectionData.Except(dbcollectionNames);
+                foreach (var item in resultcollectionname)
                 {
-                    Capped = true,
-                    MaxSize = 10485760 // 10MB
-                });
+                    _mongoDatabase?.CreateCollectionAsync(item, new CreateCollectionOptions
+                    {
+                        Capped = true,
+                        MaxSize = 10485760 // 10MB
+                    });
+                }
             }
-            //  resultcollectionname.Select(x> _mongoDatabase?.CreateCollectionAsync(x , new CreateCollectionOptions { Capped = true, MaxSize = 10485760 })); check this code
+            catch (Exception)
+            {
+                // Silently ignore connection errors during collection creation so constructor resolution doesn't block
+            }
         }
+
         private List<string> GetAllCollection(Collections collectionval)
         {
             var collectionData = new List<string>();
-            Type type = collectionval!.GetType();
+            if (collectionval == null) return collectionData;
+
+            Type type = collectionval.GetType();
             var properties = type.GetProperties();
-            // collectionData = properties.Select(x => x.GetValue(collectionval).ToString()).ToList();  //check this code
             foreach (PropertyInfo property in properties)
             {
-                collectionData.Add(property.GetValue(collectionval).ToString());
+                var val = property.GetValue(collectionval);
+                if (val != null)
+                {
+                    collectionData.Add(val.ToString()!);
+                }
             }
             return collectionData;
         }
@@ -56,26 +72,6 @@ namespace BankingAppDDD.Common.Mongo
         {
             return GetCollectionObject<T>(cancellationToken, stateContext);
         }
-
-        //public IMongoCollection<T> GetCollectionWithClassMap<T>() where T : class, IMongoCollectionSerializationMap<T>, new()
-        //{
-        //    if (!BsonClassMap.IsClassMapRegistered(typeof(T)))
-        //    {
-        //        Action<BsonClassMap<T>> classMap = (new T()).SerializationClassMap();
-        //        if (classMap != null) BsonClassMap.RegisterClassMap<T>(classMap);
-        //        else BsonClassMap.RegisterClassMap<T>();
-        //    }
-
-        //    return GetCollectionObject<T>();
-        //}
-
-        //private void CreateCollection(List<string> mongoCollections)
-        // {
-        //foreach (var collection in mongoCollections)
-        // {
-        //_mongoDatabase.GetCollection<BsonDocument>(collection);
-        // }
-        // }
 
         private IMongoCollection<T> GetCollectionObject<T>(CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null)
         {
@@ -95,14 +91,12 @@ namespace BankingAppDDD.Common.Mongo
             return collectionObject;
         }
 
-
         private void CreateCollectionTTLIndex<T>(IMongoCollection<T> collectionObject, CancellationToken cancellationToken = default, IMongoDBStateContext? stateContext = null)
         {
             if (stateContext != null && stateContext?.TTLExpiration != null && stateContext.TTLExpiration.TotalSeconds > 0 && !string.IsNullOrEmpty(stateContext.ExpirationFieldName))
             {
                 try
                 {
-
                     var indexBuilder = Builders<T>.IndexKeys;
                     var keys = indexBuilder.Ascending(stateContext.ExpirationFieldName);
                     var options = new CreateIndexOptions
@@ -112,10 +106,9 @@ namespace BankingAppDDD.Common.Mongo
                     var indexModel = new CreateIndexModel<T>(keys, options);
                     var tsk = collectionObject.Indexes.CreateOneAsync(indexModel, cancellationToken: cancellationToken);
 
-
                     tsk.Wait();
                 }
-                catch (AggregateException ex)
+                catch (AggregateException)
                 {
 
                 }
@@ -185,7 +178,6 @@ namespace BankingAppDDD.Common.Mongo
         {
             var filter = Builders<T>.Filter.And(expression);
             var result = await GetCollection<T>(cancellationtoken, stateContext).FindAsync<T>(filter).ConfigureAwait(false);
-            //Task.WaitAny(result);
             return result.ToList();
         }
 
@@ -193,13 +185,8 @@ namespace BankingAppDDD.Common.Mongo
         {
             var filter = Builders<T>.Filter.And(expression);
             var result = await GetCollection<T>(cancellationtoken, stateContext).FindAsync<T>(filter, options).ConfigureAwait(true);
-
-            // await Task.WhenAll(result);
             return result.ToList();
-            //Task<IEnumerable<T>> t =await result;
-            //return Task.FromResult(result);
         }
-
 
         public P FindAndProjectOne<T, P>(Expression<Func<T, P>> projectionParameter, Expression<Func<T, bool>> searchParameters, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
@@ -260,7 +247,6 @@ namespace BankingAppDDD.Common.Mongo
             return result;
         }
 
-
         public async Task<UpdateResult> UpdateManyAsync<T>(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDef, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var result = await GetCollection<T>(cancellationtoken, stateContext).UpdateManyAsync<T>(expression, updateDef);
@@ -269,7 +255,6 @@ namespace BankingAppDDD.Common.Mongo
 
         public ReplaceOneResult ReplaceOne<T>(T @object, Expression<Func<T, bool>> key, ReplaceOptions options, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
-
             var filter = Builders<T>.Filter.And(key);
             var result = GetCollection<T>(cancellationtoken, stateContext).ReplaceOne(filter, @object, options);
             return result;
@@ -323,6 +308,7 @@ namespace BankingAppDDD.Common.Mongo
             var result = await GetCollection<T>(cancellationtoken, stateContext).FindOneAndDeleteAsync<T>(filter);
             return result;
         }
+
         public T FindOneAndDelete<T>(Expression<Func<T, bool>> expression, FindOneAndDeleteOptions<T> options, CancellationToken cancellationtoken = default, IMongoDBStateContext? stateContext = null) where T : class
         {
             var filter = Builders<T>.Filter.And(expression);

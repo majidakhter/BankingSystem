@@ -1,0 +1,15 @@
+global using BankingAppDDD.Applications.Abstractions.Commands;
+global using BankingAppDDD.Applications.Abstractions.Queries;
+global using BankingAppDDD.Domains.Abstractions.Entities;
+global using BankingAppDDD.Domains.Abstractions.Guards;
+global using BankingAppDDD.Domains.Accounts.Models;
+global using BankingAppDDD.PaymentProcessing.API.Controllers.Requests;
+global using BankingAppDDD.PaymentProcessing.Application.ProcessingPayment;
+global using BankingAppDDD.PaymentProcessing.Application.ProcessingPayment.IntegrationEvents;
+global using BankingAppDDD.PaymentProcessing.Application.RequestingPayment;
+global using BankingAppDDD.PaymentProcessing.Domain;
+global using BankingAppDDD.PaymentProcessing.Domain.Events;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using Newtonsoft.Json;
+global using System.ComponentModel.DataAnnotations;

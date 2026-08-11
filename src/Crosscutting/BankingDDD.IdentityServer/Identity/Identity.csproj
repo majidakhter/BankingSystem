@@ -9,10 +9,10 @@
   </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.29" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.18" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
 		<PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
@@ -20,8 +20,17 @@
 	</ItemGroup>
  
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\BankingDDD.Application\Applications\Applications.csproj" />
     <ProjectReference Include="..\..\..\Core\BankingDDD.CommonLibrary\Common\Common.csproj" />
     <ProjectReference Include="..\..\..\Core\BankingDDD.Infrastructure\Infrastructures\Infrastructures.csproj" />
+    <ProjectReference Include="..\..\BankingAppDDD.KeyCloakClientLibrary\BankingAppDDD.KeyCloakClientLibrary.csproj" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <Folder Include="Application\IAM\Queries\" />
+    <Folder Include="Core\IAM\DomainEvents\" />
+    <Folder Include="Core\IAM\Models\" />
+    <Folder Include="Core\IAM\ValusObjects\" />
   </ItemGroup>
 
 </Project>

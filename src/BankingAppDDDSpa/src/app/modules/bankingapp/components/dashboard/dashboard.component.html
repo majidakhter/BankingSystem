@@ -1,0 +1,294 @@
+<div class="dashboard-wrapper">
+
+  <!-- DASHBOARD MAIN BODY -->
+  <main class="dashboard-body container-fluid px-4 py-4">
+
+    <!-- Category Filter Pills & Balance Toggle -->
+    <div class="row align-items-center mb-4">
+      <div class="col-md-9 d-flex flex-wrap gap-2">
+        <button class="category-pill" [class.active]="activeCategory === 'accounts'" (click)="selectCategory('accounts')">
+          <i class="bi bi-wallet2 me-2"></i> Accounts <small class="ms-1">(Savings, Current etc)</small>
+        </button>
+        <button class="category-pill" [class.active]="activeCategory === 'cards'" (click)="selectCategory('cards')">
+          <i class="bi bi-credit-card me-2"></i> Cards
+        </button>
+        <button class="category-pill" [class.active]="activeCategory === 'fd'" (click)="selectCategory('fd')">
+          <i class="bi bi-piggy-bank me-2"></i> FD/RD/Flexi-RD
+        </button>
+        <button class="category-pill" [class.active]="activeCategory === 'loans'" (click)="selectCategory('loans')">
+          <i class="bi bi-bank me-2"></i> Loans
+        </button>
+        <button class="category-pill" [class.active]="activeCategory === 'invest'" (click)="selectCategory('invest')">
+          <i class="bi bi-graph-up-arrow me-2"></i> Invest
+        </button>
+        <button class="category-pill" [class.active]="activeCategory === 'insure'" (click)="selectCategory('insure')">
+          <i class="bi bi-shield-check me-2"></i> Insure
+        </button>
+      </div>
+
+      <div class="col-md-3 text-md-end mt-2 mt-md-0">
+        <div class="balance-toggle-container d-inline-flex align-items-center">
+          <span class="toggle-label me-2">Show Balance</span>
+          <div class="form-check form-switch m-0">
+            <input class="form-check-input" type="checkbox" role="switch" [checked]="showBalance" (change)="toggleBalance()" id="flexSwitchBalance">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE CARDS & FAVOURITES GRID -->
+    <div class="row g-4 mb-4">
+      <!-- Left Column: 3 Feature Action Cards -->
+      <div class="col-lg-8">
+        <div class="row g-3">
+          <!-- Card 1: Savings Accounts -->
+          <div class="col-md-4">
+            <div class="feature-card card-light-purple">
+              <div class="card-header-icon d-flex justify-content-between align-items-center">
+                <i class="bi bi-person-badge fs-3 text-primary"></i>
+                <i class="bi bi-arrow-right fs-5 text-muted"></i>
+              </div>
+              <div class="card-body-content mt-3">
+                <span class="card-subtitle text-muted d-block">Savings Accounts</span>
+                <h4 class="card-account-no font-monospace">{{ accountNo || 'N/A' }}</h4>
+                <div class="balance-display my-2">
+                  @if (showBalance) {
+                    <span class="balance-amount">${{ accountBalance | number:'1.2-2' }}</span>
+                  } @else {
+                    <span class="balance-hidden">••••••••</span>
+                  }
+                </div>
+                <button class="btn btn-primary btn-sm w-100 mt-2" (click)="navigateTo('/bank-statement')">
+                  Get Statement
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: PPF & Tax Benefits -->
+          <div class="col-md-4">
+            <div class="feature-card card-purple">
+              <div class="card-header-icon d-flex justify-content-between align-items-center">
+                <i class="bi bi-percent fs-3 text-white"></i>
+                <i class="bi bi-arrow-right fs-5 text-white-50"></i>
+              </div>
+              <div class="card-body-content mt-3">
+                <h5 class="card-title text-white">Enjoy tax benefits and assured returns</h5>
+                <button class="btn btn-light btn-sm text-primary font-weight-bold w-100 mt-4" (click)="navigateTo('/deposit')">
+                  Open PPF Account
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Credit Card Controls -->
+          <div class="col-md-4">
+            <div class="feature-card card-indigo">
+              <div class="card-header-icon d-flex justify-content-between align-items-center">
+                <i class="bi bi-gear-wide-connected fs-3 text-white"></i>
+                <i class="bi bi-arrow-right fs-5 text-white-50"></i>
+              </div>
+              <div class="card-body-content mt-3">
+                <h5 class="card-title text-white">Set Limits & Control Your Credit Card Usage</h5>
+                <button class="btn btn-light btn-sm text-primary font-weight-bold w-100 mt-4" (click)="navigateTo('/user-profile')">
+                  Manage Now >>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK SEND MONEY BAR -->
+        <div class="send-money-bar card mt-4 p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-3">
+              <h4 class="m-0 font-weight-bold">Send Money</h4>
+              <select class="form-select form-select-sm w-auto" [(ngModel)]="bankSelection" (change)="onBankTypeChange()">
+                <option value="ownbank">Own Bank</option>
+                <option value="otherbank">Other Bank</option>
+              </select>
+              <select class="form-select form-select-sm w-auto" [(ngModel)]="transferType">
+                <option value="Domestic">Domestic</option>
+                <option value="International">International</option>
+              </select>
+            </div>
+            <a class="add-payee-link d-flex align-items-center text-primary cursor-pointer" (click)="navigateTo('/add-payee')" role="button">
+              <i class="bi bi-person-plus-fill me-1"></i> Add Payee <i class="bi bi-chevron-right ms-1"></i>
+            </a>
+          </div>
+
+          <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+              <label class="form-label text-muted small">To Account</label>
+              <select class="form-select" [(ngModel)]="toAccount">
+                <option value="">Select Account / Beneficiary</option>
+                @if (bankSelection === 'ownbank') {
+                  @for (acct of filteredAllBankAccounts; track acct.accountNo) {
+                    <option [value]="acct.accountNo">{{ acct.label }}</option>
+                  }
+                } @else {
+                  @for (b of filteredBeneficiariesList; track b.id || b.accountNo) {
+                    <option [value]="b.accountNo">{{ b.label }}</option>
+                  }
+                }
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label text-muted small">From</label>
+              <select class="form-select" [(ngModel)]="fromAccount">
+                <option [value]="fromAccount">{{ fromAccount }}</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label text-muted small">Amount</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="number" class="form-control" placeholder="0.00" [(ngModel)]="sendAmount" />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-primary w-100" (click)="onQuickSendMoney()">
+                Proceed
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- Right Column: My Favourite Links Card -->
+      <div class="col-lg-4">
+        <div class="card favourite-links-card h-100 p-4">
+          <h4 class="card-section-title mb-4">My Favourite Links</h4>
+
+          <ul class="list-group list-group-flush favourite-list">
+            <li class="list-group-item d-flex justify-content-between align-items-center py-3" (click)="navigateTo('/bank-statement')">
+              <span class="d-flex align-items-center">
+                <i class="bi bi-file-earmark-text text-primary fs-5 me-3"></i> Account Statement
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center py-3" (click)="navigateTo('/deposit')">
+              <span class="d-flex align-items-center">
+                <i class="bi bi-shield-lock text-primary fs-5 me-3"></i> Open FD
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center py-3" (click)="navigateTo('/bank-statement')">
+              <span class="d-flex align-items-center">
+                <i class="bi bi-download text-primary fs-5 me-3"></i> Download FD Summary
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center py-3" (click)="navigateTo('/transfer')">
+              <span class="d-flex align-items-center">
+                <i class="bi bi-arrow-repeat text-primary fs-5 me-3"></i> Sweep-in / OD against FD
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center py-3" (click)="navigateTo('/user-profile')">
+              <span class="d-flex align-items-center">
+                <i class="bi bi-award text-primary fs-5 me-3"></i> CASA Interest Certificate
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT DETAILS & TRANSACTIONS SECTION -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card account-details-section p-4">
+          <h3 class="section-heading mb-4">Account Details</h3>
+
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Account Number</th>
+                  <th>Account Type</th>
+                  <th>Current Balance</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (userAccounts && userAccounts.length > 0) {
+                  @for (acct of userAccounts; track acct.accountNo) {
+                    <tr>
+                      <td class="font-monospace fw-bold">{{ acct.accountNo }}</td>
+                      <td>{{ acct.accountType }}</td>
+                      <td class="fw-bold text-success">
+                        @if (showBalance) {
+                          ${{ acct.balance | number:'1.2-2' }}
+                        } @else {
+                          ••••••••
+                        }
+                      </td>
+                      <td><span class="badge" [class.bg-success]="acct.status === 'Active'" [class.bg-secondary]="acct.status !== 'Active'">{{ acct.status }}</span></td>
+                    </tr>
+                  }
+                } @else {
+                  <tr>
+                    <td class="font-monospace fw-bold">{{ accountNo || userProfile?.accountNumber || '1000004' }}</td>
+                    <td>{{ accountType || userProfile?.accountType || 'Savings' }}</td>
+                    <td class="fw-bold text-success">
+                      @if (showBalance) {
+                        ${{ (accountBalance !== undefined ? accountBalance : (userProfile?.accountBalance !== undefined ? userProfile?.accountBalance : 500)) | number:'1.2-2' }}
+                      } @else {
+                        ••••••••
+                      }
+                    </td>
+                    <td><span class="badge bg-success">{{ accountStatus || 'Active' }}</span></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Transaction History Section -->
+          <h4 class="mt-4 mb-3 fs-5">Recent Transactions</h4>
+          <div class="table-responsive">
+            <table class="table align-middle table-hover">
+              <thead>
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>Amount</th>
+                  <th>Transaction Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (tx of recentTransactions; track tx.id) {
+                  <tr>
+                    <td class="font-monospace text-muted">{{ tx.id }}</td>
+                    <td class="fw-bold text-primary">${{ tx.amount | number:'1.2-2' }}</td>
+                    <td>{{ tx.date }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Action Buttons Bar -->
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <button class="btn btn-info text-white font-weight-bold" (click)="navigateTo('/deposit')">
+              DEPOSIT
+            </button>
+            <button class="btn btn-primary font-weight-bold" (click)="navigateTo('/withdraw')">
+              WITHDRAW
+            </button>
+            <button class="btn btn-primary font-weight-bold" (click)="navigateTo('/transfer')">
+              TRANSFER
+            </button>
+            <button class="btn btn-danger font-weight-bold" (click)="navigateTo('/home')">
+              CLOSE
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>

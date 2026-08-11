@@ -1,0 +1,246 @@
+<div class="add-payee-container py-4">
+  <div class="container" style="max-width: 780px;">
+    
+    <div class="card payee-card border-0 shadow-sm p-4">
+      
+      <!-- Top Tabs: Domestic / International -->
+      <div class="mode-tabs-container mb-4">
+        <button 
+          type="button" 
+          class="btn mode-tab-btn me-2" 
+          [class.btn-primary]="transferMode === 'Domestic'"
+          [class.btn-outline-primary]="transferMode !== 'Domestic'"
+          (click)="setTransferMode('Domestic')">
+          Domestic
+        </button>
+        <button 
+          type="button" 
+          class="btn mode-tab-btn" 
+          [class.btn-primary]="transferMode === 'International'"
+          [class.btn-outline-primary]="transferMode !== 'International'"
+          (click)="setTransferMode('International')">
+          International
+        </button>
+      </div>
+
+      <!-- Messages -->
+      @if (errorMessage) {
+        <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ errorMessage }}
+        </div>
+      }
+      @if (successMessage) {
+        <div class="alert alert-success alert-dismissible fade show my-2" role="alert">
+          <i class="bi bi-check-circle-fill me-2"></i> {{ successMessage }}
+        </div>
+      }
+
+      <!-- Form Content -->
+      <form (ngSubmit)="onContinue()">
+
+        <!-- Payee Nickname -->
+        <div class="mb-4">
+          <label class="form-label fw-bold text-dark mb-1">Payee Nickname</label>
+          <div class="position-relative">
+            <input 
+              type="text" 
+              class="form-control nickname-input pe-5" 
+              placeholder="Enter payee nickname" 
+              maxLength="40" 
+              [(ngModel)]="payeeNickname" 
+              name="payeeNickname" />
+            <span class="char-counter text-muted position-absolute end-0 top-50 translate-middle-y me-3 small">
+              {{ payeeNickname.length }}/40
+            </span>
+          </div>
+        </div>
+
+        <!-- Grey Form Section Card -->
+        <div class="grey-section-card p-4 rounded-3 mb-4">
+          
+          <!-- Category Radio Button -->
+          <div class="form-check mb-3">
+            <input 
+              class="form-check-input" 
+              type="radio" 
+              name="payeeCategory" 
+              id="catBankAccount" 
+              value="BankAccount" 
+              [(ngModel)]="payeeCategory" checked>
+            <label class="form-check-label fw-semibold text-dark" for="catBankAccount">
+              Bank Account / Credit Card
+            </label>
+          </div>
+
+          <!-- Bank Selection Radios -->
+          <div class="d-flex align-items-center gap-4 mb-4 ms-2">
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="bankType" 
+                id="bankCooperative" 
+                value="Cooperative" 
+                [checked]="bankType === 'Cooperative'"
+                (change)="setBankType('Cooperative')">
+              <label class="form-check-label fw-medium text-dark" for="bankCooperative">
+                Cooperative Bank
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="bankType" 
+                id="bankOther" 
+                value="Other" 
+                [checked]="bankType === 'Other'"
+                (change)="setBankType('Other')">
+              <label class="form-check-label fw-medium text-dark" for="bankOther">
+                Other Bank
+              </label>
+            </div>
+          </div>
+
+          <!-- Type Dropdown -->
+          <div class="mb-4">
+            <label class="form-label text-muted small fw-semibold">Type</label>
+            <select class="form-select custom-select" [(ngModel)]="accountType" name="accountType">
+              <option value="Savings">Savings</option>
+              <option value="Bank Account">Bank Account</option>
+              <option value="Current">Current</option>
+              <option value="Credit Card">Credit Card</option>
+            </select>
+          </div>
+
+          <!-- Dual Account Number Fields -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label text-dark small fw-semibold">Account Number</label>
+              <input 
+                type="text" 
+                class="form-control custom-input" 
+                placeholder="Enter account number" 
+                [(ngModel)]="accountNumber" 
+                name="accountNumber" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-dark small fw-semibold">Confirm Account Number</label>
+              <input 
+                type="text" 
+                class="form-control custom-input" 
+                placeholder="Confirm account number" 
+                [(ngModel)]="confirmAccountNumber" 
+                name="confirmAccountNumber" />
+            </div>
+          </div>
+
+          <!-- Branch IFSC & Name Fields (For Other Bank / Additional details) -->
+          @if (bankType === 'Other') {
+            <div class="mb-4">
+              <label class="form-label text-dark small fw-semibold">Branch IFSC</label>
+              <input 
+                type="text" 
+                class="form-control custom-input text-uppercase" 
+                placeholder="e.g. COOP0001234" 
+                [(ngModel)]="ifscCode" 
+                name="ifscCode" />
+              <div class="mt-1">
+                <a href="javascript:void(0)" class="text-primary small text-decoration-none fw-medium" (click)="onFindIfsc()">Find IFSC</a>
+              </div>
+            </div>
+          }
+
+          <!-- Name as per Payee Account -->
+          <div class="mb-3">
+            <label class="form-label text-dark small fw-semibold">Name as per Payee Account</label>
+            <div class="row align-items-center g-2">
+              <div class="col-md-7 position-relative">
+                <input 
+                  type="text" 
+                  class="form-control custom-input pe-5" 
+                  placeholder="Enter payee full name" 
+                  maxLength="40" 
+                  [(ngModel)]="payeeName" 
+                  name="payeeName" />
+                <span class="char-counter text-muted position-absolute end-0 top-50 translate-middle-y me-3 small">
+                  {{ payeeName.length }}/40
+                </span>
+              </div>
+              <div class="col-md-5">
+                <span class="text-muted small d-block">Check the name as per bank records.</span>
+                <a href="javascript:void(0)" class="text-primary small text-decoration-none fw-semibold" (click)="onCheckName()">Check Now</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Helper Scam Warning Text -->
+          <p class="text-muted small m-0 mt-2">
+            Verify before you pay - check the payee name. Avoid fake investment or digital arrest scams.
+          </p>
+
+        </div>
+
+        <!-- Payee Relation Section -->
+        <div class="mb-4">
+          <label class="form-label fw-bold text-dark mb-3">Select a Payee Relation</label>
+          <div class="d-flex flex-wrap gap-2">
+            <button 
+              type="button" 
+              class="btn relation-pill" 
+              [class.active]="selectedRelation === 'Own'"
+              (click)="setRelation('Own')">
+              Own
+            </button>
+            <button 
+              type="button" 
+              class="btn relation-pill" 
+              [class.active]="selectedRelation === 'Family'"
+              (click)="setRelation('Family')">
+              Family
+            </button>
+            <button 
+              type="button" 
+              class="btn relation-pill" 
+              [class.active]="selectedRelation === 'Friends'"
+              (click)="setRelation('Friends')">
+              Friends
+            </button>
+            <button 
+              type="button" 
+              class="btn relation-pill" 
+              [class.active]="selectedRelation === 'Business'"
+              (click)="setRelation('Business')">
+              Business
+            </button>
+            <button 
+              type="button" 
+              class="btn relation-pill" 
+              [class.active]="selectedRelation === 'Others'"
+              (click)="setRelation('Others')">
+              Others
+            </button>
+          </div>
+        </div>
+
+        <hr class="my-4 border-muted" />
+
+        <!-- Bottom Action Row -->
+        <div class="d-flex justify-content-end align-items-center gap-3">
+          <button type="button" class="btn btn-link text-primary text-decoration-none fw-semibold px-4" (click)="onCancel()">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary continue-btn px-5 py-2 fw-semibold" [disabled]="isLoading">
+            @if (isLoading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span> Processing...
+            } @else {
+              Continue
+            }
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>

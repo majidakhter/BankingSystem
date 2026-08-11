@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -147,6 +147,19 @@ namespace BankingAppDDD.Domains.Extensions
             }
 
             return argument.Value.NotBeNegativeOrZero(argumentName);
+        }
+
+        public static decimal NotBeNegative(
+            this decimal argument,
+            [CallerArgumentExpression("argument")] string? argumentName = null
+        )
+        {
+            if (argument < 0)
+            {
+                throw new ValidationException($"{argumentName} cannot be negative.");
+            }
+
+            return argument;
         }
 
         public static decimal NotBeNegativeOrZero(

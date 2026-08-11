@@ -1,12 +1,14 @@
-import { Component, OnInit, inject } from '@angular/core';
-import {CommonModule} from "@angular/common";
+import { Component, inject } from '@angular/core';
+import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
-import { TransactionService } from '@core/services/transaction.service'; 
+import { RouterModule } from '@angular/router';
+import { TransactionService } from '@core/services/transaction.service';
+
 @Component({
   selector: 'app-deposit',
   templateUrl: './deposit.component.html',
   styleUrl: './deposit.component.css',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
 })
 export class DepositComponent {
   userId: number = 0;
@@ -15,7 +17,7 @@ export class DepositComponent {
   message: string = '';
   errorMessage: string = '';
   private transactionService = inject(TransactionService);
-  
+
   makeDeposit(): void {
     if (this.amount <= 0) {
       this.errorMessage = 'Deposit amount must be greater than zero.';
@@ -24,7 +26,6 @@ export class DepositComponent {
     this.transactionService.depositMoney(this.userId, this.amount, this.description).subscribe({
       next:(response) => {
         alert("Your deposit of "+`${this.amount}`+" is pending approval. Once approved by the admin, your balance will be updated.");
-        // this.message = `Successfully deposited ${this.amount} for user ${this.userId}.`;
         this.errorMessage = '';
         this.clearForm();
       },
@@ -33,7 +34,7 @@ export class DepositComponent {
         this.message = '';
         console.error(error);
       }
-  });
+    });
   }
   clearForm(): void {
     this.userId = 0;

@@ -1,0 +1,42 @@
+using BankingApp.LoanManagement.Infrastructure.Repositories;
+using BankingAppDDD.Applications.Abstractions.Commands;
+using BankingAppDDD.Applications.Abstractions.Repositories;
+using BankingAppDDD.Domains.Abstractions.Guards;
+using BankingAppDDD.Domains.LoanApplications.Entities;
+using BankingAppDDD.Domains.LoanApplications.Models;
+
+namespace BankingApp.LoanManagement.Application.LoanApplicationCommands
+{
+    public sealed record LoanApplicationSubmittedCommand(Guid operatorId, LoanApplicationData loanData) : CreateCommand;
+    public sealed class LoanApplicationSubmittedCommandHandler : CreateCommandHandler<LoanApplicationSubmittedCommand>
+    {
+        private readonly ILoanRepository<LoanApplication> _repository;
+        private readonly ILoanRepository<Operator> _operatorrepository;
+        public LoanApplicationSubmittedCommandHandler(ILoanRepository<LoanApplication> repository, ILoanRepository<Operator> operatorrepository,
+        IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
+            _repository = repository;
+            _operatorrepository = operatorrepository;
+        }
+
+        protected override async Task<Guid> HandleAsync(LoanApplicationSubmittedCommand request)
+        {
+            Operator? x = await _operatorrepository.WithLogin(request.operatorId);
+            if (x == null)
+            {
+                var allOperators = _operatorrepository.GetAll();
+                x = allOperators.FirstOrDefault();
+                if (x == null)
+                {
+                    x = Operator.Create(100000m, request.operatorId);
+                    _operatorrepository.Insert(x);
+                    await UnitOfWork.CommitAsync();
+                }
+            }
+            var created = LoanApplication.Create(request.loanData, x);
+            _repository.Insert(created);
+            await UnitOfWork.CommitAsync();
+            return created.Id; 
+        }
+    }
+}
