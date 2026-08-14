@@ -2,6 +2,7 @@
 using BankingAppDDD.Applications.Abstractions.Commands;
 using BankingAppDDD.Applications.Abstractions.Repositories;
 using BankingAppDDD.Domains.Accounts.Entities;
+using BankingAppDDD.MongoService.Application.Mongo;
 using Microsoft.Extensions.Logging;
 
 namespace BankingApp.AccountManagement.Application.Accounts.Commands
@@ -11,10 +12,12 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
     {
         private readonly IAccountRepository<Account> _repository;
         private readonly ILogger<DepositCommandHandler> _logger;
-        public DepositCommandHandler(IAccountRepository<Account> repository, ILogger<DepositCommandHandler> logger, IUnitOfWork unitOfWork) : base(unitOfWork)
+        private readonly IAccountMongoService? _mongoService;
+        public DepositCommandHandler(IAccountRepository<Account> repository, IAccountMongoService? mongoService, ILogger<DepositCommandHandler> logger, IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _repository = repository;
             _logger = logger;
+            _mongoService = mongoService;
         }
 
         protected override async Task<bool> HandleAsync(DepositCommand request)
@@ -28,7 +31,12 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
             }
             account.Deposit(request.accountId, request.amount, request.description);
             _repository.Update(account);
+            if (_mongoService != null)
+            {
+                await _mongoService.SaveAccountDetailAsync(account);
+            }
             await UnitOfWork.CommitAsync();
+
             _logger.LogInformation("Amount Deposited to {@Account No}", request.accountId);
             return true;
         }

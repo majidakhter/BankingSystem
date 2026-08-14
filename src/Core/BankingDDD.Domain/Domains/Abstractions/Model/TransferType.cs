@@ -2,10 +2,16 @@ namespace BankingAppDDD.Domains.Accounts.Models
 {
     public enum TransferType
     {
-        SameBank = 1,
+        IMPS = 1,
         NEFT = 2,
-        RTGS = 3,
-        UPI = 4
+        RTGS = 3
+    }
+    public enum PaymentType
+    {
+        UPI = 1,
+        Card = 2,
+        NetBanking = 3,
+        Wallet = 4,
     }
 
     public enum PaymentGatewayProvider
@@ -21,6 +27,16 @@ namespace BankingAppDDD.Domains.Accounts.Models
         Completed = 1,
         Failed = 2,
         PendingRetry = 3,
-        Reversed = 4
+        Reversed = 4,
+        PendingVerification = 5,
+        Processing = 6,
+        RequiresOtp = 7,
+        Rejected = 8
+    }
+    public enum TransferToEntity
+    {
+        OwnBankAccount = 1,
+        OtherBankAccount =2
+        
     }
 }

@@ -1,7 +1,8 @@
 using Autofac;
+using BankingApp.AccountManagement.Infrastructure.Outbox;
 using BankingApp.AccountManagement.Infrastructure.Repositories;
+using BankingAppDDD.AccountManagement.Infrastructure.Outbox;
 using BankingAppDDD.Applications.Abstractions.Repositories;
-using BankingAppDDD.Domains.Abstractions.Entities;
 using BankingAppDDD.Domains.Accounts.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +47,10 @@ namespace BankingApp.AccountManagement.Infrastructure.AutofacModules
 
             builder.RegisterType<AccountRepository<Account>>()
                 .As<IAccountRepository<Account>>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<OutboxService>()
+                .As<IOutboxService>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterGeneric(typeof(Logger<>))

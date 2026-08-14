@@ -19,6 +19,7 @@ export class AddPayeeComponent implements OnInit {
   accountNumber: string = '';
   confirmAccountNumber: string = '';
   ifscCode: string = '';
+  payeeBankName: string = 'STATE BANK OF INDIA';
   payeeName: string = '';
   selectedRelation: string = 'Friends'; // 'Own' | 'Family' | 'Friends' | 'Business' | 'Others'
 
@@ -60,7 +61,7 @@ export class AddPayeeComponent implements OnInit {
   }
 
   onFindIfsc(): void {
-    alert('IFSC Helper: Enter standard IFSC code e.g., COOP0001234');
+    alert('IFSC Helper: Enter standard IFSC code e.g., COSB0001234');
   }
 
   onCheckName(): void {
@@ -84,17 +85,22 @@ export class AddPayeeComponent implements OnInit {
       return;
     }
 
-    if (!this.accountNumber) {
+    if (!this.accountNumber || !this.accountNumber.trim()) {
       this.errorMessage = 'Please enter Account Number.';
       return;
     }
 
-    if (this.accountNumber !== this.confirmAccountNumber) {
+    if (!this.confirmAccountNumber || !this.confirmAccountNumber.trim()) {
+      this.errorMessage = 'Please confirm Account Number.';
+      return;
+    }
+
+    if (this.accountNumber.trim() !== this.confirmAccountNumber.trim()) {
       this.errorMessage = 'Account Number and Confirm Account Number do not match.';
       return;
     }
 
-    let acctNoInt = parseInt(this.accountNumber, 10);
+    let acctNoInt = parseInt(this.accountNumber.trim(), 10);
     if (isNaN(acctNoInt)) {
       this.errorMessage = 'Account Number must be a valid numeric value.';
       return;
@@ -110,13 +116,15 @@ export class AddPayeeComponent implements OnInit {
 
     this.isLoading = true;
     const payeeFinalName = this.payeeName || this.payeeNickname;
-    const bankName = this.bankType === 'Cooperative' ? 'Cooperative Bank' : `Other Bank (${this.ifscCode || 'IFSC'})`;
+    const finalBankName = this.payeeBankName || (this.bankType === 'Cooperative' ? 'City Omni Bank' : 'STATE BANK OF INDIA');
+    const finalIfscCode = this.ifscCode || 'COSB0001234';
 
     const command = {
       accountId: this.keyCloakUserId,
       beneficiaryName: payeeFinalName,
       beneficiaryAccountNo: acctNoInt,
-      beneficiaryBankName: bankName
+      beneficiaryBankName: finalBankName,
+      beneficaryIfscCode: finalIfscCode
     };
 
     console.log('Sending AddBeneficiaryCommand to AccountController endpoint addbeneficiary:', command);

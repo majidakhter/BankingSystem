@@ -2,7 +2,6 @@ using BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer;
 using BankingAppDDD.PaymentProcessing.Domain.Gateways;
 using BankingAppDDD.PaymentProcessing.Domain.Gateways.Models;
 using MassTransit;
-using Microsoft.Extensions.Logging;
 
 namespace BankingAppDDD.PaymentProcessing.Application.ProcessingPayment.Consumers
 {
@@ -16,14 +15,14 @@ namespace BankingAppDDD.PaymentProcessing.Application.ProcessingPayment.Consumer
             ILogger<FundTransferRequestedConsumer> logger)
         {
             _gatewayFactory = gatewayFactory;
-            _logger = logger;
+            _logger = logger; 
         }
 
         public async Task Consume(ConsumeContext<FundTransferRequestedIntegrationEvent> context)
         {
             var @event = context.Message;
             _logger.LogInformation("Processing FundTransferRequestedIntegrationEvent for TransactionId: {TransactionId}, TransferType: {TransferType}, Gateway: {Gateway}",
-                @event.TransactionId, @event.TransferType, @event.PaymentGateway);
+                @event.TransactionId, @event.TransferType, @event.transferToEntity);
 
             try
             {
@@ -35,9 +34,7 @@ namespace BankingAppDDD.PaymentProcessing.Application.ProcessingPayment.Consumer
                     @event.TransferType,
                     @event.PaymentGateway,
                     @event.BeneficiaryAccountNo,
-                    @event.IfscCode,
-                    @event.UpiId,
-                    @event.DestinationBankName,
+                    @event.DestinationBankIfscCode,
                     @event.Description);
 
                 var response = await gateway.ProcessPayoutAsync(payoutRequest, context.CancellationToken);
@@ -64,6 +61,7 @@ namespace BankingAppDDD.PaymentProcessing.Application.ProcessingPayment.Consumer
                         @event.TransactionId,
                         @event.AccountId,
                         @event.Amount,
+                        @event.currencyCode,
                         response.ErrorMessage ?? "Payment Gateway payout failed",
                         @event.CorrelationId);
 
@@ -78,6 +76,7 @@ namespace BankingAppDDD.PaymentProcessing.Application.ProcessingPayment.Consumer
                     @event.TransactionId,
                     @event.AccountId,
                     @event.Amount,
+                    @event.currencyCode,
                     ex.Message,
                     @event.CorrelationId);
 

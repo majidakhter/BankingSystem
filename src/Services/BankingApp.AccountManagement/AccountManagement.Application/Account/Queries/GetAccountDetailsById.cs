@@ -79,6 +79,7 @@ namespace BankingApp.AccountManagement.Application.Accounts.Queries
                             BeneficaryName = b.Beneficiary?.BeneficaryName ?? string.Empty,
                             BeneficaryAccountNo = b.Beneficiary?.BeneficaryAccountNo ?? 0,
                             BeneficaryBankName = b.Beneficiary?.BeneficaryBankName ?? string.Empty,
+                            BeneficaryIfscCode = b.Beneficiary?.BeneficaryIfscCode ?? string.Empty,
                             AddedDate = b.AddedDate
                         }).ToList();
 

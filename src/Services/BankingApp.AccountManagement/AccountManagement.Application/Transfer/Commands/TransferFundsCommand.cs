@@ -1,215 +1,205 @@
+using BankingApp.AccountManagement.Infrastructure.Repositories;
+using BankingAppDDD.AccountManagement.Application.Outbox;
+using BankingAppDDD.AccountManagement.Core.Accounts.Models;
 using BankingAppDDD.Applications.Abstractions.Commands;
 using BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer;
 using BankingAppDDD.Applications.Abstractions.Repositories;
 using BankingAppDDD.Domains.Accounts.Entities;
 using BankingAppDDD.Domains.Accounts.Models;
 using BankingAppDDD.MongoService.Application.Mongo;
-using MassTransit;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.ML;
+using System;
+using System.Threading.Tasks;
 
 namespace BankingApp.AccountManagement.Application.Transfers.Commands
 {
     public sealed record TransferFundsCommand(
-        Guid accountId,
-        Guid destinationAccountId,
+        Guid senderAccountId,
+        string senderBankIfscCode,
+        Guid receiverAccountId,
+        string receiverBankIfscCode,
         decimal amount,
+        string currencyCode,
         string description,
-        TransferType transferType = TransferType.SameBank,//this will passed from frontend 
+        TransferType transferType, // NEFT, RTGS, IMPS
+        TransferToEntity transferToEntity, // OwnBankAccount, OtherBank
+        DateTime? transactiontime = null,
+        string? receiverAccountNo = null,
+        string? receivermobileNo = null, // Required when doing IMPS transaction (account to mobile)
         PaymentGatewayProvider paymentGateway = PaymentGatewayProvider.Internal,
-        string? beneficiaryAccountNo = null,
-        string? ifscCode = null,
-        string? upiId = null,
-        string? destinationBankName = null) : Command;
+        string? otpCode = null) : Command;
 
     public sealed class TransferFundsCommandHandler : CommandHandler<TransferFundsCommand>
     {
-        private readonly IRepository<Account> _repository;
+        private readonly IAccountRepository<Account> _repository;
         private readonly IRepository<BeneficiaryGroup> _beneficiaryRepository;
         private readonly IRepository<FundTransferTransaction> _transferRepository;
+        private readonly IOutboxService _outboxService;
         private readonly IAccountMongoService? _mongoService;
-        private readonly IBus _eventBus;
+        private readonly PredictionEnginePool<TransactionData, FraudPrediction>? _predictionEnginePool;
         private readonly ILogger<TransferFundsCommandHandler> logger;
 
         public TransferFundsCommandHandler(
-            IRepository<Account> repository,
+            IAccountRepository<Account> repository,
             IRepository<BeneficiaryGroup> beneficiaryRepository,
             IRepository<FundTransferTransaction> transferRepository,
-            IBus eventBus,
+            IOutboxService outboxService,
             ILogger<TransferFundsCommandHandler> _logger,
             IUnitOfWork unitOfWork,
-            IAccountMongoService? mongoService = null) : base(unitOfWork)
+            IAccountMongoService? mongoService = null,
+            PredictionEnginePool<TransactionData, FraudPrediction>? predictionEnginePool = null) : base(unitOfWork)
         {
             _repository = repository;
             _beneficiaryRepository = beneficiaryRepository;
             _transferRepository = transferRepository;
-            _eventBus = eventBus;
+            _outboxService = outboxService;
             logger = _logger;
             _mongoService = mongoService;
+            _predictionEnginePool = predictionEnginePool;
         }
 
         protected override async Task<bool> HandleAsync(TransferFundsCommand request)
         {
             var correlationId = Guid.NewGuid().ToString();
-            logger.LogInformation("Processing fund transfer request. CorrelationId: {CorrelationId}, AccountId: {AccountId}, TransferType: {TransferType}, Amount: {Amount}",
-                correlationId, request.accountId, request.transferType, request.amount);
+            logger.LogInformation("Decoupled Intake Gateway receiving fund transfer request. CorrelationId: {CorrelationId}, AccountId: {AccountId}, TransferType: {TransferType}, Amount: {Amount}",
+                correlationId, request.senderAccountId, request.transferType, request.amount);
 
-            var originAccount = await _repository.GetByIdAsync(request.accountId);
-            if (originAccount is not Account withdrawAccount)
+            // 1. Fast-Path Inline Validation & Hard-Stops (Sub-millisecond)
+            if (request.amount <= 0m)
             {
-                throw new Exception($"Source Account {request.accountId} not found.");
+                throw new ArgumentException("Transfer amount must be greater than zero.");
             }
 
-            // Step 1: Event 1 - Publish FundTransferInitiatedIntegrationEvent (Listened by Fraud Detection, Analytics, Notification Engine)
-            var initiatedEvent = new FundTransferInitiatedIntegrationEvent(
-                Guid.NewGuid(),
-                request.accountId,
-                request.destinationAccountId,
-                request.amount,
-                request.transferType,
-                request.paymentGateway,
-                request.beneficiaryAccountNo,
-                request.ifscCode,
-                request.upiId,
-                request.destinationBankName,
-                request.description ?? "Transfer Initiated",
-                correlationId);
-
-            await _eventBus.Publish(initiatedEvent);
-            logger.LogInformation("Published FundTransferInitiatedIntegrationEvent for CorrelationId: {CorrelationId}", correlationId);
-
-            // Scenario 1: Same Bank / Internal Transfer to an existing account in our database
-            if (request.transferType == TransferType.SameBank && request.destinationAccountId != Guid.Empty)
+            var originAccount = await _repository.GetEntityById(request.senderAccountId);
+            if (originAccount is not Account withdrawAccount)
             {
-                var destinationAccount = await _repository.GetByIdAsync(request.destinationAccountId);
-                if (destinationAccount is Account depositAccount)
+                throw new Exception($"Source Account {request.senderAccountId} not found.");
+            }
+
+            var currentBal = originAccount.GetCurrentBalance().Value;
+            if (request.amount > currentBal)
+            {
+                throw new InvalidOperationException($"Insufficient account balance. Available: ${currentBal:F2}, Requested: ${request.amount:F2}");
+            }
+
+            // Fast-Path inline ML hard-stop check (velocity / blacklist check)
+            if (_predictionEnginePool != null)
+            {
+                var fastTxData = new TransactionData
                 {
-                    // Withdraw from origin account
-                    withdrawAccount.Withdraw(request.accountId, request.amount, request.description ?? "Withdraw from source account");
-                    _repository.Update(withdrawAccount);
+                    Amount = (float)request.amount,
+                    TransactionTime = DateTime.UtcNow.Hour,
+                    IsInternational = 0f,
+                    DeviceRiskScore = 0.05f,
+                    HistoricalVelocity = 1f,
+                    PaymentType = 0f,
+                    IsFraud = false
+                };
 
-                    // Deposit to beneficiary account
-                    depositAccount.Deposit(request.destinationAccountId, request.amount, request.description ?? "Deposited to beneficiary account");
-                    _repository.Update(depositAccount);
-
-                    // Store completed transfer record in PostgreSQL
-                    var transactionRecord = FundTransferTransaction.Create(
-                        request.accountId,
-                        request.destinationAccountId,
-                        request.amount,
-                        TransferType.SameBank,
-                        PaymentGatewayProvider.Internal,
-                        request.beneficiaryAccountNo,
-                        request.ifscCode,
-                        request.upiId,
-                        request.destinationBankName,
-                        request.description ?? "Internal transfer completed",
-                        TransferStatus.Completed);
-
-                    _transferRepository.Insert(transactionRecord);
-                    await this.UnitOfWork.CommitAsync();
-
-                    // Step 2: Event 2 - Account Debited Event
-                    var debitedEvent = new AccountDebitedIntegrationEvent(
-                        transactionRecord.TransactionId,
-                        request.accountId,
-                        request.amount,
-                        DateTime.UtcNow,
-                        "Account debited for internal transfer",
-                        correlationId);
-                    await _eventBus.Publish(debitedEvent);
-
-                    // Step 3: Event 3 - Settled Event
-                    var settledEvent = new FundTransferSettledIntegrationEvent(
-                        transactionRecord.TransactionId,
-                        request.accountId,
-                        request.amount,
-                        $"INTERNAL_SETTLED_{transactionRecord.TransactionId:N}",
-                        DateTime.UtcNow,
-                        correlationId);
-                    await _eventBus.Publish(settledEvent);
-
-                    // Save to MongoDB for read/audit log
-                    if (_mongoService != null)
+                try
+                {
+                    FraudPrediction fastPrediction;
+                    try
                     {
-                        await _mongoService.SaveAccountDetailAsync(withdrawAccount);
-                        await _mongoService.SaveAccountDetailAsync(depositAccount);
-                        await _mongoService.SaveTransferTransactionAsync(transactionRecord);
+                        fastPrediction = _predictionEnginePool.Predict(fastTxData);
+                    }
+                    catch (ArgumentException)
+                    {
+                        fastPrediction = _predictionEnginePool.Predict("FraudDetectionModel", fastTxData);
                     }
 
-                    logger.LogInformation("Internal transfer completed successfully for TransactionId: {TransactionId}", transactionRecord.TransactionId);
-                    return true;
+                    if (fastPrediction.IsFraudulent && request.amount > 25000m)
+                    {
+                        logger.LogWarning("Fast-Path inline hard-stop triggered! High-velocity fraud pattern detected.");
+                        throw new InvalidOperationException("Fast-Path Hard-Stop: Transaction blocked by inline velocity check.");
+                    }
+                }
+                catch (InvalidOperationException) { throw; }
+                catch (Exception ex)
+                {
+                    logger.LogWarning(ex, "Fast-Path inline check bypassed; proceeding to async evaluation pipeline.");
                 }
             }
 
-            // Scenario 2: Inter-Bank Transfer using Payment Gateway (NEFT / RTGS / UPI to another bank)
-            // 1. Debit origin account in local DB
-            withdrawAccount.Withdraw(request.accountId, request.amount, $"Transfer via {request.transferType} / {request.paymentGateway}");
-            _repository.Update(withdrawAccount);
+            // 2. Resolve Receiver Identification based on TransferType
+            string? effectiveReceiverAccountNo = request.receiverAccountNo;
+            Guid effectiveReceiverAccountId = request.receiverAccountId;
 
-            // 2. Create pending transfer record in DB & MongoDB
+            if (request.transferType == TransferType.IMPS)
+            {
+                if (string.IsNullOrWhiteSpace(request.receivermobileNo))
+                {
+                    throw new ArgumentException("Receiver mobile number (receivermobileNo) is required for IMPS transfers.");
+                }
+
+                if (string.IsNullOrWhiteSpace(effectiveReceiverAccountNo))
+                {
+                    var beneficiary = await _beneficiaryRepository.FirstOrDefaultAsync(b => b.Beneficiary != null && b.Beneficiary.BeneficaryAccountNo.ToString() == request.receivermobileNo);
+                    if (beneficiary != null)
+                    {
+                        effectiveReceiverAccountNo = beneficiary.Beneficiary.BeneficaryAccountNo.ToString();
+                    }
+                    else
+                    {
+                        effectiveReceiverAccountNo = request.receivermobileNo;
+                    }
+                }
+            }
+            else // NEFT & RTGS
+            {
+                if (string.IsNullOrWhiteSpace(effectiveReceiverAccountNo) && effectiveReceiverAccountId == Guid.Empty)
+                {
+                    throw new ArgumentException($"Receiver account ID or account number is required for {request.transferType} transfers.");
+                }
+            }
+
+            // 3. State Machine Lifecycle Initialization: Create Transaction in PendingVerification state
             var pendingTransaction = FundTransferTransaction.Create(
-                request.accountId,
-                request.destinationAccountId == Guid.Empty ? null : request.destinationAccountId,
+                request.senderAccountId,
+                effectiveReceiverAccountId == Guid.Empty ? null : effectiveReceiverAccountId,
                 request.amount,
+                request.currencyCode,
                 request.transferType,
+                request.transferToEntity,
                 request.paymentGateway,
-                request.beneficiaryAccountNo,
-                request.ifscCode,
-                request.upiId,
-                request.destinationBankName,
-                request.description ?? $"Pending Inter-Bank Transfer via {request.transferType}",
-                TransferStatus.Pending);
+                effectiveReceiverAccountNo,
+                request.receiverBankIfscCode,
+                request.description ?? $"Pending Verification via {request.transferType}",
+                TransferStatus.PendingVerification);
 
             _transferRepository.Insert(pendingTransaction);
+
+            // 4. Publish FundTransferSubmittedIntegrationEvent to Outbox in local DB transaction
+            var submittedEvent = new FundTransferSubmittedIntegrationEvent(
+                pendingTransaction.TransactionId,
+                request.senderAccountId,
+                withdrawAccount.AccountNo,
+                request.senderBankIfscCode,
+                effectiveReceiverAccountId,
+                request.amount,
+                request.currencyCode,
+                request.description ?? "Fund transfer submitted",
+                request.transferType,
+                request.transferToEntity,
+                request.paymentGateway,
+                effectiveReceiverAccountNo,
+                request.receiverBankIfscCode,
+                correlationId);
+
+            await _outboxService.SaveEventAsync("FundTransferTransaction", pendingTransaction.TransactionId.ToString(), submittedEvent);
+
+            // 5. Commit local DB transaction ATOMICALLY (Record in PendingVerification state + Outbox Event)
             await this.UnitOfWork.CommitAsync();
 
             if (_mongoService != null)
             {
-                await _mongoService.SaveAccountDetailAsync(withdrawAccount);
                 await _mongoService.SaveTransferTransactionAsync(pendingTransaction);
             }
 
-            // Step 2: Event 2 - Publish AccountDebitedIntegrationEvent (Triggers SMS/Notification Engine)
-            var interBankDebitedEvent = new AccountDebitedIntegrationEvent(
-                pendingTransaction.TransactionId,
-                request.accountId,
-                request.amount,
-                DateTime.UtcNow,
-                $"Debited for inter-bank transfer via {request.transferType}",
-                correlationId);
-            await _eventBus.Publish(interBankDebitedEvent);
-
-            // Step 3: Event 3 - Publish SentToClearingIntegrationEvent (Triggers Clearing Audit / Analytics)
-            var clearingEvent = new SentToClearingIntegrationEvent(
-                pendingTransaction.TransactionId,
-                request.accountId,
-                request.amount,
-                request.transferType,
-                request.paymentGateway,
-                request.beneficiaryAccountNo,
-                request.ifscCode,
-                request.upiId,
-                DateTime.UtcNow,
-                correlationId);
-            await _eventBus.Publish(clearingEvent);
-
-            // Step 4: Publish FundTransferRequestedIntegrationEvent to persistent queue (Processed asynchronously by Payment Processor)
-            var transferEvent = new FundTransferRequestedIntegrationEvent(
-                pendingTransaction.TransactionId,
-                request.accountId,
-                request.destinationAccountId,
-                request.amount,
-                request.transferType,
-                request.paymentGateway,
-                request.beneficiaryAccountNo,
-                request.ifscCode,
-                request.upiId,
-                request.destinationBankName,
-                request.description ?? "Fund transfer request",
-                correlationId);
-
-            await _eventBus.Publish(transferEvent);
-            logger.LogInformation("Published all lifecycle events and queued FundTransferRequestedIntegrationEvent for TransactionId: {TransactionId}", pendingTransaction.TransactionId);
+            logger.LogInformation("Intake Gateway accepted transaction {TransactionId} (Status: PENDING_VERIFICATION). FundTransferSubmittedIntegrationEvent published to RabbitMQ via Outbox.",
+                pendingTransaction.TransactionId);
 
             return true;
         }

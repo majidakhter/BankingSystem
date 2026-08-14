@@ -1,5 +1,5 @@
 ﻿
 namespace BankingAppDDD.Domains.Accounts.Models
 {
-    public record class BeneficiaryData(string beneficaryName, int beneficaryAccountNo, string beneficaryBankName);
+    public record class BeneficiaryData(string beneficaryName, int beneficaryAccountNo, string beneficaryBankName, string beneficaryIfscCode);
 }

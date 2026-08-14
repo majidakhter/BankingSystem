@@ -49,6 +49,7 @@ namespace BankingApp.AccountManagement.Application.Transfer.Consumers
                     transaction.TransactionId,
                     transaction.AccountId,
                     transaction.Amount,
+                    transaction.CurrencyCode,
                     @event.GatewayTransactionRef ?? $"SETTLED_{transaction.TransactionId:N}",
                     DateTime.UtcNow,
                     @event.CorrelationId);

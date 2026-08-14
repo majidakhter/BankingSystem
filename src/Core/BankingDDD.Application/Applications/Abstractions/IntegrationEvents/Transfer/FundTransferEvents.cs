@@ -6,15 +6,17 @@ namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer
     public sealed record FundTransferInitiatedIntegrationEvent(
         Guid TransactionId,
         Guid AccountId,
+        int AccountNo,
+        string senderBankIfscCode,
         Guid? DestinationAccountId,
         decimal Amount,
+        string currencyCode,
+        string Description,
         TransferType TransferType,
+        TransferToEntity transferToEntity,
         PaymentGatewayProvider PaymentGateway,
         string? BeneficiaryAccountNo,
-        string? IfscCode,
-        string? UpiId,
-        string? DestinationBankName,
-        string Description,
+        string? receiverBankIfscCode,
         string CorrelationId) : MassTransitIntegrationEvent(CorrelationId);
 
     // 2. Debited Event: Published when sender account is debited (Listened to by Notification Engine, Fraud Detection)
@@ -22,6 +24,7 @@ namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer
         Guid TransactionId,
         Guid AccountId,
         decimal Amount,
+        string currencyCode,
         DateTime DebitedAt,
         string Description,
         string CorrelationId) : MassTransitIntegrationEvent(CorrelationId);
@@ -30,12 +33,15 @@ namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer
     public sealed record SentToClearingIntegrationEvent(
         Guid TransactionId,
         Guid AccountId,
+        string senderBankIfscCode,
         decimal Amount,
+        string currencyCode,
         TransferType TransferType,
+        TransferToEntity transferToEntity,
         PaymentGatewayProvider PaymentGateway,
         string? BeneficiaryAccountNo,
-        string? IfscCode,
-        string? UpiId,
+        string? receiverBankIfscCode,
+        string? remarks,
         DateTime SubmittedAt,
         string CorrelationId) : MassTransitIntegrationEvent(CorrelationId);
 
@@ -44,6 +50,7 @@ namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer
         Guid TransactionId,
         Guid AccountId,
         decimal Amount,
+        string currencyCode,
         string GatewayTransactionRef,
         DateTime SettledAt,
         string CorrelationId) : MassTransitIntegrationEvent(CorrelationId);
@@ -54,12 +61,13 @@ namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer
         Guid AccountId,
         Guid? DestinationAccountId,
         decimal Amount,
+        string currencyCode,
         TransferType TransferType,
+        TransferToEntity transferToEntity,
         PaymentGatewayProvider PaymentGateway,
         string? BeneficiaryAccountNo,
-        string? IfscCode,
-        string? UpiId,
-        string? DestinationBankName,
+        string? senderBankIfscCode,
+        string? DestinationBankIfscCode,
         string Description,
         string CorrelationId) : MassTransitIntegrationEvent(CorrelationId);
 
@@ -75,6 +83,7 @@ namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer
         Guid TransactionId,
         Guid AccountId,
         decimal Amount,
+        string currencyCode,
         string FailureReason,
         string CorrelationId) : MassTransitIntegrationEvent(CorrelationId);
 
@@ -83,6 +92,7 @@ namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer
         Guid TransactionId,
         Guid AccountId,
         decimal Amount,
+        string currencyCode,
         string ReversalReason,
         string CorrelationId) : MassTransitIntegrationEvent(CorrelationId);
 
@@ -91,6 +101,7 @@ namespace BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer
         Guid TransactionId,
         Guid AccountId,
         decimal Amount,
+        string currencyCode,
         string ReversalReason,
         DateTime ReversedAt,
         string CorrelationId) : MassTransitIntegrationEvent(CorrelationId);

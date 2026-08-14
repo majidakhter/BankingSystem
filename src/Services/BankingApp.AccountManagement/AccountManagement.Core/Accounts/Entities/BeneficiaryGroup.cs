@@ -24,9 +24,9 @@ namespace BankingAppDDD.Domains.Accounts.Entities
 
         public static BeneficiaryGroup Create(BeneficiaryData beneficiary, Guid associatesourceaccountId, DateTime addedDate)
         {
-            var (BeneficaryName, BeneficaryAccountNo, BeneficaryBankName) = beneficiary ?? throw new ArgumentNullException(nameof(beneficiary));
+            var (BeneficaryName, BeneficaryAccountNo, BeneficaryBankName, BeneficaryIfscCode) = beneficiary ?? throw new ArgumentNullException(nameof(beneficiary));
 
-            Beneficiary beneficiaryData = Beneficiary.Create(BeneficaryName, BeneficaryAccountNo, BeneficaryBankName);
+            Beneficiary beneficiaryData = Beneficiary.Create(BeneficaryName, BeneficaryAccountNo, BeneficaryBankName, BeneficaryIfscCode);
 
             return new BeneficiaryGroup(associatesourceaccountId, beneficiaryData, addedDate);
         }

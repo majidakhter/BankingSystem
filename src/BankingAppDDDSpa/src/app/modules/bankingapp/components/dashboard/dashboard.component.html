@@ -53,7 +53,7 @@
                 <h4 class="card-account-no font-monospace">{{ accountNo || 'N/A' }}</h4>
                 <div class="balance-display my-2">
                   @if (showBalance) {
-                    <span class="balance-amount">${{ accountBalance | number:'1.2-2' }}</span>
+                    <span class="balance-amount">₹{{ accountBalance | number:'1.2-2' }}</span>
                   } @else {
                     <span class="balance-hidden">••••••••</span>
                   }
@@ -142,7 +142,7 @@
             <div class="col-md-3">
               <label class="form-label text-muted small">Amount</label>
               <div class="input-group">
-                <span class="input-group-text">$</span>
+                <span class="input-group-text">₹</span>
                 <input type="number" class="form-control" placeholder="0.00" [(ngModel)]="sendAmount" />
               </div>
             </div>
@@ -222,7 +222,7 @@
                       <td>{{ acct.accountType }}</td>
                       <td class="fw-bold text-success">
                         @if (showBalance) {
-                          ${{ acct.balance | number:'1.2-2' }}
+                          ₹{{ acct.balance | number:'1.2-2' }}
                         } @else {
                           ••••••••
                         }
@@ -236,7 +236,7 @@
                     <td>{{ accountType || userProfile?.accountType || 'Savings' }}</td>
                     <td class="fw-bold text-success">
                       @if (showBalance) {
-                        ${{ (accountBalance !== undefined ? accountBalance : (userProfile?.accountBalance !== undefined ? userProfile?.accountBalance : 500)) | number:'1.2-2' }}
+                        ₹{{ (accountBalance !== undefined ? accountBalance : (userProfile?.accountBalance !== undefined ? userProfile?.accountBalance : 500)) | number:'1.2-2' }}
                       } @else {
                         ••••••••
                       }
@@ -263,7 +263,7 @@
                 @for (tx of recentTransactions; track tx.id) {
                   <tr>
                     <td class="font-monospace text-muted">{{ tx.id }}</td>
-                    <td class="fw-bold text-primary">${{ tx.amount | number:'1.2-2' }}</td>
+                    <td class="fw-bold text-primary">₹{{ tx.amount | number:'1.2-2' }}</td>
                     <td>{{ tx.date }}</td>
                   </tr>
                 }

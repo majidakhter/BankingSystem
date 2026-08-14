@@ -76,6 +76,7 @@ namespace BankingApp.AccountManagement.Application.Transfer.Consumers
                     transaction.TransactionId,
                     transaction.AccountId,
                     transaction.Amount,
+                    transaction.CurrencyCode,
                     @event.ReversalReason,
                     DateTime.UtcNow,
                     @event.CorrelationId);

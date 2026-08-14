@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="8.5.2" />
+    <PackageReference Include="Microsoft.Extensions.ML" Version="5.0.0" />
     <PackageReference Include="Polly" Version="8.7.0" />
   </ItemGroup>
 

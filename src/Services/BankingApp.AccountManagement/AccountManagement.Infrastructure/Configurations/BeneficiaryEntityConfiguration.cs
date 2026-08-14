@@ -20,6 +20,9 @@ namespace BankingApp.AccountManagement.Infrastructure.Configurations
                 beneficiaryBuilder.Property(e => e.BeneficaryBankName)
                .HasColumnName("BeneficaryBankName")
                .IsRequired();
+               beneficiaryBuilder.Property(e => e.BeneficaryIfscCode)
+              .HasColumnName("BeneficaryIfscCode")
+              .IsRequired();
             });
             //builder.Property<Guid>("AccountId");
             builder.Property<DateTime>("AddedDate");

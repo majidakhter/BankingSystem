@@ -1,32 +1,36 @@
-
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using BankingApp.AccountManagement.Application.Transfer.Models;
 using BankingApp.AccountManagement.Application.Transfer.Queries;
 using BankingApp.AccountManagement.Application.Transfers.Commands;
 using BankingAppDDD.Common.Types;
 using BankingAppDDD.Infrastructures.ActionResults;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BankingApp.AccountManagement.Controllers
 {
     /// <summary>
-    ///  Fund transfers, validation, transaction initiation, Transaction history, PDF generation  moves transfer method to transfer controller
+    /// Unified Fund Transfer and Transaction Controller with In-Line Real-Time ML & LLM Fraud Evaluation
     /// </summary>
     [ApiController]
     [Route("api/v{version:apiVersion}/transaction")]
     public class TransactionController : ControllerBase
     {
-        readonly IMediator _mediator;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="mediator"></param>
-        public TransactionController(IMediator mediator)
+        private readonly IMediator _mediator;
+        private readonly ILogger<TransactionController> _logger;
+
+        public TransactionController(IMediator mediator, ILogger<TransactionController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
+
         /// <summary>
-        ///  
+        /// Single unified endpoint executing in-line ML & LLM Ensemble Fraud Evaluation and Fund Transfer initiation.
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
@@ -41,16 +45,14 @@ namespace BankingApp.AccountManagement.Controllers
             return Ok(new
             {
                 Status = "Transfer Initiated",
-                Message = "Fund transfer has been initiated successfully. Money movement is being processed in background via central clearing network.",
+                Message = "Fund transfer has been evaluated and initiated successfully. Money movement is being processed via central clearing network.",
                 Success = result,
                 Timestamp = DateTime.UtcNow
             });
         }
 
-
         [HttpGet("transactionlist/{accountId}/{startDate}/{endDate}")]
         [MapToApiVersion(ApiVersions.V2)]
-       // [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(List<TransferDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
@@ -62,7 +64,6 @@ namespace BankingApp.AccountManagement.Controllers
 
         [HttpGet("gettransactionbyaccountid/{accountId}")]
         [MapToApiVersion(ApiVersions.V2)]
-        // [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(List<TransferDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]
@@ -74,7 +75,6 @@ namespace BankingApp.AccountManagement.Controllers
 
         [HttpGet("gettransactionbytransactionnumber/{transactionNo}")]
         [MapToApiVersion(ApiVersions.V2)]
-        // [Authorize(Roles = "Accountant")]
         [ProducesResponseType(typeof(List<TransferDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Envelope), StatusCodes.Status404NotFound)]

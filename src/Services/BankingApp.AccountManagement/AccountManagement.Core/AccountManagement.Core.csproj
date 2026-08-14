@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ML" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Core\BankingDDD.CommonLibrary\Common\Common.csproj" />
     <ProjectReference Include="..\..\..\Core\BankingDDD.Domain\Domains\Domains.csproj" />
   </ItemGroup>

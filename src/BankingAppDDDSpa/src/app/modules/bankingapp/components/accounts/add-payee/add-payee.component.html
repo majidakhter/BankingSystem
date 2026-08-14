@@ -135,21 +135,30 @@
             </div>
           </div>
 
-          <!-- Branch IFSC & Name Fields (For Other Bank / Additional details) -->
-          @if (bankType === 'Other') {
-            <div class="mb-4">
-              <label class="form-label text-dark small fw-semibold">Branch IFSC</label>
+          <!-- Payee Bank Name & Branch IFSC Fields -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label text-dark small fw-semibold">Payee Bank Name</label>
+              <input 
+                type="text" 
+                class="form-control custom-input" 
+                placeholder="e.g. State Bank of India" 
+                [(ngModel)]="payeeBankName" 
+                name="payeeBankName" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-dark small fw-semibold">Branch IFSC Code</label>
               <input 
                 type="text" 
                 class="form-control custom-input text-uppercase" 
-                placeholder="e.g. COOP0001234" 
+                placeholder="e.g. SBIN0001234" 
                 [(ngModel)]="ifscCode" 
                 name="ifscCode" />
               <div class="mt-1">
                 <a href="javascript:void(0)" class="text-primary small text-decoration-none fw-medium" (click)="onFindIfsc()">Find IFSC</a>
               </div>
             </div>
-          }
+          </div>
 
           <!-- Name as per Payee Account -->
           <div class="mb-3">

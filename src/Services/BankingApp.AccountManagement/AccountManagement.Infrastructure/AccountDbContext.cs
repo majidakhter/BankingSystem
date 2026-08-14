@@ -32,6 +32,7 @@ namespace BankingApp.AccountManagement
         public DbSet<BeneficiaryGroup> Beneficaries { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }
         public DbSet<FundTransferTransaction> FundTransferTransactions { get; set; }
+        public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
 
 
@@ -56,6 +57,7 @@ namespace BankingApp.AccountManagement
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CreditEntityConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DebitEntityConfiguration).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CustomerEntityTypeConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(OutboxMessageEntityConfiguration).Assembly);
 
             modelBuilder.HasSequence<int>("MyTransactionSequence").IncrementsBy(1).HasMin(-2000000).HasMax(2000100).StartsAt(1100001).IsCyclic();
             modelBuilder.Entity<Credit>().Property(pm => pm.TransactionNo).HasDefaultValueSql("nextval('\"MyTransactionSequence\"')");

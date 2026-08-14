@@ -200,11 +200,16 @@ export class DashboardComponent implements OnInit {
                   const acctNoStr = acctNo ? acctNo.toString() : '';
                   const name = b.beneficaryName || b.BeneficaryName || 'Beneficiary';
                   const bank = b.beneficaryBankName || b.BeneficaryBankName || 'External Bank';
+                  const branch = b.branchName || b.BranchName || b.beneficaryBranchName || b.BeneficaryBranchName || 'Main Branch';
+                  const ifsc = b.ifscCode || b.IfscCode || b.beneficaryIfscCode || b.BeneficaryIfscCode || '';
+                  const id = b.id || b.Id || b.beneficiaryAccountId || b.BeneficiaryAccountId || b.beneficaryAccountId || b.BeneficaryAccountId || '';
                   beneficiariesExtracted.push({
-                    id: b.id || b.Id,
+                    id: id,
                     accountNo: acctNoStr,
                     name: name,
                     bankName: bank,
+                    branchName: branch,
+                    ifscCode: ifsc,
                     label: `${acctNoStr} - ${name} (${bank})`
                   });
                 });
@@ -261,8 +266,17 @@ export class DashboardComponent implements OnInit {
           const acctNo = a.accountNo !== undefined ? a.accountNo : a.AccountNo;
           const acctNoStr = acctNo ? acctNo.toString() : '';
           const typeId = a.accountTypeId !== undefined ? a.accountTypeId : a.AccountTypeId;
+          const name = a.userFullName || a.UserFullName || a.name || a.Name || 'Account Holder';
+          const branch = a.branchName || a.BranchName || 'Main Branch';
+          const ifsc = a.ifscCode || a.IfscCode || '';
+          const id = a.id || a.Id || '';
           return {
+            id: id,
             accountNo: acctNoStr,
+            name: name,
+            bankName: 'City Omni Bank',
+            branchName: branch,
+            ifscCode: ifsc,
             label: `${acctNoStr} (${typeId === 2 ? 'Current Account' : 'Savings Account'})`
           };
         });
@@ -306,11 +320,24 @@ export class DashboardComponent implements OnInit {
       alert('Please enter a valid transfer amount.');
       return;
     }
+
+    let selectedRecipient: any = null;
+    if (this.bankSelection === 'ownbank') {
+      selectedRecipient = this.filteredAllBankAccounts.find((a: any) => a.accountNo === this.toAccount);
+    } else {
+      selectedRecipient = this.filteredBeneficiariesList.find((b: any) => b.accountNo === this.toAccount);
+    }
+
     this.router.navigate(['/transfer'], {
       queryParams: {
         amount: this.sendAmount,
         toAccount: this.toAccount,
-        bankType: this.bankSelection
+        bankType: this.bankSelection,
+        toName: selectedRecipient?.name || '',
+        toBank: selectedRecipient?.bankName || '',
+        toBranch: selectedRecipient?.branchName || '',
+        toIfsc: selectedRecipient?.ifscCode || '',
+        toAccountId: selectedRecipient?.id || ''
       }
     });
   }

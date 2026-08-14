@@ -1,6 +1,5 @@
 using BankingAppDDD.Domains.Abstractions.Entities;
 using BankingAppDDD.Domains.Accounts.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace BankingAppDDD.Domains.Accounts.Entities
 {
@@ -15,13 +14,13 @@ namespace BankingAppDDD.Domains.Accounts.Entities
         public Guid AccountId { get; private set; }
         public Guid? DestinationAccountId { get; private set; }
         public decimal Amount { get; private set; }
+        public string CurrencyCode { get; private set; }
         public TransferType TransferType { get; private set; }
+        public TransferToEntity TransferToEntity { get; private set; }
         public PaymentGatewayProvider PaymentGateway { get; private set; }
         public TransferStatus Status { get; private set; }
         public string? BeneficiaryAccountNo { get; private set; }
         public string? IfscCode { get; private set; }
-        public string? UpiId { get; private set; }
-        public string? DestinationBankName { get; private set; }
         public string? GatewayTransactionRef { get; private set; }
         public string? FailureReason { get; private set; }
         public string Description { get; private set; }
@@ -32,12 +31,12 @@ namespace BankingAppDDD.Domains.Accounts.Entities
             Guid accountId,
             Guid? destinationAccountId,
             decimal amount,
+            string currencyCode,
             TransferType transferType,
+            TransferToEntity transferToEntity,
             PaymentGatewayProvider paymentGateway,
             string? beneficiaryAccountNo,
             string? ifscCode,
-            string? upiId,
-            string? destinationBankName,
             string description,
             TransferStatus initialStatus = TransferStatus.Pending)
         {
@@ -49,13 +48,13 @@ namespace BankingAppDDD.Domains.Accounts.Entities
                 AccountId = accountId,
                 DestinationAccountId = destinationAccountId,
                 Amount = amount,
+                CurrencyCode = currencyCode,
                 TransferType = transferType,
+                TransferToEntity = transferToEntity,
                 PaymentGateway = paymentGateway,
                 Status = initialStatus,
                 BeneficiaryAccountNo = beneficiaryAccountNo,
                 IfscCode = ifscCode,
-                UpiId = upiId,
-                DestinationBankName = destinationBankName,
                 Description = description,
                 CreatedAt = DateTime.UtcNow
             };

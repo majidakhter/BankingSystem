@@ -53,6 +53,7 @@ namespace BankingApp.AccountManagement.Application.Transfer.Consumers
                     @event.TransactionId,
                     @event.AccountId,
                     @event.Amount,
+                    @event.currencyCode,
                     $"Gateway/Clearing Network transfer failed after retries: {@event.FailureReason}",
                     @event.CorrelationId);
 

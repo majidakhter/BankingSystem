@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using BankingApp.AccountManagement;
 using BankingApp.AccountManagement.Infrastructure.AutofacModules;
 using BankingAppDDD.AccountManagement.Application.Accounts.DomainEventHandlers.AccountCreated;
+using BankingAppDDD.AccountManagement.Core.Accounts.Models;
 using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Model;
 using BankingAppDDD.Common.Types;
@@ -11,6 +12,7 @@ using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.ML;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -24,6 +26,25 @@ services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
 });
+
+// Ensure ML Fraud Detection model exists or train initial model
+string modelDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Models");
+if (!Directory.Exists(modelDirectory))
+{
+    Directory.CreateDirectory(modelDirectory);
+}
+string modelFilePath = Path.Combine(modelDirectory, "fraud_model.zip");
+if (!File.Exists(modelFilePath))
+{
+    var trainer = new BankingAppDDD.AccountManagement.Infrastructure.Repositories.Implementation.ModelTrainer();
+    trainer.TrainAndSaveModel(modelFilePath);
+}
+
+// Register PredictionEnginePool for dependency injection (default unnamed model + named model)
+builder.Services.AddPredictionEnginePool<TransactionData, FraudPrediction>()
+    .FromFile(filePath: modelFilePath, watchForChanges: true)
+    .FromFile(modelName: "FraudDetectionModel", filePath: modelFilePath, watchForChanges: true);
+
 var headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 services.AddEndpointsApiExplorer();
 services.AddRedis(builder.Configuration);
@@ -39,6 +60,10 @@ if (!string.IsNullOrEmpty(mongoConnStr))
     builder.Services.AddSingleton<MongoDB.Driver.IMongoClient>(sp => new MongoDB.Driver.MongoClient(mongoConnStr));
 }
 services.AddScoped<IAccountMongoService, AccountMongoService>();
+services.AddScoped<BankingAppDDD.AccountManagement.Application.Outbox.IOutboxService, BankingApp.AccountManagement.Infrastructure.Outbox.OutboxService>();
+services.AddSingleton<BankingApp.AccountManagement.Application.Services.ILlmSemanticAnalyzer, BankingApp.AccountManagement.Application.Services.LlmSemanticAnalyzer>();
+services.AddSingleton<BankingApp.AccountManagement.Application.Services.IEnsembleWorkflowCoordinator, BankingApp.AccountManagement.Application.Services.EnsembleWorkflowCoordinator>();
+services.AddHostedService<BankingApp.AccountManagement.Infrastructure.Outbox.OutboxProcessorBackgroundService>();
 services.AddSwaggerDocs();
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy("Application is running"))

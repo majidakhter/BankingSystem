@@ -14,7 +14,8 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
         Guid accountId, 
         string beneficiaryName, 
         [property: JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)] int beneficiaryAccountNo, 
-        string beneficiaryBankName
+        string beneficiaryBankName,
+        string beneficaryIfscCode
     ) : Command;
 
     public sealed class AddBeneficiaryCommandHandler : CommandHandler<AddBeneficiaryCommand>
@@ -43,7 +44,7 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
             }
             Guard.Against.NotFound(account);
 
-            var beneficiaryData = new BeneficiaryData(request.beneficiaryName, request.beneficiaryAccountNo, request.beneficiaryBankName);
+            var beneficiaryData = new BeneficiaryData(request.beneficiaryName, request.beneficiaryAccountNo, request.beneficiaryBankName, request.beneficaryIfscCode);
             var group = account!.AddBeneficiary(beneficiaryData, account.Id);
 
             _beneficiaryRepository.Insert(group);

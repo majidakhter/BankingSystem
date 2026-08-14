@@ -9,6 +9,7 @@ namespace BankingAppDDD.Domains.Accounts.Models
         public string BeneficaryName { get; set; } = string.Empty;
         public int BeneficaryAccountNo { get; set; }
         public string BeneficaryBankName { get; set; } = string.Empty;
+        public string BeneficaryIfscCode { get; set; } = string.Empty;
         public DateTime AddedDate { get; set; }
     }
 }
