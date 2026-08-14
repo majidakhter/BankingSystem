@@ -107,7 +107,7 @@ This system provides a comprehensive suite of banking features to clients:
 - **Saga Pattern**: Distributed transactions implemented using choreography and orchestration.
 - **Circuit Breaker**: Fault-tolerance mechanisms for cross-service calls.
 - **Cross-Cutting Concerns**: Centralized logging with Seq, global exception handling, Polly resilience, and ASP.NET Core Health Checks.
-
+- **Machine Learning & LLM Model**: Implemented Real time fraud detection system by introducing a 2-layer ensemble workflow: Layer 1 (ML Quantitative Engine) + Layer 2 (Microsoft Semantic Kernel & OpenAI Semantic Analyzer), merged by an Ensemble Workflow Coordinator using weighted voting and conditional routing.
 ### Layer Responsibilities
 
 - **Core / Domain**: Building blocks and abstractions used across projects (Aggregates, Value Objects, Domain Events). Pure domain logic without infrastructure dependencies.
