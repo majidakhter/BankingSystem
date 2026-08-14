@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID, HostListener } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, HostListener, ChangeDetectorRef } from '@angular/core';
 import { MemberShipService } from '../../core/services/membership.service';
 import { Router } from '@angular/router';
 
@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
 
   isAdmin = false;
+  isOperator = false;
+  isCustomer = false;
   isUser = false;
-  userRole: string | null = null;
   userName: string = 'User';
   lastLoginTime: string = '';
   activeDropdown: string | null = null;
@@ -19,6 +20,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     public authService: MemberShipService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -69,18 +71,28 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  updateRoles(): void {
+    const roleStr = this.authService.getUserRole();
+    this.isAdmin = this.authService.isAdmin() || roleStr === 'ADMIN';
+    this.isOperator = this.authService.isOperator() || roleStr === 'OPERATOR';
+    this.isCustomer = !this.isAdmin && !this.isOperator;
+    this.isUser = this.isCustomer;
+    this.cdr.detectChanges();
+  }
+
   ngOnInit(): void {
     this.setLastLoginTime();
+    this.updateRoles();
 
-    this.authService.userRole$.subscribe((role: any) => {
-      this.isAdmin = this.authService.isAdmin() || String(role) === 'ADMIN' || String(role) === '0';
-      this.isUser = String(role) === 'USER' || String(role) === '1' || (!this.isAdmin && !!role);
+    this.authService.userRole$.subscribe(() => {
+      this.updateRoles();
     });
 
     this.authService.currentUser$.subscribe((user: any) => {
       if (user) {
         this.userName = user.name || user.fullName || user.email || 'User';
       }
+      this.updateRoles();
     });
 
     const user: any = this.authService.getUser();
@@ -89,7 +101,3 @@ export class HeaderComponent implements OnInit {
     }
   }
 }
-
-
-
-

@@ -108,19 +108,39 @@ namespace BankingAppDDD.MongoService.Application.Mongo
         {
             try
             {
+                if (dataBase != null)
+                {
+                    var collection = dataBase.GetCollection<AccountReadModelMapper>("AccountReadModel");
+                    var accountList = await collection.Find(a => a.UserId == userId || a.AccountId == userId).ToListAsync();
+                    if (accountList != null && accountList.Count > 0)
+                    {
+                        var latestAcct = accountList.OrderByDescending(a => a.AccountBalance).FirstOrDefault();
+                        if (latestAcct != null) return latestAcct;
+                    }
+
+                    var userCol = dataBase.GetCollection<UserReadModelMapper>("UserReadModel");
+                    var user = await userCol.Find(a => a.UserId == userId || a.KeycloakUserId == userId).FirstOrDefaultAsync();
+                    if (user != null)
+                    {
+                        accountList = await collection.Find(a => a.UserId == user.KeycloakUserId || a.UserId == user.UserId).ToListAsync();
+                        if (accountList != null && accountList.Count > 0)
+                        {
+                            var latestAcct = accountList.OrderByDescending(a => a.AccountBalance).FirstOrDefault();
+                            if (latestAcct != null) return latestAcct;
+                        }
+                    }
+                }
+
                 if (_document == null) return null;
                 IMongoDBStateContext statecontext = new MongoDBStateContext { CollectionName = "AccountReadModel" };
-
-                // 1. Direct query in AccountReadModel by UserId or AccountId
                 var account = await _document.GetOneAsync<AccountReadModelMapper>(a => a.UserId == userId || a.AccountId == userId, CancellationToken.None, statecontext);
                 if (account != null) return account;
 
-                // 2. Fallback query via UserReadModel
                 IMongoDBStateContext userstatecontext = new MongoDBStateContext { CollectionName = "UserReadModel" };
-                var user = await _document.GetOneAsync<UserReadModelMapper>(a => a.UserId == userId || a.KeycloakUserId == userId, CancellationToken.None, userstatecontext);
-                if (user != null)
+                var userRead = await _document.GetOneAsync<UserReadModelMapper>(a => a.UserId == userId || a.KeycloakUserId == userId, CancellationToken.None, userstatecontext);
+                if (userRead != null)
                 {
-                    account = await _document.GetOneAsync<AccountReadModelMapper>(a => a.UserId == user.KeycloakUserId || a.UserId == user.UserId, CancellationToken.None, statecontext);
+                    account = await _document.GetOneAsync<AccountReadModelMapper>(a => a.UserId == userRead.KeycloakUserId || a.UserId == userRead.UserId, CancellationToken.None, statecontext);
                 }
                 return account;
             }

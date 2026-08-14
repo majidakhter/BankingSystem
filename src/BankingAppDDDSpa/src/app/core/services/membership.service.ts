@@ -41,6 +41,7 @@ export class MemberShipService {
     const role = localStorage.getItem('userRole');
     if (role === null || role === undefined) return null;
     if (role === 'ADMIN' || role === 'Admin' || role === '0') return Role.ADMIN;
+    if (role === 'OPERATOR' || role === 'Operator' || role === 'TELLER') return Role.OPERATOR;
     return Role.USER;
   }
 
@@ -68,12 +69,23 @@ export class MemberShipService {
     const roleFromStorage = localStorage.getItem('userRole');
     if (roleFromStorage) return roleFromStorage;
     const role = this.userRoleValue ?? this.getRoleFromStorage();
-    return role === Role.ADMIN ? 'ADMIN' : 'Customer';
+    if (role === Role.ADMIN) return 'ADMIN';
+    if (role === Role.OPERATOR) return 'OPERATOR';
+    return 'Customer';
   }
 
   public isAdmin(): boolean {
     const role = this.getUserRole();
     return role === 'ADMIN' || role === 'Admin' || role === '0';
+  }
+
+  public isOperator(): boolean {
+    const role = this.getUserRole();
+    return role === 'OPERATOR' || role === 'Operator' || role === 'TELLER';
+  }
+
+  public isCustomer(): boolean {
+    return !this.isAdmin() && !this.isOperator();
   }
 
   public decodeToken(token: string): any {
@@ -90,7 +102,7 @@ export class MemberShipService {
           .join('')
       );
       return JSON.parse(jsonPayload);
-    } catch (e) {
+    } catch {
       return null;
     }
   }
@@ -99,27 +111,14 @@ export class MemberShipService {
     return !!this.currentUserValue;
   }
 
-  login(credentialsOrUsername: any, passwordArg?: string): Observable<any> {
-    let username = '';
-    let password = '';
-
-    if (typeof credentialsOrUsername === 'string') {
-      username = credentialsOrUsername;
-      password = passwordArg || '';
-    } else if (credentialsOrUsername && typeof credentialsOrUsername === 'object') {
-      username = credentialsOrUsername.username || credentialsOrUsername.email || '';
-      password = credentialsOrUsername.password || '';
-    }
-
-    const loginPayload = {
-      username: username,
-      password: password,
-    };
+  login(username: string, password: string): Observable<any> {
+    const loginPayload = { username, password };
 
     return this.http.post<any>(`${this.apiUrl}/api/v2/auth/login`, loginPayload).pipe(
       tap((res: any) => {
-        const token = res?.access_token || res?.token || res?.result?.token || res?.data?.token || res?.accessToken;
-        const user = res?.result?.user || res?.user || res?.data?.user;
+        console.log('UserAccountController Auth login API raw response:', res);
+        const token = res?.token || res?.access_token || res?.accessToken || res?.result?.token || res?.data?.token;
+        const user = res?.user || res?.result?.user || res?.data?.user;
 
         if (token) {
           localStorage.setItem('token', token);
@@ -137,8 +136,22 @@ export class MemberShipService {
         }
 
         const isAdminUser = roles.some(r => r === 'ADMIN' || r === 'ROLE_ADMIN' || r === '0');
-        const userRole = isAdminUser ? Role.ADMIN : Role.USER;
-        const userRoleString = isAdminUser ? 'ADMIN' : 'Customer';
+        const isOperatorUser = roles.some(r => r === 'OPERATOR' || r === 'ROLE_OPERATOR' || r === 'TELLER') || username.toLowerCase().includes('operator');
+
+        let userRole: Role = Role.USER;
+        let userRoleString = 'Customer';
+
+        if (isAdminUser) {
+          userRole = Role.ADMIN;
+          userRoleString = 'ADMIN';
+        } else if (isOperatorUser) {
+          userRole = Role.OPERATOR;
+          userRoleString = 'OPERATOR';
+        } else {
+          userRole = Role.USER;
+          userRoleString = 'Customer';
+        }
+
         const keyCloakUserId = decoded?.sub || res?.preferred_username || user?.keyCloakUserId || user?.id || '';
 
         const loggedInUser: User = {

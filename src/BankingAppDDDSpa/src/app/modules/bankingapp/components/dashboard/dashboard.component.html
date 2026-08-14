@@ -247,45 +247,6 @@
               </tbody>
             </table>
           </div>
-
-          <!-- Transaction History Section -->
-          <h4 class="mt-4 mb-3 fs-5">Recent Transactions</h4>
-          <div class="table-responsive">
-            <table class="table align-middle table-hover">
-              <thead>
-                <tr>
-                  <th>Transaction ID</th>
-                  <th>Amount</th>
-                  <th>Transaction Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (tx of recentTransactions; track tx.id) {
-                  <tr>
-                    <td class="font-monospace text-muted">{{ tx.id }}</td>
-                    <td class="fw-bold text-primary">₹{{ tx.amount | number:'1.2-2' }}</td>
-                    <td>{{ tx.date }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Action Buttons Bar -->
-          <div class="d-flex flex-wrap gap-2 mt-4">
-            <button class="btn btn-info text-white font-weight-bold" (click)="navigateTo('/deposit')">
-              DEPOSIT
-            </button>
-            <button class="btn btn-primary font-weight-bold" (click)="navigateTo('/withdraw')">
-              WITHDRAW
-            </button>
-            <button class="btn btn-primary font-weight-bold" (click)="navigateTo('/transfer')">
-              TRANSFER
-            </button>
-            <button class="btn btn-danger font-weight-bold" (click)="navigateTo('/home')">
-              CLOSE
-            </button>
-          </div>
         </div>
       </div>
     </div>

@@ -7,6 +7,26 @@
     </div>
 </section>
 
+<!-- Logged-in Operator Quick Action Buttons (Deposit, Withdraw, Close) -->
+@if (showOperatorActions) {
+  <div class="container my-4">
+    <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
+      <h5 class="fw-bold text-dark mb-3">Operator Quick Operations</h5>
+      <div class="d-flex flex-wrap gap-3">
+        <button class="btn btn-info text-white font-weight-bold px-4 py-2" (click)="navigateTo('/deposit')">
+          <i class="bi bi-piggy-bank me-2"></i> DEPOSIT
+        </button>
+        <button class="btn btn-primary font-weight-bold px-4 py-2" (click)="navigateTo('/withdraw')">
+          <i class="bi bi-cash-stack me-2"></i> WITHDRAW
+        </button>
+        <button class="btn btn-danger font-weight-bold px-4 py-2" (click)="navigateTo('/home')">
+          <i class="bi bi-x-circle me-2"></i> CLOSE
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
 <!-- About Start -->
 <div class="container-fluid about bg-light py-5">
     <div class="container py-5">

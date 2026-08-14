@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
           this.successMessage = 'Login successful!';
 
           const role = this.authService.getUserRole();
-          if (this.authService.isAdmin() || role === 'ADMIN') {
+          if (this.authService.isAdmin() || this.authService.isOperator() || role === 'ADMIN' || role === 'OPERATOR') {
             this.router.navigate(['/home']);
           } else {
             this.router.navigate(['/dashboard']);

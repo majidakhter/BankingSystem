@@ -140,6 +140,24 @@
             </div>
         }
 
+        @if (isOperator) {
+            <!-- Operator Header Navigation Row -->
+            <div class="py-3 px-4 bg-white border-bottom shadow-sm">
+                <div class="container-fluid px-0 d-flex align-items-center justify-content-between">
+                    <a href="/home" class="navbar-brand p-0 text-decoration-none">
+                        <h1 class="text-primary m-0 fs-3 fw-bold"><i class="fas fa-university me-2"></i>Cooperative Bank</h1>
+                    </a>
+                    <div class="d-flex align-items-center gap-4">
+                        <a href="/home" class="nav-link text-dark fw-semibold">Home</a>
+                        <span class="text-secondary small fw-medium">Logged in as Operator ({{ userName }})</span>
+                        <button class="btn btn-primary rounded-pill text-white px-4 py-2 fw-semibold cursor-pointer ms-2" (click)="logout()">
+                            <i class="fas fa-power-off me-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+
         @if (isAdmin) {
             <!-- Admin Header Navigation Row -->
             <div class="py-3 px-4 bg-white border-bottom shadow-sm">

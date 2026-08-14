@@ -106,12 +106,39 @@
                 <i class="bi bi-person-circle fs-5"></i> Account Details
               </button>
 
-              <button type="button" class="btn btn-primary action-btn-solid fw-semibold px-4 py-2 d-inline-flex align-items-center gap-2" (click)="navigateTo('/transaction-list')">
+              <button type="button" class="btn btn-primary action-btn-solid fw-semibold px-4 py-2 d-inline-flex align-items-center gap-2" (click)="toggleRecentTransactions()">
                 <i class="bi bi-journal-text fs-5"></i> Recent Transaction
               </button>
             </div>
 
           </div>
+
+          <!-- Recent Transactions Section (Displayed on button click) -->
+          @if (showRecentTransactions) {
+            <div class="recent-transactions-section mt-4 pt-3 border-top">
+              <h5 class="fw-bold text-dark mb-3 fs-5">Recent Transactions</h5>
+              <div class="table-responsive">
+                <table class="table align-middle table-hover">
+                  <thead>
+                    <tr>
+                      <th class="text-secondary small fw-bold">TRANSACTION ID</th>
+                      <th class="text-secondary small fw-bold">AMOUNT</th>
+                      <th class="text-secondary small fw-bold">TRANSACTION DATE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (tx of recentTransactions; track tx.id) {
+                      <tr>
+                        <td class="font-monospace text-muted">{{ tx.id }}</td>
+                        <td class="fw-bold text-primary">₹{{ tx.amount | number:'1.2-2' }}</td>
+                        <td>{{ tx.date }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
 
         </div>
 

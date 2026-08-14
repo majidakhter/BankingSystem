@@ -243,6 +243,27 @@ export class UserProfileComponent implements OnInit {
             role: Role.USER
           };
         }
+
+        // Sync live account balance & account number with AccountDetails (same API used by Dashboard & Account Summary)
+        this.membershipService.getAccountDetails(targetId).subscribe({
+          next: (acctRes: any) => {
+            const accountList = Array.isArray(acctRes) ? acctRes : (acctRes?.result || acctRes?.data || acctRes?.value || (acctRes ? [acctRes] : []));
+            if (accountList && accountList.length > 0) {
+              const primary = accountList[0];
+              const liveBal = primary.currentBalance !== undefined ? primary.currentBalance : (primary.CurrentBalance !== undefined ? primary.CurrentBalance : primary.balance);
+              if (liveBal !== undefined && liveBal !== null && this.user) {
+                this.user.balance = liveBal;
+              }
+              const liveAcctNo = primary.accountNo !== undefined ? primary.accountNo : primary.AccountNo;
+              if (liveAcctNo !== undefined && liveAcctNo !== null && this.user) {
+                this.user.accountNumber = liveAcctNo.toString();
+              }
+              this.cdr.detectChanges();
+            }
+          },
+          error: (acctErr: any) => console.error('Error syncing live balance in user-profile:', acctErr)
+        });
+
         this.cdr.detectChanges();
       },
       error: (err: any) => {

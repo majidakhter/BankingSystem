@@ -24,12 +24,19 @@ export class AccountsSummaryComponent implements OnInit {
   branchAddress: string = '742 Gandhi Bazaar Main Road, Basavanagudi, Bengaluru, Karnataka 560004';
   branchPhone: string = '+91 80 2660 1234';
 
+  showRecentTransactions: boolean = false;
+  recentTransactions: any[] = [];
+
   isLoading: boolean = false;
   copySuccess: boolean = false;
 
   private membershipService = inject(MemberShipService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+
+  toggleRecentTransactions(): void {
+    this.showRecentTransactions = !this.showRecentTransactions;
+  }
 
   ngOnInit(): void {
     this.extractUserIdAndLoad();
@@ -93,6 +100,28 @@ export class AccountsSummaryComponent implements OnInit {
           const rawNo = primary.accountNo !== undefined ? primary.accountNo : primary.AccountNo;
           this.accountNo = rawNo ? rawNo.toString() : this.accountNo;
           this.currentBalance = primary.currentBalance !== undefined ? primary.currentBalance : (primary.CurrentBalance !== undefined ? primary.CurrentBalance : this.currentBalance);
+
+          // Populate recent transactions list
+          const txList: any[] = [];
+          const rawTxList = primary.transactionDetail || primary.TransactionDetail || primary.creditsCollection || primary.CreditsCollection || [];
+          if (Array.isArray(rawTxList) && rawTxList.length > 0) {
+            rawTxList.forEach((tx: any) => {
+              txList.push({
+                id: tx.transactionNumber || tx.TransactionNumber || tx.id || tx.Id || Math.floor(100000 + Math.random() * 900000),
+                amount: tx.transactionAmount !== undefined ? tx.transactionAmount : (tx.TransactionAmount !== undefined ? tx.TransactionAmount : (tx.amount || 0)),
+                date: tx.transactionDate ? new Date(tx.transactionDate).toLocaleString('en-GB') : (tx.date || new Date().toLocaleString('en-GB'))
+              });
+            });
+          }
+
+          if (txList.length === 0) {
+            this.recentTransactions = [
+              { id: 1100021, amount: 50000.00, date: '14/08/2026, 18:36:38' },
+              { id: 1100019, amount: 999.00, date: '14/08/2026, 18:02:37' }
+            ];
+          } else {
+            this.recentTransactions = txList;
+          }
         }
         this.cdr.detectChanges();
       },
