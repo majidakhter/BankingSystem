@@ -154,6 +154,14 @@ This system provides a comprehensive suite of banking features to clients:
 - Install **Docker Desktop** with WSL 2 support: [Docker Desktop Download](https://docs.docker.com/docker-for-windows/wsl/)
 - **.NET 8 SDK** & **Node.js** (for local development)
 
+Running the SPA locally
+If you prefer running the frontend outside Docker for development, start the backend with docker compose up, then:
+
+cd src/BankingAppDDDSpa
+npm install
+ng serve
+The app will be available at http://localhost:4200.
+
 ### 2. Database & Identity Setup
 
 #### Keycloak PostgreSQL Setup
