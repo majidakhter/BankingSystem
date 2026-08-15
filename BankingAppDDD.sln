@@ -49,6 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\aks\keycloak-configmap.yaml = ..\aks\keycloak-configmap.yaml
 		..\aks\keycloak-secret.yaml = ..\aks\keycloak-secret.yaml
 		..\aks\keycloak.yaml = ..\aks\keycloak.yaml
+		LICENSE = LICENSE
 		..\aks\mongo-configmap.yaml = ..\aks\mongo-configmap.yaml
 		..\aks\mongo-secret.yaml = ..\aks\mongo-secret.yaml
 		..\aks\mongo.yaml = ..\aks\mongo.yaml
