@@ -11,7 +11,7 @@ import { TransactionService } from '@core/services/transaction.service';
   imports: [CommonModule, FormsModule, RouterModule],
 })
 export class DepositComponent {
-  userId: number = 0;
+  accountNo: number = 0;
   amount: number = 0;
   description: string = '';
   message: string = '';
@@ -23,13 +23,14 @@ export class DepositComponent {
       this.errorMessage = 'Deposit amount must be greater than zero.';
       return;
     }
-    this.transactionService.depositMoney(this.userId, this.amount, this.description).subscribe({
-      next:(response) => {
-        alert("Your deposit of "+`${this.amount}`+" is pending approval. Once approved by the admin, your balance will be updated.");
+    const desc = this.description && this.description.trim() ? this.description.trim() : 'Deposit funds';
+    this.transactionService.depositMoney(this.accountNo, this.amount, desc).subscribe({
+      next: (response) => {
+        alert("Your deposit of " + `${this.amount}` + " is pending approval. Once approved by the admin, your balance will be updated.");
         this.errorMessage = '';
         this.clearForm();
       },
-      error:(error) => {
+      error: (error) => {
         this.errorMessage = 'An error occurred during the deposit. Please try again.';
         this.message = '';
         console.error(error);
@@ -37,7 +38,7 @@ export class DepositComponent {
     });
   }
   clearForm(): void {
-    this.userId = 0;
+    this.accountNo = 0;
     this.amount = 0;
     this.description = '';
   }

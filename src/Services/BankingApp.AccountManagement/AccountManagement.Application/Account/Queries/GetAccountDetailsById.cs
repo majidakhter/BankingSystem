@@ -56,18 +56,32 @@ namespace BankingApp.AccountManagement.Application.Accounts.Queries
                     userAccountDto.AccountStatusId = account.AccountStatusId;
                     userAccountDto.CurrentBalance = account.GetCurrentBalance().Value;
 
-                    var creditsForAccount = new List<CreditDTO>();
+                    var transactionsForAccount = new List<CreditDTO>();
                     foreach (var credit in account.CreditsCollection)
                     {
                         var creditDTO = new CreditDTO
                         {
                             TransactionNumber = credit.TransactionNo,
                             TransactionAmount = credit.Amount != null ? credit.Amount.Value : 0,
-                            TransactionDate = credit.TransactionDate
+                            TransactionDate = credit.TransactionDate,
+                            TransactionType = "Credit",
+                            Description = credit.Description ?? "Deposit / Credit"
                         };
-                        creditsForAccount.Add(creditDTO);
+                        transactionsForAccount.Add(creditDTO);
                     }
-                    userAccountDto.TransactionDetail = creditsForAccount;
+                    foreach (var debit in account.DebitsCollection)
+                    {
+                        var debitDTO = new CreditDTO
+                        {
+                            TransactionNumber = debit.TransactionNo,
+                            TransactionAmount = debit.Amount != null ? debit.Amount.Value : 0,
+                            TransactionDate = debit.TransactionDate,
+                            TransactionType = "Debit",
+                            Description = debit.Description ?? "Withdrawal / Debit"
+                        };
+                        transactionsForAccount.Add(debitDTO);
+                    }
+                    userAccountDto.TransactionDetail = transactionsForAccount.OrderByDescending(t => t.TransactionDate).ToList();
 
                     // Combine Beneficiaries for this account into UserAccountDTO
                     var beneficiariesForAccount = allBeneficiaries

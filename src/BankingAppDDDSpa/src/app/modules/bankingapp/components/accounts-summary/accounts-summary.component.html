@@ -122,6 +122,8 @@
                   <thead>
                     <tr>
                       <th class="text-secondary small fw-bold">TRANSACTION ID</th>
+                      <th class="text-secondary small fw-bold">TYPE</th>
+                      <th class="text-secondary small fw-bold">DESCRIPTION</th>
                       <th class="text-secondary small fw-bold">AMOUNT</th>
                       <th class="text-secondary small fw-bold">TRANSACTION DATE</th>
                     </tr>
@@ -130,8 +132,16 @@
                     @for (tx of recentTransactions; track tx.id) {
                       <tr>
                         <td class="font-monospace text-muted">{{ tx.id }}</td>
-                        <td class="fw-bold text-primary">₹{{ tx.amount | number:'1.2-2' }}</td>
-                        <td>{{ tx.date }}</td>
+                        <td>
+                          <span class="badge rounded-pill px-2 py-1 small" [class.bg-success-subtle]="tx.type?.toLowerCase() === 'credit'" [class.text-success]="tx.type?.toLowerCase() === 'credit'" [class.bg-danger-subtle]="tx.type?.toLowerCase() === 'debit'" [class.text-danger]="tx.type?.toLowerCase() === 'debit'">
+                            {{ tx.type?.toUpperCase() }}
+                          </span>
+                        </td>
+                        <td class="small text-dark fw-medium">{{ tx.description || 'N/A' }}</td>
+                        <td class="fw-bold" [class.text-success]="tx.type?.toLowerCase() === 'credit'" [class.text-danger]="tx.type?.toLowerCase() === 'debit'">
+                          {{ tx.type?.toLowerCase() === 'debit' ? '-' : '+' }}₹{{ tx.amount | number:'1.2-2' }}
+                        </td>
+                        <td class="small text-secondary">{{ tx.date }}</td>
                       </tr>
                     }
                   </tbody>

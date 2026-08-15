@@ -16,6 +16,7 @@ namespace BankingApp.AccountManagement.Infrastructure.Repositories
         void Update(T item);
         IQueryable<T> FetchMulti(Expression<Func<T, bool>> predicate = null);
         Task<Account> GetEntityById(Guid id);
+        Task<Account> GetEntityByAccountNumber(int accountNo);
         Task<List<Account>> GetAccountsWithDetailsAsync(Expression<Func<Account, bool>> predicate);
     }
 }

@@ -31,11 +31,9 @@ namespace BankingAppDDD.Domains.Accounts.Entities
 
         private void Apply(AccountDebitedDomainEvent @event)
         {
-            Id = @event.AccountId;
             Description = @event.Description;
             Amount = @event.Amount;
             TransactionDate = @event.Timestamp;
-
         }
 
         [Required]

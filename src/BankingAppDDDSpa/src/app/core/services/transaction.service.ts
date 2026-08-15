@@ -8,8 +8,9 @@ import { MemberShipService } from './membership.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TransactionService{
+export class TransactionService {
   baseUrl = 'http://localhost:8084/api/transactions/';
+  apiUrl = 'http://localhost:5210/api/v2/account/'
   private http = inject(HttpClient);
   private userService = inject(MemberShipService);
 
@@ -21,48 +22,49 @@ export class TransactionService{
       'Content-Type': 'application/json'
     });
   }
-  
-  
+
+
   getTransactions(): Observable<TransactionModel[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<TransactionModel[]>(this.baseUrl);
   }
-  
+
 
   getTransactionById(id: number): Observable<TransactionModel> {
     const headers = this.getAuthHeaders();
-    return this.http.get<TransactionModel>(`${this.baseUrl}${id}`, {headers});
+    return this.http.get<TransactionModel>(`${this.baseUrl}${id}`, { headers });
   }
 
-  
+
   getTransactionsByUserId(userId: number): Observable<TransactionModel[]> {
     const headers = this.getAuthHeaders();
-    return this.http.get<TransactionModel[]>(`${this.baseUrl}user/${userId}`, {headers});
+    return this.http.get<TransactionModel[]>(`${this.baseUrl}user/${userId}`, { headers });
   }
 
-  depositMoney(userId: number, amount: number, description: string): Observable<any> {
-    const url = `${this.baseUrl}deposit`;
+  depositMoney(accountNo: number, amount: number, description: string): Observable<any> {
+    const url = `${this.apiUrl}deposit`;
+    const desc = description && description.trim() ? description.trim() : 'Deposit funds';
 
-    // Setting up query parameters
-    const params = new HttpParams()
-      .set('userId', userId.toString())
-      .set('amount', amount.toString())
-      .set('description', description);
+    const payload = {
+      accountNumber: Number(accountNo),
+      amount: Number(amount),
+      description: desc
+    };
 
-    // Making the POST request with parameters
-    return this.http.post(url, {}, { params });
-}
-withdrawMoney(userId: number, amount: number, description: string): Observable<any> {
-    const url = `${this.baseUrl}withdraw`;
+    return this.http.post(url, payload);
+  }
 
-    // Setting up query parameters
-    let params = new HttpParams()
-      .set('userId', userId.toString())
-      .set('amount', amount.toString())
-      .set('description', description);
+  withdrawMoney(accountNo: number, amount: number, description: string): Observable<any> {
+    const url = `${this.apiUrl}withdraw`;
+    const desc = description && description.trim() ? description.trim() : 'Withdraw funds';
 
-    // Making the POST request with parameters
-    return this.http.post(url, {}, { params });
+    const payload = {
+      accountNumber: Number(accountNo),
+      amount: Number(amount),
+      description: desc
+    };
+
+    return this.http.post(url, payload);
   }
 
   transferMoney(senderId: number, receiverId: number, amount: number, description: string): Observable<any> {
@@ -83,9 +85,9 @@ withdrawMoney(userId: number, amount: number, description: string): Observable<a
     const headers = this.getAuthHeaders();
     return this.http.put<void>(`${this.baseUrl}${transactionId}/status`, { status }, { headers });
   }
-  
+
   deleteTransaction(id: number): Observable<void> {
     const headers = this.getAuthHeaders();
-    return this.http.delete<void>(`${this.baseUrl}${id}`, {headers});
+    return this.http.delete<void>(`${this.baseUrl}${id}`, { headers });
   }
 }

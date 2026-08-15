@@ -60,9 +60,14 @@ namespace BankingApp.AccountManagement.Infrastructure.Repositories
         public void Update(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
-            _context.Entry(item).State = EntityState.Modified;
+            var entry = _context.Entry(item);
+            if (entry.State == EntityState.Detached)
+            {
+                _context.Attach(item);
+                entry.State = EntityState.Modified;
+            }
         }
         public virtual IQueryable<T> FetchMulti(Expression<Func<T, bool>> predicate = null)
         {
@@ -75,6 +80,24 @@ namespace BankingApp.AccountManagement.Infrastructure.Repositories
         public async Task<Account> GetEntityById(Guid id)
         {
             var entity = await _context.Set<Account>().FindAsync(id);
+            if (entity != null)
+            {
+                await _context.Entry(entity)
+                    .Collection(q => q.CreditsCollection).LoadAsync();
+
+                await _context.Entry(entity)
+                .Collection(q => q.DebitsCollection).LoadAsync();
+
+                await _context.Entry(entity)
+                    .Reference(q => q.AccountStatus).LoadAsync();
+            }
+
+            return entity;
+        }
+
+        public async Task<Account> GetEntityByAccountNumber(int accountNo)
+        {
+            var entity = await _context.Set<Account>().FirstOrDefaultAsync(a => a.AccountNo == accountNo);
             if (entity != null)
             {
                 await _context.Entry(entity)

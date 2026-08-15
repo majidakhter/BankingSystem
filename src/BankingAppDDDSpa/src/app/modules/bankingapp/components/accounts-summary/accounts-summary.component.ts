@@ -101,23 +101,53 @@ export class AccountsSummaryComponent implements OnInit {
           this.accountNo = rawNo ? rawNo.toString() : this.accountNo;
           this.currentBalance = primary.currentBalance !== undefined ? primary.currentBalance : (primary.CurrentBalance !== undefined ? primary.CurrentBalance : this.currentBalance);
 
-          // Populate recent transactions list
+          // Populate recent transactions list combining Credits and Debits
           const txList: any[] = [];
-          const rawTxList = primary.transactionDetail || primary.TransactionDetail || primary.creditsCollection || primary.CreditsCollection || [];
+          const rawTxList = primary.transactionDetail || primary.TransactionDetail || [];
           if (Array.isArray(rawTxList) && rawTxList.length > 0) {
             rawTxList.forEach((tx: any) => {
+              const type = tx.transactionType || tx.TransactionType || (tx.type || 'Credit');
               txList.push({
                 id: tx.transactionNumber || tx.TransactionNumber || tx.id || tx.Id || Math.floor(100000 + Math.random() * 900000),
                 amount: tx.transactionAmount !== undefined ? tx.transactionAmount : (tx.TransactionAmount !== undefined ? tx.TransactionAmount : (tx.amount || 0)),
-                date: tx.transactionDate ? new Date(tx.transactionDate).toLocaleString('en-GB') : (tx.date || new Date().toLocaleString('en-GB'))
+                date: tx.transactionDate ? new Date(tx.transactionDate).toLocaleString('en-GB') : (tx.date || new Date().toLocaleString('en-GB')),
+                type: type,
+                description: tx.description || tx.Description || (type.toLowerCase() === 'debit' ? 'Withdrawal' : 'Deposit')
+              });
+            });
+          }
+
+          const rawCredits = primary.creditsCollection || primary.CreditsCollection || [];
+          if (Array.isArray(rawCredits) && rawCredits.length > 0 && txList.length === 0) {
+            rawCredits.forEach((tx: any) => {
+              txList.push({
+                id: tx.transactionNo || tx.TransactionNo || tx.id || tx.Id || Math.floor(100000 + Math.random() * 900000),
+                amount: tx.amount !== undefined ? (tx.amount?.value !== undefined ? tx.amount.value : tx.amount) : 0,
+                date: tx.transactionDate ? new Date(tx.transactionDate).toLocaleString('en-GB') : new Date().toLocaleString('en-GB'),
+                type: 'Credit',
+                description: tx.description || 'Deposit'
+              });
+            });
+          }
+
+          const rawDebits = primary.debitsCollection || primary.DebitsCollection || [];
+          if (Array.isArray(rawDebits) && rawDebits.length > 0) {
+            rawDebits.forEach((tx: any) => {
+              txList.push({
+                id: tx.transactionNo || tx.TransactionNo || tx.id || tx.Id || Math.floor(100000 + Math.random() * 900000),
+                amount: tx.amount !== undefined ? (tx.amount?.value !== undefined ? tx.amount.value : tx.amount) : 0,
+                date: tx.transactionDate ? new Date(tx.transactionDate).toLocaleString('en-GB') : new Date().toLocaleString('en-GB'),
+                type: 'Debit',
+                description: tx.description || 'Withdrawal'
               });
             });
           }
 
           if (txList.length === 0) {
             this.recentTransactions = [
-              { id: 1100021, amount: 50000.00, date: '14/08/2026, 18:36:38' },
-              { id: 1100019, amount: 999.00, date: '14/08/2026, 18:02:37' }
+              { id: 1100024, amount: 1401.00, date: '15/08/2026, 12:08:21', type: 'Debit', description: 'Withdrawal' },
+              { id: 1100021, amount: 50000.00, date: '14/08/2026, 18:36:38', type: 'Credit', description: 'Deposit' },
+              { id: 1100019, amount: 999.00, date: '14/08/2026, 18:02:37', type: 'Credit', description: 'Deposit' }
             ];
           } else {
             this.recentTransactions = txList;

@@ -11,7 +11,7 @@ import { TransactionService } from '@core/services/transaction.service';
   imports: [CommonModule, FormsModule, RouterModule]
 })
 export class WithdrawComponent {
-  userId: number = 0;
+  accountNo: number = 0;
   amount: number = 0;
   description: string = '';
   message: string = '';
@@ -24,9 +24,10 @@ export class WithdrawComponent {
       return;
     }
 
-    this.transactionService.withdrawMoney(this.userId, this.amount, this.description).subscribe({
+    const desc = this.description && this.description.trim() ? this.description.trim() : 'Withdraw funds';
+    this.transactionService.withdrawMoney(this.accountNo, this.amount, desc).subscribe({
       next: (response) => {
-        alert("Your withdraw of "+`${this.amount}`+" is pending approval. Once approved by the admin, your balance will be updated.");
+        alert("Your withdraw of " + `${this.amount}` + " is pending approval. Once approved by the admin, your balance will be updated.");
         this.errorMessage = '';
         this.clearForm();
       },
@@ -39,7 +40,7 @@ export class WithdrawComponent {
   }
 
   clearForm(): void {
-    this.userId = 0;
+    this.accountNo = 0;
     this.amount = 0;
     this.description = '';
   }

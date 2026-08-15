@@ -20,5 +20,7 @@ namespace BankingAppDDD.Domains.Accounts.Models
         public int TransactionNumber { get; set; }
         public decimal TransactionAmount { get; set; }
         public DateTime TransactionDate { get; set; }
+        public string TransactionType { get; set; } = "Credit";
+        public string Description { get; set; } = string.Empty;
     }
 }

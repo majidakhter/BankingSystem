@@ -66,7 +66,12 @@ namespace BankingApp.AccountManagement.Infrastructure.Repositories
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            _context.Entry(item).State = EntityState.Modified;
+            var entry = _context.Entry(item);
+            if (entry.State == EntityState.Detached)
+            {
+                _context.Attach(item);
+                entry.State = EntityState.Modified;
+            }
         }
 
         public virtual IQueryable<T> FetchMulti(Expression<Func<T, bool>>? predicate = null)

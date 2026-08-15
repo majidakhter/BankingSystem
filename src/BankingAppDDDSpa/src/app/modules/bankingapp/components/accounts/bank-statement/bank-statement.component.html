@@ -1,34 +1,255 @@
-<div class="bank-statement-container" id="print-section">
-    <h2 style="text-align: center;">Bank Statement</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Description</th>
-          <th>Type</th>
-          <th>Amount</th>
-          <!-- <th>Amount</th> -->
-          <!-- <th>Balance</th> -->
-        </tr>
-      </thead>
-      <tbody>
-      @for(transaction of transactions; track transaction.id)
-      { 
-        <tr>
-          <td>{{ transaction.transactionDate | date: 'short' }}</td>
-          <td>{{ transaction.description }}</td>
-          <td>{{ transaction.transactionType }}</td>
-          <td [ngClass]="{'DEPOSIT': transaction.transactionType, 'WITHDRAW': transaction.transactionType, 'FUND_TRANSFER': transaction.transactionType}">
-            {{ transaction.amount | currency }}
-          </td>
-          <!-- <td>{{ transaction.amount | currency }}</td> -->
-        </tr>
-      }
-        
-      </tbody>
-    </table>
+<div class="bank-statement-wrapper py-4 bg-light min-vh-100">
+  <div class="container" style="max-width: 1140px;">
+    
+    <!-- Success Alert Messages -->
+    @if (downloadSuccessMessage) {
+      <div class="alert alert-success alert-dismissible fade show mb-3 shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> {{ downloadSuccessMessage }}
+      </div>
+    }
+    @if (emailSuccessMessage) {
+      <div class="alert alert-info alert-dismissible fade show mb-3 shadow-sm" role="alert">
+        <i class="bi bi-envelope-check-fill me-2"></i> {{ emailSuccessMessage }}
+      </div>
+    }
 
-    <!-- Print Button -->
-    <button (click)="printStatement()" class="print-btn">Print Statement</button>
+    <div class="row g-4">
+      
+      <!-- LEFT MAIN CONTENT COLUMN -->
+      <div class="col-lg-8">
+        
+        <div class="card statement-main-card border-0 shadow-sm p-4 rounded-4 bg-white">
+          <h4 class="fw-bold text-dark mb-4 fs-4">Select Account and Statement Period</h4>
+
+          <!-- Account Summary Selector Box -->
+          <div class="account-select-box p-3 rounded-3 border bg-light-subtle d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h5 class="account-name-title fw-bold text-dark m-0 d-flex align-items-center gap-2">
+                Savings A/C . <span class="font-monospace text-primary fs-5">**** **** **{{ accountNo.slice(-4) }}</span>
+              </h5>
+              <span class="text-uppercase fw-semibold text-secondary small d-block mt-1">
+                {{ userName }}
+              </span>
+            </div>
+            <div class="text-end">
+              <h4 class="fw-bold text-dark m-0">₹{{ availableBalance | number:'1.2-2' }}</h4>
+              <span class="text-muted small">Available Balance</span>
+            </div>
+          </div>
+
+          <!-- Statement Period Dropdown & Date Filters Row -->
+          <div class="row g-3 align-items-center mb-3">
+            <div class="col-md-5">
+              <select class="form-select form-select-lg border-secondary-subtle fw-medium shadow-none cursor-pointer" [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
+                <option value="Recent Transactions">Recent Transactions</option>
+                @for (m of monthOptions; track m.label) {
+                  <option [value]="m.label">{{ m.label }}</option>
+                }
+                <option value="Current Financial Year">Current Financial Year</option>
+                <option value="Previous Financial Year">Previous Financial Year</option>
+                <option value="Custom Date">Custom Date</option>
+              </select>
+            </div>
+
+            <div class="col-md-35 col-md-3">
+              <div class="input-group">
+                <input type="date" class="form-control form-control-lg border-secondary-subtle small shadow-none" [(ngModel)]="fromDate" (change)="applyFilters()" [disabled]="!isCustomDate && selectedPeriod === 'Recent Transactions'" />
+              </div>
+            </div>
+
+            <div class="col-md-35 col-md-4">
+              <div class="input-group">
+                <input type="date" class="form-control form-control-lg border-secondary-subtle small shadow-none" [(ngModel)]="toDate" (change)="applyFilters()" [disabled]="!isCustomDate && selectedPeriod === 'Recent Transactions'" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Download / Email Statement Options Panel (Visible when non-recent transactions period is selected) -->
+          @if (selectedPeriod !== 'Recent Transactions') {
+            <div class="download-options-panel p-3 rounded-3 bg-light border my-4">
+              <div class="row align-items-center g-3">
+                <div class="col-md-4">
+                  <span class="text-secondary small fw-medium d-block mb-1">Download / Email statement for selected period</span>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-select form-select-md border-primary shadow-none fw-bold text-primary cursor-pointer" [(ngModel)]="selectedFormat">
+                    <option value="PDF">PDF</option>
+                    <option value="Excel">Excel</option>
+                    <option value="Text">Text</option>
+                    <option value="Delimited">Delimited</option>
+                    <option value="MSMoney">MSMoney</option>
+                  </select>
+                </div>
+                <div class="col-md-5 d-flex gap-2">
+                  <button type="button" class="btn btn-primary fw-semibold flex-fill d-inline-flex align-items-center justify-content-center gap-2 py-2" (click)="onDownloadStatement()">
+                    <i class="bi bi-download fs-5"></i> Download
+                  </button>
+                  <button type="button" class="btn btn-outline-primary fw-semibold flex-fill d-inline-flex align-items-center justify-content-center gap-2 py-2" (click)="onEmailStatement()">
+                    <i class="bi bi-envelope fs-5"></i> Email (PDF)
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Statement Period Notes -->
+          <div class="statement-notes-box text-muted small mt-2">
+            <p class="mb-1 fw-medium text-secondary">
+              <strong>Note :</strong>
+            </p>
+            <p class="mb-1 text-secondary">
+              'Recent transactions' is for View only. To download or email a statement, choose any other option from the dropdown menu.
+            </p>
+            @if (selectedPeriod !== 'Recent Transactions') {
+              <p class="mb-0 text-secondary">
+                • Your PDF password is your Customer Internet Banking Numeric User ID (<strong>{{ numericUserId }}</strong>)
+              </p>
+            }
+          </div>
+
+        </div>
+
+        <!-- RECENT TRANSACTIONS TABLE CARD -->
+        <div class="card transactions-table-card border-0 shadow-sm p-4 rounded-4 bg-white mt-4">
+          
+          <!-- Table Controls Header: View Mode + Filter Dropdown + Search Input -->
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            
+            <div class="d-flex align-items-center gap-2">
+              <!-- View Mode Toggle Buttons -->
+              <div class="btn-group border rounded-3 p-1 bg-light" role="group">
+                <button type="button" class="btn btn-sm btn-icon shadow-none" [class.btn-primary]="viewMode === 'list'" [class.btn-light]="viewMode !== 'list'" (click)="viewMode = 'list'" title="List View">
+                  <i class="bi bi-list-task"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-icon shadow-none" [class.btn-primary]="viewMode === 'grid'" [class.btn-light]="viewMode !== 'grid'" (click)="viewMode = 'grid'" title="Grid View">
+                  <i class="bi bi-grid-fill"></i>
+                </button>
+              </div>
+
+              <!-- Filter Dropdown -->
+              <select class="form-select form-select-md border-secondary-subtle fw-semibold text-dark cursor-pointer w-auto" [(ngModel)]="transactionFilter" (change)="applyFilters()">
+                <option value="All Transactions">All Transactions</option>
+                <option value="Credits Only">Credits Only</option>
+                <option value="Debits Only">Debits Only</option>
+              </select>
+            </div>
+
+            <!-- Search Transaction Input -->
+            <div class="search-input-box position-relative" style="min-width: 260px;">
+              <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+              <input type="text" class="form-control form-control-md ps-5 rounded-pill border-secondary-subtle shadow-none" placeholder="Search a transaction" [(ngModel)]="searchQuery" (input)="applyFilters()" />
+            </div>
+
+          </div>
+
+          <!-- List View Table -->
+          @if (viewMode === 'list') {
+            <div class="table-responsive">
+              <table class="table align-middle table-hover m-0">
+                <thead class="table-light">
+                  <tr>
+                    <th class="text-secondary small fw-bold">TRANSACTION ID</th>
+                    <th class="text-secondary small fw-bold">DESCRIPTION</th>
+                    <th class="text-secondary small fw-bold">TYPE</th>
+                    <th class="text-secondary small fw-bold">AMOUNT</th>
+                    <th class="text-secondary small fw-bold">TRANSACTION DATE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if (filteredTransactions && filteredTransactions.length > 0) {
+                    @for (tx of filteredTransactions; track tx.id) {
+                      <tr>
+                        <td class="font-monospace fw-bold text-dark">{{ tx.id }}</td>
+                        <td class="fw-semibold text-dark">{{ tx.description }}</td>
+                        <td>
+                          <span class="badge rounded-pill px-3 py-1 small" [class.bg-success-subtle]="tx.type?.toLowerCase() === 'credit'" [class.text-success]="tx.type?.toLowerCase() === 'credit'" [class.bg-danger-subtle]="tx.type?.toLowerCase() === 'debit'" [class.text-danger]="tx.type?.toLowerCase() === 'debit'">
+                            {{ tx.type?.toUpperCase() }}
+                          </span>
+                        </td>
+                        <td class="fw-bold" [class.text-success]="tx.type?.toLowerCase() === 'credit'" [class.text-danger]="tx.type?.toLowerCase() === 'debit'">
+                          {{ tx.type?.toLowerCase() === 'debit' ? '-' : '+' }}₹{{ tx.amount | number:'1.2-2' }}
+                        </td>
+                        <td class="text-secondary small">{{ tx.date | date:'dd/MM/yyyy, HH:mm:ss' }}</td>
+                      </tr>
+                    }
+                  } @else {
+                    <tr>
+                      <td colspan="5" class="text-center py-4 text-muted">No transactions found for the selected period or criteria.</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <!-- Grid View Cards -->
+            <div class="row g-3">
+              @for (tx of filteredTransactions; track tx.id) {
+                <div class="col-md-6">
+                  <div class="card p-3 border rounded-3 shadow-sm h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="font-monospace fw-bold text-muted small">#{{ tx.id }}</span>
+                      <span class="badge rounded-pill px-2 py-1 small" [class.bg-success-subtle]="tx.type?.toLowerCase() === 'credit'" [class.text-success]="tx.type?.toLowerCase() === 'credit'" [class.bg-danger-subtle]="tx.type?.toLowerCase() === 'debit'" [class.text-danger]="tx.type?.toLowerCase() === 'debit'">
+                        {{ tx.type?.toUpperCase() }}
+                      </span>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">{{ tx.description }}</h6>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                      <span class="text-secondary small">{{ tx.date | date:'dd/MM/yyyy, HH:mm' }}</span>
+                      <span class="fw-bold fs-5" [class.text-success]="tx.type?.toLowerCase() === 'credit'" [class.text-danger]="tx.type?.toLowerCase() === 'debit'">
+                        {{ tx.type?.toLowerCase() === 'debit' ? '-' : '+' }}₹{{ tx.amount | number:'1.2-2' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDEBAR COLUMN: QUICK LINKS -->
+      <div class="col-lg-4">
+        <div class="card quick-links-card border-0 shadow-sm p-4 rounded-4 bg-white position-sticky" style="top: 20px;">
+          <h4 class="fw-bold text-dark mb-4 fs-4">Quick Links</h4>
+
+          <ul class="list-group list-group-flush border-0">
+            
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="navigateTo('/accounts-summary')">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium fs-6">
+                <i class="bi bi-person-badge text-primary fs-5"></i> Go to Account Details
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="navigateTo('/home')">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium fs-6">
+                <i class="bi bi-file-earmark-check text-primary fs-5"></i> Forms Center
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="downloadInterestCertificate()">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium fs-6">
+                <i class="bi bi-award text-primary fs-5"></i> Download Interest Certificate
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+            <li class="list-group-item border-0 px-0 py-3 d-flex justify-content-between align-items-center cursor-pointer quick-link-item" (click)="downloadBalanceCertificate()">
+              <span class="d-flex align-items-center gap-3 text-dark fw-medium fs-6">
+                <i class="bi bi-shield-check text-primary fs-5"></i> Download Balance Certificate
+              </span>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
   </div>
+</div>
   

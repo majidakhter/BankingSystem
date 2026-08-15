@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BankingApp.AccountManagement.Application.Accounts.Commands
 {
-    public sealed record DepositCommand(Guid accountId, decimal amount, string description) : Command;
+    public sealed record DepositCommand(int accountNumber, decimal amount, string description) : Command;
     public sealed class DepositCommandHandler : CommandHandler<DepositCommand>
     {
         private readonly IAccountRepository<Account> _repository;
@@ -23,13 +23,13 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
         protected override async Task<bool> HandleAsync(DepositCommand request)
         {
 
-            var account = await _repository.GetEntityById(request.accountId);
+            var account = await _repository.GetEntityByAccountNumber(request.accountNumber);
             if (account == null)
             {
-                _logger.LogInformation("AccountId does not exist: {@Account No}", request.accountId);
-                throw new ArgumentException("AccountId does not exist");
+                _logger.LogInformation("AccountId does not exist: {@Account No}", request.accountNumber);
+                throw new ArgumentException("accountNumber does not exist");
             }
-            account.Deposit(request.accountId, request.amount, request.description);
+            account.Deposit(account.Id, request.amount, request.description);
             _repository.Update(account);
             if (_mongoService != null)
             {
@@ -37,7 +37,7 @@ namespace BankingApp.AccountManagement.Application.Accounts.Commands
             }
             await UnitOfWork.CommitAsync();
 
-            _logger.LogInformation("Amount Deposited to {@Account No}", request.accountId);
+            _logger.LogInformation("Amount Deposited to {@Account No}", request.accountNumber);
             return true;
         }
     }
