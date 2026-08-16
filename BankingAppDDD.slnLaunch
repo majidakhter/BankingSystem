@@ -13,6 +13,10 @@
       {
         "Path": "src\\Crosscutting\\BankingDDD.IdentityServer\\Identity\\Identity.csproj",
         "Action": "Start"
+      },
+      {
+        "Path": "src\\Services\\BankingApp.PaymentProcessing\\BankingApp.PaymentProcessing.csproj",
+        "Action": "Start"
       }
     ]
   }

@@ -148,13 +148,23 @@ namespace BankingAppDDD.MongoService.Application.Mongo
             try
             {
                 if (_document == null) return false;
-                Random r = new Random();
-                int userversion = r.Next();
-                var key = DataHelper.GetAccountKey(request.Id, userversion, _dataVersion ?? "V1");
-                var readKey = DataHelper.GetAccountReadableKey(request.Id, userversion, _dataVersion ?? "V1");
+
+                IMongoDBStateContext statecontext = new MongoDBStateContext { CollectionName = "AccountReadModel", ExpirationFieldName = "ModifiedDate", TTLExpiration = TimeSpan.FromDays(ExpireAfterDays > 0 ? ExpireAfterDays : 365) };
+
+                // Preserve existing CacheKey (_id) if document already exists to comply with Mongo's immutable _id constraint
+                AccountReadModelMapper? existingDoc = null;
+                try
+                {
+                    existingDoc = await _document.GetOneAsync<AccountReadModelMapper>(a => a.AccountId == request.Id, CancellationToken.None, statecontext);
+                }
+                catch { }
+
+                var cacheKey = existingDoc != null ? existingDoc.CacheKey : request.Id;
+                var readKey = existingDoc != null ? existingDoc.ReadableKey : DataHelper.GetAccountReadableKey(request.Id, 1, _dataVersion ?? "V1");
+
                 var accountReadModel = new AccountReadModelMapper
                 {
-                    CacheKey = key,
+                    CacheKey = cacheKey,
                     ReadableKey = readKey,
                     AccountId = request.Id,
                     UserId = request.KeycloakUserId,
@@ -164,9 +174,8 @@ namespace BankingAppDDD.MongoService.Application.Mongo
                     AccountBalance = request.GetCurrentBalance().Value
                 };
 
-                IMongoDBStateContext statecontext = new MongoDBStateContext { CollectionName = "AccountReadModel", ExpirationFieldName = "ModifiedDate", TTLExpiration = TimeSpan.FromDays(ExpireAfterDays > 0 ? ExpireAfterDays : 365) };
-                var result = await _document.AddOneAsync(accountReadModel, CancellationToken.None, statecontext);
-                return result.Success;
+                var result = await _document.ReplaceOneAsync(accountReadModel, a => a.AccountId == request.Id, new ReplaceOptions { IsUpsert = true }, CancellationToken.None, statecontext);
+                return result != null && result.IsAcknowledged;
             }
             catch (Exception ex)
             {
@@ -179,10 +188,24 @@ namespace BankingAppDDD.MongoService.Application.Mongo
         {
             try
             {
-                if (_document == null) return false;
-                IMongoDBStateContext statecontext = new MongoDBStateContext { CollectionName = "TransferTransactions", ExpirationFieldName = "CreatedAt", TTLExpiration = TimeSpan.FromDays(ExpireAfterDays > 0 ? ExpireAfterDays : 365) };
-                var result = await _document.AddOneAsync(transaction, CancellationToken.None, statecontext);
-                return result.Success;
+                if (_document != null)
+                {
+                    IMongoDBStateContext statecontext = new MongoDBStateContext { CollectionName = "TransferTransactions", ExpirationFieldName = "CreatedAt", TTLExpiration = TimeSpan.FromDays(ExpireAfterDays > 0 ? ExpireAfterDays : 365) };
+                    var result = await _document.ReplaceOneAsync(transaction, t => t.TransactionId == transaction.TransactionId, new ReplaceOptions { IsUpsert = true }, CancellationToken.None, statecontext);
+                    return result != null && result.IsAcknowledged;
+                }
+
+                if (dataBase != null)
+                {
+                    var collection = dataBase.GetCollection<FundTransferTransaction>("TransferTransactions");
+                    var result = await collection.ReplaceOneAsync(
+                        t => t.TransactionId == transaction.TransactionId,
+                        transaction,
+                        new ReplaceOptions { IsUpsert = true });
+                    return result.IsAcknowledged;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {

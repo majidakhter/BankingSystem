@@ -88,6 +88,17 @@ services.AddMassTransit(configure =>
             h.Username($"{Username}");
             h.Password($"{Password}");
         });
+
+        // Step 2: MassTransit Consumer Message Partitioning on AccountId for sequential state machine processing
+        config.ReceiveEndpoint("transfer-state-processor-queue", e =>
+        {
+            var partitioner = e.CreatePartitioner(8);
+            e.ConfigureConsumer<BankingApp.AccountManagement.Application.Transfer.Consumers.TransferStateProcessorConsumer>(context, c =>
+            {
+                c.Message<BankingAppDDD.Applications.Abstractions.IntegrationEvents.Transfer.FraudEvaluationCompletedIntegrationEvent>(m => m.UsePartitioner(partitioner, x => x.Message.AccountId));
+            });
+        });
+
         config.ConfigureEndpoints(context);
     });
    

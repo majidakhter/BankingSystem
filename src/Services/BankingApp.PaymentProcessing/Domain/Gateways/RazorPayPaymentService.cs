@@ -43,8 +43,8 @@ namespace BankingAppDDD.PaymentProcessing.Domain.Gateways
                 {
                     TransferType.NEFT => "NEFT",
                     TransferType.RTGS => "RTGS",
-                    TransferType.UPI => "UPI",
-                    _ => "NEFT"
+                    TransferType.IMPS => "IMPS",
+                    _ => "IMPS"
                 };
 
                 // Simulate network/API call with cancellation check

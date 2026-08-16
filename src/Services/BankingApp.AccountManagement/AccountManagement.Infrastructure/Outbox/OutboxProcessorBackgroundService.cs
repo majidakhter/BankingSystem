@@ -1,27 +1,24 @@
+ï»¿using System;
+using System.Linq;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Retry;
 
 namespace BankingApp.AccountManagement.Infrastructure.Outbox
 {
-    /// <summary>
-    /// background worker reads the outbox table, publishes the event to the message broker safely, and marks it as processed.
-    /// Initiate Transfer: User transfers $100 from Account A (Service 1) to Account B (Service 2).
-    /// Local Write: Service 1 runs a local transaction:Subtracts $100 from Account A’s balance.
-    /// Inserts row: Event: MoneyWithdrawn, Amount: $100, Status: Pending into the local outbox table
-    /// Commit: The database commits successfully. No messages are lost even if the app crashes next.
-    /// Relay Event: A background poller reads the pending outbox row and pushes it to the message broker.
-    /// Acknowledge: The poller updates the outbox row to Status: Processed.
-    /// Receiver Update: Service 2 consumes the event and safely adds $100 to Account B
-    /// </summary>
     public class OutboxProcessorBackgroundService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<OutboxProcessorBackgroundService> _logger;
         private readonly TimeSpan _period = TimeSpan.FromSeconds(3);
+        private readonly AsyncRetryPolicy _publishRetryPolicy;
 
         public OutboxProcessorBackgroundService(
             IServiceProvider serviceProvider,
@@ -29,6 +26,17 @@ namespace BankingApp.AccountManagement.Infrastructure.Outbox
         {
             _serviceProvider = serviceProvider;
             _logger = logger;
+
+            _publishRetryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(
+                    retryCount: 3,
+                    sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)),
+                    onRetry: (exception, timeSpan, retryCount, context) =>
+                    {
+                        _logger.LogWarning("Outbox Publisher Retry {RetryCount}: Transient error encountered. Retrying in {SleepSeconds}s. Exception: {Message}",
+                            retryCount, timeSpan.TotalSeconds, exception.Message);
+                    });
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -78,7 +86,6 @@ namespace BankingApp.AccountManagement.Infrastructure.Outbox
                     var eventType = Type.GetType(message.EventType);
                     if (eventType == null)
                     {
-                        // Fallback type resolution by class name across assemblies
                         eventType = AppDomain.CurrentDomain.GetAssemblies()
                             .SelectMany(a => a.GetTypes())
                             .FirstOrDefault(t => t.FullName == message.EventType || t.Name == message.EventType);
@@ -89,7 +96,11 @@ namespace BankingApp.AccountManagement.Infrastructure.Outbox
                         var eventObj = JsonSerializer.Deserialize(message.Payload, eventType);
                         if (eventObj != null)
                         {
-                            await publishEndpoint.Publish(eventObj, eventType, cancellationToken);
+                            await _publishRetryPolicy.ExecuteAsync(async () =>
+                            {
+                                await publishEndpoint.Publish(eventObj, eventType, cancellationToken);
+                            });
+
                             _logger.LogInformation("Successfully published outbox event {EventType} for AggregateId {AggregateId}", message.EventType, message.AggregateId);
                         }
                     }

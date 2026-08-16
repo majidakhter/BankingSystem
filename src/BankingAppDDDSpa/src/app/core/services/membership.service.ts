@@ -216,7 +216,9 @@ export class MemberShipService {
 
   transferFunds(command: any): Observable<any> {
     const accountUrl = (environment as any).accountApiUrl || 'http://localhost:5210';
-    return this.http.post<any>(`${accountUrl}/api/v2/transaction`, command, { headers: this.headers });
+    const key = command?.idempotencyKey || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `tx-${Date.now()}-${Math.floor(Math.random() * 1000000)}`);
+    const customHeaders = (this.headers || new HttpHeaders()).set('X-Idempotency-Key', key);
+    return this.http.post<any>(`${accountUrl}/api/v2/transaction`, command, { headers: customHeaders });
   }
 
 
