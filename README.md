@@ -108,7 +108,19 @@ This system provides a comprehensive suite of banking features to clients:
 - **Circuit Breaker**: Fault-tolerance mechanisms for cross-service calls.
 - **Cross-Cutting Concerns**: Centralized logging with Seq, global exception handling, Polly resilience, and ASP.NET Core Health Checks.
 - **Machine Learning & LLM Model**: Implemented Real time fraud detection system by introducing a 2-layer ensemble workflow: Layer 1 (ML Quantitative Engine) + Layer 2 (Microsoft Semantic Kernel & OpenAI Semantic Analyzer), merged by an Ensemble Workflow Coordinator using weighted voting and conditional routing.
-### Layer Responsibilities
+### Layer Responsibilities.
+
+When I tried to transfer the money  and put the remarks like won the lottery. you can see how logs are generated and blocked the transaction.
+[12:53:43 INF] Ensemble Workflow Coordinator evaluating ML Score: 1.00, Amount: 20000
+[12:53:43 INF] ML score in ambiguous range (1.00). Triggering LLM Semantic Analyzer...
+[12:53:43 INF] LLM Semantic Analyzer triggered for ambiguous transaction. Amount: 20000, Description: 'won the lottery'
+[12:53:43 INF] Azure/OpenAI credentials not present; running Microsoft Semantic Kernel Resilient Engine...
+[12:53:43 WRN] Severe social-engineering cues detected by LLM Semantic Analyzer. Escalating ensemble risk score.
+[12:53:43 INF] Ensemble Workflow final decision: Action=BLOCK_TRANSACTION, EnsembleScore=0.94
+[12:53:43 INF] Async Fraud Evaluation completed for Transaction 0047eedc-0ff6-42d2-95b4-5e701fc61cfe: Action=BLOCK_TRANSACTION, EnsembleScore=0.94
+[12:53:44 INF] Published FraudEvaluationCompletedIntegrationEvent for TransactionId: 0047eedc-0ff6-42d2-95b4-5e701fc61cfe
+[12:53:44 INF] TransferStateProcessorConsumer processing FraudEvaluationCompletedIntegrationEvent for TransactionId: 0047eedc-0ff6-42d2-95b4-5e701fc61cfe, Action: BLOCK_TRANSACTION, Score: 0.94
+[12:53:44 WRN] State Machine Transition: Transaction 0047eedc-0ff6-42d2-95b4-5e701fc61cfe state updated to REJECTED. FundTransferRejectedIntegrationEvent published.
 
 - **Core / Domain**: Building blocks and abstractions used across projects (Aggregates, Value Objects, Domain Events). Pure domain logic without infrastructure dependencies.
 - **Infrastructure**: Persistence implementations, Entity Framework Core mappings, database contexts, and external integrations.
