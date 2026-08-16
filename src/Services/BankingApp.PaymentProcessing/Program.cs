@@ -1,3 +1,4 @@
+using BankingApp.PaymentProcessing.Application.Command;
 using BankingAppDDD.Common.Extension;
 using BankingAppDDD.Common.Types;
 using BankingAppDDD.PaymentProcessing.Application.ProcessingPayment.Consumers;
@@ -8,10 +9,13 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
-// API Versioning
+// API Versioning & Logging
 builder.AddHostLogging();
 services.AddWebHostInfrastructure(builder.Configuration, "PaymentService");
 services.AddApiVersioning(ApiVersions.V2);
+
+// Register MediatR CQRS Pipeline
+services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RequestPhonePePaymentCommand).Assembly));
 
 services.AddControllers();
 services.AddEndpointsApiExplorer();

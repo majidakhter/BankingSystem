@@ -6,12 +6,19 @@ namespace BankingAppDDD.Domains.Accounts.Models
         NEFT = 2,
         RTGS = 3
     }
-    public enum PaymentType
+
+    public enum PaymentMethodType
     {
-        UPI = 1,
-        Card = 2,
-        NetBanking = 3,
-        Wallet = 4,
+        CreditDebitCard, 
+        DigitalWallet,
+        BankTransfer,
+        BillPayment
+    }
+    public enum PaymentReceiverBusinessEntity
+    {
+        Merchant = 1,
+        Biller = 2,
+        Wallet = 3,
     }
 
     public enum PaymentGatewayProvider

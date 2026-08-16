@@ -94,45 +94,167 @@
 
                 </div>
 
-                <!-- Input Field & Action -->
+                <!-- Payment Gateway Selection -->
                 <div class="mb-4">
-                  <label class="form-label text-dark small fw-semibold">
-                    @if (rechargeCategory === 'MobilePrepaid') { Mobile Number }
-                    @else if (rechargeCategory === 'FASTag') { Vehicle Number }
-                    @else { Subscriber ID }
-                  </label>
-                  
+                  <label class="form-label text-dark small fw-semibold">Select Payment Method</label>
+                  <div class="d-flex align-items-center gap-3 flex-wrap">
+                    
+                    <div class="form-check">
+                      <input 
+                        class="form-check-input" 
+                        type="radio" 
+                        name="gwCat" 
+                        id="gwPhonePe" 
+                        value="PhonePe" 
+                        [checked]="gatewayProvider === 'PhonePe'"
+                        (change)="setGateway('PhonePe')">
+                      <label class="form-check-label fw-semibold text-primary ms-1" for="gwPhonePe">
+                        <i class="bi bi-phone-fill me-1"></i> PhonePe
+                      </label>
+                    </div>
+
+                    <div class="form-check">
+                      <input 
+                        class="form-check-input" 
+                        type="radio" 
+                        name="gwCat" 
+                        id="gwRazorpay" 
+                        value="Razorpay" 
+                        [checked]="gatewayProvider === 'Razorpay'"
+                        (change)="setGateway('Razorpay')">
+                      <label class="form-check-label fw-semibold text-info ms-1" for="gwRazorpay">
+                        <i class="bi bi-credit-card-2-front-fill me-1"></i> Razorpay
+                      </label>
+                    </div>
+
+                    <div class="form-check">
+                      <input 
+                        class="form-check-input" 
+                        type="radio" 
+                        name="gwCat" 
+                        id="gwDirect" 
+                        value="DirectDebit" 
+                        [checked]="gatewayProvider === 'DirectDebit'"
+                        (change)="setGateway('DirectDebit')">
+                      <label class="form-check-label fw-semibold text-dark ms-1" for="gwDirect">
+                        <i class="bi bi-bank2 me-1"></i> Account Debit
+                      </label>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Input Fields & Action -->
+                <div class="mb-4">
                   <div class="row g-3 align-items-center">
-                    <div class="col-md-7">
+                    <div class="col-md-5">
+                      <label class="form-label text-dark small fw-semibold">
+                        @if (rechargeCategory === 'MobilePrepaid') { Mobile Number }
+                        @else if (rechargeCategory === 'FASTag') { Vehicle Number }
+                        @else { Subscriber ID }
+                      </label>
                       <input 
                         type="text" 
                         class="form-control custom-input" 
-                        placeholder="Enter Mobile Number" 
+                        placeholder="Enter Mobile / Account No" 
                         [(ngModel)]="mobileNumber" />
                     </div>
-                    <div class="col-md-5">
+
+                    <div class="col-md-3">
+                      <label class="form-label text-dark small fw-semibold">Amount (₹)</label>
+                      <input 
+                        type="number" 
+                        class="form-control custom-input" 
+                        placeholder="299" 
+                        [(ngModel)]="rechargeAmount" />
+                    </div>
+
+                    <div class="col-md-4 mt-auto">
                       <button 
                         type="button" 
-                        class="btn btn-outline-primary recharge-now-btn w-100 fw-semibold px-4 py-2" 
+                        class="btn btn-primary recharge-now-btn w-100 fw-semibold px-4 py-2 text-white" 
                         (click)="onRechargeNow()"
                         [disabled]="isLoading">
                         @if (isLoading) {
                           <span class="spinner-border spinner-border-sm me-1"></span>
                         }
-                        Recharge Now
+                        Pay ₹{{ rechargeAmount || 0 }}
                       </button>
                     </div>
                   </div>
                 </div>
+
+                <!-- Initiation Result Details & PhonePe QR Code Scanner Component -->
+                @if (initiationResult && initiationResult.provider === 'PhonePe') {
+                  <div class="card border-0 shadow-sm rounded-4 mt-4 overflow-hidden" style="border: 2px solid #5f259f !important;">
+                    <div class="px-4 py-3 text-white d-flex justify-content-between align-items-center" style="background-color: #5f259f;">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-qr-code-scan fs-4"></i>
+                        <div>
+                          <h5 class="fw-bold mb-0 text-white">PhonePe UPI QR Scanner</h5>
+                          <span class="small opacity-75">Scan & Pay securely via PhonePe, GPay, Paytm, or BHIM</span>
+                        </div>
+                      </div>
+                      <span class="badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill">Pay ₹{{ rechargeAmount }}</span>
+                    </div>
+
+                    <div class="card-body p-4 text-center bg-white">
+                      <!-- Dynamic QR Code Container -->
+                      <div class="qr-box p-3 d-inline-block bg-white rounded-4 border shadow-sm mb-3 position-relative">
+                        <img [src]="getQrCodeUrl()" alt="PhonePe UPI QR Code" width="220" height="220" class="img-fluid rounded-3" />
+                        <div class="mt-2 text-center">
+                          <span class="badge bg-light text-dark border small fw-semibold">
+                            <i class="bi bi-shield-lock-fill text-success me-1"></i> PhonePe Verified Merchant
+                          </span>
+                        </div>
+                      </div>
+
+                      <!-- UPI ID Copy Bar -->
+                      <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+                        <span class="small fw-semibold text-muted">UPI ID:</span>
+                        <code class="px-3 py-1 bg-light text-dark rounded-3 border fw-bold fs-6">{{ initiationResult.upiId || 'PGTESTPAYUAT@ybl' }}</code>
+                        <button type="button" class="btn btn-outline-secondary btn-sm rounded-3" (click)="copyUpiId()">
+                          @if (copySuccess) {
+                            <i class="bi bi-check2 text-success"></i> Copied!
+                          } @else {
+                            <i class="bi bi-clipboard"></i> Copy
+                          }
+                        </button>
+                      </div>
+
+                      <!-- Action Buttons -->
+                      <div class="d-flex align-items-center justify-content-center gap-3 flex-wrap">
+                        <button type="button" class="btn btn-success fw-bold px-4 py-2 rounded-pill" (click)="confirmPhonePePayment()">
+                          <i class="bi bi-check-circle-fill me-1"></i> Confirm Payment Done
+                        </button>
+                        <a [href]="initiationResult.paymentUrl" target="_blank" class="btn btn-outline-primary fw-semibold px-4 py-2 rounded-pill">
+                          Open Web Gateway <i class="bi bi-box-arrow-up-right ms-1"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                } @else if (initiationResult && initiationResult.paymentUrl) {
+                  <div class="p-3 bg-light rounded-3 border border-primary-subtle mt-3">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                      <div>
+                        <span class="badge bg-primary text-white mb-1">{{ initiationResult.provider }} Gateway</span>
+                        <div class="small fw-semibold text-dark">Order ID: {{ initiationResult.orderId }}</div>
+                      </div>
+                      <a [href]="initiationResult.paymentUrl" target="_blank" class="btn btn-success btn-sm fw-semibold px-3">
+                        Proceed to Checkout <i class="bi bi-box-arrow-up-right ms-1"></i>
+                      </a>
+                    </div>
+                  </div>
+                }
 
               </div>
 
               <!-- Smartphone Illustration Side Graphic -->
               <div class="col-md-4 text-center d-none d-md-block">
                 <div class="illustration-badge p-3 bg-light-blue rounded-4 d-inline-block">
-                  <i class="bi bi-phone-vibrate text-primary display-4"></i>
+                  <i class="bi bi-shield-check text-success display-4"></i>
                   <div class="mt-2">
-                    <span class="badge bg-success rounded-pill px-3 py-1">Instant Activation</span>
+                    <span class="badge bg-primary rounded-pill px-3 py-1">256-Bit SSL Encrypted</span>
                   </div>
                 </div>
               </div>
@@ -198,3 +320,57 @@
   </div>
 
 </div>
+
+<!-- RAZORPAY CHECKOUT MODAL SIMULATOR -->
+@if (showRazorpayModal) {
+  <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px);">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        
+        <!-- Header -->
+        <div class="px-4 py-3 text-white d-flex justify-content-between align-items-center" style="background-color: #0c2340;">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-credit-card-2-front-fill fs-4 text-info"></i>
+            <div>
+              <h5 class="fw-bold mb-0 text-white">Razorpay Standard Checkout</h5>
+              <span class="small opacity-75">Test Mode &bullet; Safe & Encrypted</span>
+            </div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="closeRazorpayModal()"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body p-4 bg-white text-center">
+          <div class="mb-3">
+            <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-2 fs-6 rounded-pill">Amount: ₹{{ rechargeAmount }}</span>
+          </div>
+
+          <div class="p-3 bg-light rounded-3 border text-start mb-4 small">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="text-muted">Order ID:</span>
+              <strong class="text-dark">{{ initiationResult?.orderId || 'N/A' }}</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span class="text-muted">Mobile / Account:</span>
+              <strong class="text-dark">{{ mobileNumber }}</strong>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="text-muted">Currency:</span>
+              <strong class="text-dark">INR (₹)</strong>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-primary fw-bold py-2 rounded-3" (click)="confirmRazorpayTestPayment()">
+              <i class="bi bi-shield-check me-1"></i> Pay ₹{{ rechargeAmount }} (Success Test)
+            </button>
+            <button type="button" class="btn btn-outline-secondary fw-semibold py-2 rounded-3" (click)="closeRazorpayModal()">
+              Cancel Checkout
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

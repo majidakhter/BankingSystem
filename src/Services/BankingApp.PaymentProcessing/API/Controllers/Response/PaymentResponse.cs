@@ -2,9 +2,8 @@
 {
     public record class PaymentResponse
     {
-        public int TransactionNumber { get; set; }
-        public string GatewayReference { get; set; }  // e.g., Bank UTR or Provider ID
+        public string TransactionNumber { get; set; }
         public TransactionStatus Status { get; set; }
-        public string Message { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

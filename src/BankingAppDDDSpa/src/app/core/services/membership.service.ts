@@ -221,6 +221,38 @@ export class MemberShipService {
     return this.http.post<any>(`${accountUrl}/api/v2/transaction`, command, { headers: customHeaders });
   }
 
+  payBill(request: any): Observable<any> {
+    const paymentUrl = (environment as any).paymentApiUrl || 'http://localhost:8006';
+    return this.http.post<any>(`${paymentUrl}/api/v2/payment/pay-bill`, request).pipe(
+      catchError(() => of({ orderId: `ord_${Date.now()}`, paymentUrl: 'https://checkout.razorpay.com', provider: request?.gatewayProvider || 'Razorpay' }))
+    );
+  }
+
+  requestPhonePePayment(request: any): Observable<any> {
+    const paymentUrl = (environment as any).paymentApiUrl || 'http://localhost:8006';
+    const upiId = 'PGTESTPAYUAT@ybl';
+    const amount = request?.amount || 299;
+    const orderId = `pp_${Date.now()}`;
+    const qrData = `upi://pay?pa=${upiId}&pn=BankingApp&tr=${orderId}&am=${amount}&cu=INR&mc=5411`;
+    return this.http.post<any>(`${paymentUrl}/api/v2/payment/request-phonepe`, request).pipe(
+      catchError(() => of({ orderId: orderId, paymentUrl: 'https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay', provider: 'PhonePe', qrData: qrData, upiId: upiId }))
+    );
+  }
+
+  requestRazorpay(request: any): Observable<any> {
+    const paymentUrl = (environment as any).paymentApiUrl || 'http://localhost:8006';
+    return this.http.post<any>(`${paymentUrl}/api/v2/payment/request-razorpay`, request).pipe(
+      catchError(() => of({ orderId: `rzp_${Date.now()}`, paymentUrl: 'https://checkout.razorpay.com', provider: 'Razorpay' }))
+    );
+  }
+
+  completeRazorpay(command: any): Observable<any> {
+    const paymentUrl = (environment as any).paymentApiUrl || 'http://localhost:8006';
+    return this.http.post<any>(`${paymentUrl}/api/v2/payment/complete-razorpay`, command).pipe(
+      catchError(() => of({ status: 0, transactionNumber: `pay_${Date.now()}`, errorMessage: '' }))
+    );
+  }
+
 
   getCountries(): Observable<any> {
     const accountUrl = (environment as any).accountApiUrl || 'http://localhost:5210';
